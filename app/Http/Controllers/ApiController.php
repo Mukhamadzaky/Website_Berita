@@ -48,10 +48,25 @@ class ApiController extends Controller
     }
 
     public function storeNews(Request $request) {
-        $request->validate(['title' => 'required', 'content' => 'required']);
-        News::create($request->only(['title', 'content']));
-        return response()->json(['message' => 'Berita terbit!']);
+    $request->validate([
+        'title' => 'required', 
+        'content' => 'required',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048' // Validasi gambar max 2MB
+    ]);
+
+    $data = [
+        'title' => $request->title,
+        'content' => $request->content,
+    ];
+
+    // Jika ada file gambar yang diupload
+    if ($request->hasFile('image')) {
+        $data['image_path'] = $request->file('image')->store('news_images', 'public');
     }
+
+    News::create($data);
+    return response()->json(['message' => 'Berita berhasil diterbitkan!']);
+}
 
     // --- DOCUMENTS ---
     public function getDocuments() {

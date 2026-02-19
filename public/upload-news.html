@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Tulis Berita - Portal Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex h-screen overflow-hidden font-sans">
+
+    <aside class="w-64 bg-slate-900 text-white flex flex-col shadow-xl z-20">
+        <div class="h-16 flex items-center px-6 border-b border-slate-800">
+            <h1 class="font-bold text-lg"><i class="fa-solid fa-cube text-blue-500"></i> PortalAdmin</h1>
+        </div>
+        <nav class="flex-1 px-4 py-6 space-y-2">
+            <a href="dashboard.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl">
+                <i class="fa-solid fa-gauge-high w-6"></i> Dashboard
+            </a>
+            <a href="upload-news.html" class="flex items-center px-4 py-3 bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-600/20">
+                <i class="fa-regular fa-newspaper w-6"></i> Tulis Berita
+            </a>
+            <a href="upload-doc.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl">
+                <i class="fa-solid fa-file-pdf w-6"></i> Upload Dokumen
+            </a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto p-8 bg-gray-50/50">
+        <div class="max-w-4xl mx-auto">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800">Tulis Berita Baru</h2>
+                    <p class="text-gray-500 mt-1">Publikasikan informasi terbaru ke website.</p>
+                </div>
+                <a href="dashboard.html" class="text-gray-500 hover:text-gray-800 bg-white px-4 py-2 border rounded-lg shadow-sm">Batal</a>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    
+                    <div class="md:col-span-2 space-y-6">
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-2">Judul Berita <span class="text-red-500">*</span></label>
+                            <input type="text" id="title" placeholder="Contoh: Rapat Koordinasi Tahunan 2026..." class="w-full border border-gray-300 p-3.5 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white transition-all">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-2">Isi Berita <span class="text-red-500">*</span></label>
+                            <textarea id="content" placeholder="Ketik isi berita selengkapnya di sini..." class="w-full border border-gray-300 p-4 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none h-64 bg-gray-50 focus:bg-white transition-all"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-2">Gambar Sampul (Opsional)</label>
+                            <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:bg-blue-50 hover:border-blue-400 transition-colors relative cursor-pointer group">
+                                <input type="file" id="imageFile" accept="image/jpeg, image/png, image/jpg" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                                <div class="text-gray-400 group-hover:text-blue-500 transition-colors">
+                                    <i class="fa-regular fa-image text-4xl mb-3"></i>
+                                    <p class="text-sm font-semibold text-gray-700">Pilih Gambar</p>
+                                    <p class="text-xs mt-1">Format: JPG, PNG (Max 2MB)</p>
+                                </div>
+                            </div>
+                            <p id="fileNamePreview" class="text-xs text-blue-600 font-bold mt-2 text-center hidden"></p>
+                        </div>
+
+                        <button id="submitBtn" onclick="submitNews()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-600/30 transition-all flex justify-center items-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> Terbitkan Berita
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="config.js"></script>
+    <script>
+        checkAuth();
+
+        // Fitur untuk menampilkan nama file gambar saat dipilih
+        document.getElementById('imageFile').addEventListener('change', function(e) {
+            const fileNamePreview = document.getElementById('fileNamePreview');
+            if(this.files[0]) {
+                fileNamePreview.textContent = "File terpilih: " + this.files[0].name;
+                fileNamePreview.classList.remove('hidden');
+            } else {
+                fileNamePreview.classList.add('hidden');
+            }
+        });
+
+        async function submitNews() {
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            const imageInput = document.getElementById('imageFile');
+            const btn = document.getElementById('submitBtn');
+
+            if (!title || !content) return alert("Judul dan Isi berita wajib diisi!");
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengunggah...';
+
+            // Menggunakan FormData karena kita mengirim FILE (Gambar)
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('content', content);
+            if (imageInput.files.length > 0) {
+                formData.append('image', imageInput.files[0]);
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/news`, {
+                    method: 'POST',
+                    headers: {
+                        // JANGAN set Content-Type kalau pakai FormData, biarkan browser yang atur
+                        'Authorization': `Bearer ${getToken()}`
+                    },
+                    body: formData
+                });
+
+                if (res.ok) {
+                    alert('Berita berhasil diterbitkan!');
+                    window.location.href = 'index.html'; // Lempar ke halaman depan untuk melihat hasil
+                } else {
+                    const err = await res.json();
+                    alert('Gagal: ' + (err.message || 'Cek kembali isian Anda.'));
+                }
+            } catch (error) {
+                alert('Terjadi kesalahan koneksi.');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Terbitkan Berita';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Dokumen - Portal Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex h-screen overflow-hidden font-sans">
+
+    <aside class="w-64 bg-slate-900 text-white flex flex-col shadow-xl z-20">
+        <div class="h-16 flex items-center px-6 border-b border-slate-800">
+            <h1 class="font-bold text-lg"><i class="fa-solid fa-cube text-blue-500"></i> PortalAdmin</h1>
+        </div>
+        <nav class="flex-1 px-4 py-6 space-y-2">
+            <a href="dashboard.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl">
+                <i class="fa-solid fa-gauge-high w-6"></i> Dashboard
+            </a>
+            <a href="upload-news.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl">
+                <i class="fa-regular fa-newspaper w-6"></i> Tulis Berita
+            </a>
+            <a href="upload-doc.html" class="flex items-center px-4 py-3 bg-orange-500 text-white rounded-xl shadow-lg shadow-orange-500/20">
+                <i class="fa-solid fa-file-pdf w-6"></i> Upload Dokumen
+            </a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto p-8 bg-gray-50/50">
+        <div class="max-w-2xl mx-auto">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800">Pusat Unduhan</h2>
+                    <p class="text-gray-500 mt-1">Unggah dokumen resmi (PDF/Word) untuk publik.</p>
+                </div>
+                <a href="dashboard.html" class="text-gray-500 hover:text-gray-800 bg-white px-4 py-2 border rounded-lg shadow-sm">Batal</a>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                <div class="space-y-6">
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-2">Nama Dokumen <span class="text-red-500">*</span></label>
+                        <input type="text" id="docTitle" placeholder="Contoh: Surat Keputusan No.1 Tahun 2026..." class="w-full border border-gray-300 p-3.5 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none bg-gray-50 focus:bg-white transition-all">
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-2">File Dokumen <span class="text-red-500">*</span></label>
+                        <div class="border-2 border-dashed border-gray-300 bg-gray-50 rounded-2xl p-10 text-center hover:bg-orange-50 hover:border-orange-400 transition-all relative cursor-pointer group">
+                            <input type="file" id="docFile" accept=".pdf,.doc,.docx" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                            
+                            <div class="text-gray-400 group-hover:text-orange-500 transition-colors">
+                                <div class="bg-white w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
+                                    <i class="fa-solid fa-cloud-arrow-up text-4xl"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-gray-700 mb-1">Klik atau Drop file di sini</h4>
+                                <p class="text-sm font-medium">Mendukung format: .PDF, .DOC, .DOCX</p>
+                                <p class="text-xs mt-2 text-gray-400">Ukuran maksimal file: 10MB</p>
+                            </div>
+                        </div>
+                        <p id="docNamePreview" class="text-sm text-orange-600 font-bold mt-3 text-center hidden"></p>
+                    </div>
+
+                    <button id="submitDocBtn" onclick="submitDoc()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-orange-500/30 transition-all flex justify-center items-center gap-2 mt-4">
+                        <i class="fa-solid fa-upload"></i> Mulai Unggah
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="config.js"></script>
+    <script>
+        checkAuth();
+
+        // Tampilkan nama dokumen saat dipilih
+        document.getElementById('docFile').addEventListener('change', function(e) {
+            const docNamePreview = document.getElementById('docNamePreview');
+            if(this.files[0]) {
+                docNamePreview.innerHTML = '<i class="fa-solid fa-check-circle mr-1"></i> File siap diupload: ' + this.files[0].name;
+                docNamePreview.classList.remove('hidden');
+            } else {
+                docNamePreview.classList.add('hidden');
+            }
+        });
+
+        async function submitDoc() {
+            const title = document.getElementById('docTitle').value;
+            const fileInput = document.getElementById('docFile');
+            const btn = document.getElementById('submitDocBtn');
+            
+            if(!title) return alert("Judul dokumen harus diisi!");
+            if(fileInput.files.length === 0) return alert("Mohon pilih file terlebih dahulu!");
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengunggah...';
+
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('file', fileInput.files[0]);
+
+            try {
+                const res = await fetch(`${API_URL}/documents`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${getToken()}`
+                    },
+                    body: formData
+                });
+
+                if (res.ok) {
+                    alert('Dokumen berhasil diunggah!');
+                    window.location.href = 'index.html';
+                } else {
+                    const err = await res.json();
+                    alert('Gagal: ' + (err.message || 'Cek format atau ukuran file'));
+                }
+            } catch (error) {
+                alert('Terjadi kesalahan koneksi.');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-upload"></i> Mulai Unggah';
+            }
+        }
+    </script>
+</body>
+</html>
