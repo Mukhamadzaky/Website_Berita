@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard - Portal Admin</title>
+    <title>Dashboard Utama - Portal Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
@@ -10,23 +10,45 @@
 
     <aside class="w-64 bg-slate-900 text-white flex flex-col shadow-xl z-20">
         <div class="h-16 flex items-center px-6 border-b border-slate-800">
-            <h1 class="font-bold text-lg flex items-center gap-3">
-                <i class="fa-solid fa-cube text-blue-500 text-xl"></i> Portal<span class="text-blue-400">Admin</span>
-            </h1>
+            <h1 class="font-bold text-lg"><i class="fa-solid fa-cube text-blue-500"></i> Portal<span class="text-blue-400">Admin</span></h1>
         </div>
-        <nav class="flex-1 px-4 py-6 space-y-2">
-            <a href="dashboard.html" class="flex items-center px-4 py-3 bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-600/20">
-                <i class="fa-solid fa-gauge-high w-6"></i> <span class="font-medium">Dashboard</span>
+        
+        <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+            
+            <a href="index.html" target="_blank" class="flex items-center px-4 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-lg shadow-emerald-600/20 mb-6 transition-all group">
+                <i class="fa-solid fa-globe w-5 mr-3 group-hover:animate-pulse"></i> <span class="font-bold">Lihat Website</span>
             </a>
-            <a href="upload-news.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors">
-                <i class="fa-regular fa-newspaper w-6"></i> <span class="font-medium">Tulis Berita</span>
+
+            <p class="px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Menu Utama</p>
+            
+            <a href="dashboard.html" class="flex items-center px-4 py-3 bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-600/20 mb-2">
+                <i class="fa-solid fa-gauge-high w-5 mr-3"></i> <span class="font-medium">Dashboard</span>
             </a>
-            <a href="upload-doc.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors">
-                <i class="fa-solid fa-file-pdf w-6"></i> <span class="font-medium">Upload Dokumen</span>
+
+            <p class="px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider mt-6 mb-2">Konten</p>
+            
+            <a href="upload-news.html" class="flex items-center px-4 py-2.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors">
+                <i class="fa-regular fa-newspaper w-5 mr-3"></i> <span>Berita</span>
+            </a>
+            <a href="upload-doc.html" class="flex items-center px-4 py-2.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors">
+                <i class="fa-solid fa-file-pdf w-5 mr-3"></i> <span>Dokumen</span>
+            </a>
+
+            <p class="px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider mt-6 mb-2">Administrasi</p>
+            
+            <a href="inbox.html" class="flex items-center px-4 py-2.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group">
+                <i class="fa-solid fa-inbox w-5 mr-3 group-hover:text-yellow-400"></i> 
+                <span>Pesan Masuk</span>
+                <span id="badge-msg" class="ml-auto bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full hidden">New</span>
+            </a>
+            
+            <a href="users.html" class="flex items-center px-4 py-2.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors">
+                <i class="fa-solid fa-users w-5 mr-3"></i> <span>Daftar Admin</span>
             </a>
         </nav>
+
         <div class="p-4 border-t border-slate-800 bg-slate-950">
-            <button onclick="logout()" class="w-full flex items-center justify-center px-4 py-2.5 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors font-medium">
+            <button onclick="logout()" class="w-full flex items-center justify-center px-4 py-2.5 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors font-medium text-sm">
                 <i class="fa-solid fa-right-from-bracket mr-2"></i> Keluar
             </button>
         </div>
@@ -34,70 +56,84 @@
 
     <main class="flex-1 flex flex-col h-screen overflow-hidden">
         <header class="h-16 bg-white shadow-sm flex items-center justify-between px-8 z-10">
-            <h2 class="text-xl font-bold text-gray-700">Ikhtisar Panel</h2>
+            <h2 class="text-xl font-bold text-gray-700">Dashboard Overview</h2>
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold border border-blue-200">
-                    <i class="fa-regular fa-user"></i>
-                </div>
-                <span class="text-sm font-bold text-gray-600">Administrator</span>
+                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">A</div>
+                <span class="text-sm font-bold text-gray-600">Admin</span>
             </div>
         </header>
 
-        <div class="flex-1 overflow-y-auto p-8 bg-gray-50/50">
-            <div class="mb-8">
-                <h3 class="text-2xl font-bold text-gray-800">Selamat datang kembali!</h3>
-                <p class="text-gray-500 mt-1">Pilih menu cepat di bawah ini untuk mengelola konten website Anda.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl">
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col justify-between group hover:shadow-md transition-shadow">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-14 h-14 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                            <i class="fa-regular fa-pen-to-square"></i>
-                        </div>
-                        <span class="bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full">Aktif</span>
-                    </div>
-                    <div>
-                        <h4 class="text-xl font-bold text-gray-800 mb-2">Publikasi Berita</h4>
-                        <p class="text-gray-500 text-sm mb-6">Tulis artikel, pengumuman, atau berita terbaru lengkap dengan gambar sampul.</p>
-                        <a href="upload-news.html" class="inline-flex items-center text-blue-600 font-bold hover:text-blue-800">
-                            Tulis Sekarang <i class="fa-solid fa-arrow-right ml-2"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col justify-between group hover:shadow-md transition-shadow">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-14 h-14 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-file-arrow-up"></i>
-                        </div>
-                        <span class="bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full">Aktif</span>
-                    </div>
-                    <div>
-                        <h4 class="text-xl font-bold text-gray-800 mb-2">Manajemen Dokumen</h4>
-                        <p class="text-gray-500 text-sm mb-6">Unggah file penting berformat PDF atau Word agar dapat diunduh oleh publik.</p>
-                        <a href="upload-doc.html" class="inline-flex items-center text-orange-500 font-bold hover:text-orange-700">
-                            Upload Dokumen <i class="fa-solid fa-arrow-right ml-2"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
+        <div class="flex-1 overflow-y-auto p-8 bg-gray-50">
             
-            <div class="mt-10 pt-6 border-t border-gray-200">
-                <a href="index.html" target="_blank" class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-medium transition-colors">
-                    <i class="fa-solid fa-globe mr-2"></i> Lihat Website Publik (Halaman Depan)
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+                    <div class="p-4 rounded-xl bg-blue-50 text-blue-600 text-2xl"><i class="fa-regular fa-newspaper"></i></div>
+                    <div>
+                        <p class="text-gray-500 text-sm">Total Berita</p>
+                        <h3 class="text-2xl font-bold text-gray-800" id="stat-news">0</h3>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+                    <div class="p-4 rounded-xl bg-orange-50 text-orange-600 text-2xl"><i class="fa-solid fa-file-pdf"></i></div>
+                    <div>
+                        <p class="text-gray-500 text-sm">Dokumen</p>
+                        <h3 class="text-2xl font-bold text-gray-800" id="stat-docs">0</h3>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+                    <div class="p-4 rounded-xl bg-yellow-50 text-yellow-600 text-2xl"><i class="fa-solid fa-inbox"></i></div>
+                    <div>
+                        <p class="text-gray-500 text-sm">Pesan Masuk</p>
+                        <h3 class="text-2xl font-bold text-gray-800" id="stat-msg">0</h3>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+                    <div class="p-4 rounded-xl bg-purple-50 text-purple-600 text-2xl"><i class="fa-solid fa-users"></i></div>
+                    <div>
+                        <p class="text-gray-500 text-sm">Total Admin</p>
+                        <h3 class="text-2xl font-bold text-gray-800" id="stat-users">0</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <a href="upload-news.html" class="block p-6 bg-gradient-to-r from-blue-600 to-blue-500 rounded-2xl shadow-lg text-white hover:scale-[1.02] transition-transform">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold">Tulis Berita Baru</h3>
+                        <i class="fa-solid fa-pen-nib text-3xl opacity-50"></i>
+                    </div>
+                    <p class="text-blue-100 text-sm">Publikasikan artikel terbaru sekarang.</p>
+                </a>
+                <a href="inbox.html" class="block p-6 bg-white rounded-2xl shadow-sm border border-gray-200 hover:border-blue-400 transition-colors group">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold text-gray-800 group-hover:text-blue-600">Cek Pesan Masuk</h3>
+                        <i class="fa-solid fa-envelope-open-text text-3xl text-gray-300 group-hover:text-blue-500 transition-colors"></i>
+                    </div>
+                    <p class="text-gray-500 text-sm">Lihat aspirasi atau pesan dari pengunjung website.</p>
                 </a>
             </div>
+
         </div>
     </main>
 
     <script src="config.js"></script>
     <script>
         checkAuth();
-        function logout() {
-            localStorage.removeItem('token');
-            window.location.href = 'login.html';
-        }
+        function logout() { localStorage.removeItem('token'); window.location.href = 'login.html'; }
+
+        // Fetch Data Statistik Realtime
+        fetch(`${API_URL}/dashboard-stats`, {
+            headers: { 'Authorization': `Bearer ${getToken()}` }
+        })
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('stat-news').innerText = data.total_news;
+            document.getElementById('stat-docs').innerText = data.total_docs;
+            document.getElementById('stat-msg').innerText = data.total_messages;
+            document.getElementById('stat-users').innerText = data.total_users;
+
+            if(data.total_messages > 0) document.getElementById('badge-msg').classList.remove('hidden');
+        });
     </script>
 </body>
 </html>

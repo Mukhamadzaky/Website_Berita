@@ -93,4 +93,34 @@ class ApiController extends Controller
         }
         return response()->json(['message' => 'Gagal upload'], 400);
     }
+
+    // --- FITUR TAMBAHAN ---
+
+    // 1. Dashboard Stats (Untuk widget angka-angka)
+    public function getDashboardStats() {
+        return response()->json([
+            'total_news' => News::count(),
+            'total_docs' => Document::count(),
+            'total_users' => User::count(),
+            'total_messages' => \App\Models\Message::count()
+        ]);
+    }
+
+    // 2. User Management
+    public function getUsers() {
+        return response()->json(User::latest()->get());
+    }
+
+    // 3. Message / Inbox System
+    public function storeMessage(Request $request) {
+        // Ini untuk Publik (Tanpa Login)
+        $request->validate(['name'=>'required', 'email'=>'required', 'message'=>'required']);
+        \App\Models\Message::create($request->all());
+        return response()->json(['message' => 'Pesan terkirim!']);
+    }
+
+    public function getMessages() {
+        // Ini untuk Admin (Butuh Login)
+        return response()->json(\App\Models\Message::latest()->get());
+    }
 }

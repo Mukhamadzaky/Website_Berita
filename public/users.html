@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Daftar Pengguna - Portal Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex h-screen overflow-hidden font-sans">
+
+    <aside class="w-64 bg-slate-900 text-white flex flex-col shadow-xl z-20">
+        <div class="h-16 flex items-center px-6 border-b border-slate-800">
+            <h1 class="font-bold text-lg"><i class="fa-solid fa-cube text-blue-500"></i> Portal<span class="text-blue-400">Admin</span></h1>
+        </div>
+        
+        <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+            <a href="index.html" target="_blank" class="flex items-center px-4 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-lg shadow-emerald-600/20 mb-6 transition-all group">
+                <i class="fa-solid fa-globe w-5 mr-3 group-hover:animate-pulse"></i> <span class="font-bold">Lihat Website</span>
+            </a>
+
+            <p class="px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Menu Utama</p>
+            <a href="dashboard.html" class="flex items-center px-4 py-2.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors">
+                <i class="fa-solid fa-gauge-high w-5 mr-3"></i> <span>Dashboard</span>
+            </a>
+
+            <p class="px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider mt-6 mb-2">Konten</p>
+            <a href="upload-news.html" class="flex items-center px-4 py-2.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors">
+                <i class="fa-regular fa-newspaper w-5 mr-3"></i> <span>Berita</span>
+            </a>
+            <a href="upload-doc.html" class="flex items-center px-4 py-2.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors">
+                <i class="fa-solid fa-file-pdf w-5 mr-3"></i> <span>Dokumen</span>
+            </a>
+
+            <p class="px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider mt-6 mb-2">Administrasi</p>
+            <a href="inbox.html" class="flex items-center px-4 py-2.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors">
+                <i class="fa-solid fa-inbox w-5 mr-3"></i> <span>Pesan Masuk</span>
+            </a>
+            
+            <a href="users.html" class="flex items-center px-4 py-2.5 bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-600/20 transition-colors">
+                <i class="fa-solid fa-users w-5 mr-3"></i> <span class="font-medium">Daftar Admin</span>
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-slate-800 bg-slate-950">
+            <button onclick="logout()" class="w-full flex items-center justify-center px-4 py-2.5 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors font-medium text-sm">
+                <i class="fa-solid fa-right-from-bracket mr-2"></i> Keluar
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-screen overflow-hidden">
+        <header class="h-16 bg-white shadow-sm flex items-center justify-between px-8 z-10">
+            <h2 class="text-xl font-bold text-gray-700">Manajemen Pengguna</h2>
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">A</div>
+                <span class="text-sm font-bold text-gray-600">Admin Panel</span>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-8 bg-gray-50">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-800">Daftar Admin Terdaftar</h3>
+                        <p class="text-sm text-gray-500">Berikut adalah daftar pengguna yang memiliki akses login.</p>
+                    </div>
+                    <span class="bg-blue-100 text-blue-600 text-xs font-bold px-3 py-1 rounded-full">
+                        <i class="fa-solid fa-shield-halved mr-1"></i> Secure Data
+                    </span>
+                </div>
+                
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-gray-50 text-gray-500 text-xs uppercase font-bold">
+                        <tr>
+                            <th class="px-6 py-4">Nama Pengguna</th>
+                            <th class="px-6 py-4">Email</th>
+                            <th class="px-6 py-4">Tanggal Bergabung</th>
+                            <th class="px-6 py-4 text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="user-list" class="divide-y divide-gray-100 text-sm">
+                        <tr><td colspan="4" class="px-6 py-8 text-center text-gray-400">Memuat data pengguna...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="config.js"></script>
+    <script>
+        checkAuth();
+        function logout() { localStorage.removeItem('token'); window.location.href = 'login.html'; }
+
+        // Fungsi Format Tanggal
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('id-ID', options);
+        }
+
+        // LOAD DATA USERS
+        fetch(`${API_URL}/users`, {
+            headers: { 'Authorization': `Bearer ${getToken()}` }
+        })
+        .then(res => res.json())
+        .then(data => {
+            const list = document.getElementById('user-list');
+            
+            if (data.length === 0) {
+                list.innerHTML = '<tr><td colspan="4" class="text-center py-4">Tidak ada data.</td></tr>';
+                return;
+            }
+
+            // Ambil email user yang sedang login saat ini (disimpan di localStorage jika ada, atau kita abaikan highlightnya)
+            // Di sini kita list semua user saja.
+            
+            list.innerHTML = data.map(user => `
+                <tr class="hover:bg-blue-50/50 transition-colors">
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 text-white flex items-center justify-center font-bold text-xs">
+                                ${user.name.charAt(0).toUpperCase()}
+                            </div>
+                            <span class="font-bold text-gray-700">${user.name}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-gray-600 font-mono text-xs">${user.email}</td>
+                    <td class="px-6 py-4 text-gray-500">${formatDate(user.created_at)}</td>
+                    <td class="px-6 py-4 text-center">
+                        <span class="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-1 rounded-full uppercase">Active</span>
+                    </td>
+                </tr>
+            `).join('');
+        })
+        .catch(err => {
+            console.error(err);
+            document.getElementById('user-list').innerHTML = '<tr><td colspan="4" class="text-center py-4 text-red-500">Gagal memuat data.</td></tr>';
+        });
+    </script>
+</body>
+</html>

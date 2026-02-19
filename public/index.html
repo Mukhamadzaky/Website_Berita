@@ -12,52 +12,62 @@
     <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-200">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="bg-blue-600 text-white p-2 rounded-lg">
+                <div class="bg-blue-600 text-white p-2 rounded-lg shadow-blue-500/30 shadow-lg">
                     <i class="fa-solid fa-cube text-xl"></i>
                 </div>
                 <h1 class="text-2xl font-bold text-gray-800 tracking-tight">Portal<span class="text-blue-600">Info</span></h1>
             </div>
             <div>
-                <a href="login.html" class="inline-flex items-center bg-gray-100 hover:bg-gray-200 text-gray-700 px-5 py-2.5 rounded-xl font-bold transition-colors">
+                <a href="login.html" class="inline-flex items-center bg-gray-100 hover:bg-blue-50 hover:text-blue-600 text-gray-700 px-5 py-2.5 rounded-xl font-bold transition-all duration-300">
                     <i class="fa-solid fa-lock mr-2"></i> Login Admin
                 </a>
             </div>
         </div>
     </nav>
 
-    <header class="bg-gradient-to-br from-blue-900 to-blue-700 text-white py-20 relative overflow-hidden">
+    <header class="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 text-white py-24 relative overflow-hidden">
         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+        <div class="absolute top-0 right-0 w-96 h-96 bg-blue-500 rounded-full blur-3xl opacity-20 -mr-20 -mt-20"></div>
+        <div class="absolute bottom-0 left-0 w-72 h-72 bg-cyan-400 rounded-full blur-3xl opacity-20 -ml-20 -mb-20"></div>
+
         <div class="container mx-auto px-6 relative z-10 text-center md:text-left flex flex-col md:flex-row items-center justify-between">
             <div class="max-w-2xl">
-                <span class="bg-blue-500/30 text-blue-100 px-4 py-1.5 rounded-full text-sm font-semibold backdrop-blur-sm border border-blue-400/30">
-                    Pusat Informasi Digital
+                <span class="bg-blue-500/30 text-blue-100 px-4 py-1.5 rounded-full text-sm font-semibold backdrop-blur-sm border border-blue-400/30 mb-4 inline-block">
+                    🚀 Pusat Informasi Digital Terpadu
                 </span>
-                <h2 class="text-4xl md:text-5xl font-bold mt-6 mb-4 leading-tight">Temukan Berita & Dokumen Resmi Terbaru</h2>
-                <p class="text-lg text-blue-100 mb-8 leading-relaxed">Selamat datang di portal informasi kami. Akses berbagai pengumuman penting, artikel terbaru, dan unduh dokumen resmi dengan mudah dan cepat.</p>
-                <a href="#berita" class="bg-white text-blue-700 px-8 py-3.5 rounded-xl font-bold shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all inline-flex items-center">
-                    Lihat Berita <i class="fa-solid fa-arrow-down ml-2"></i>
-                </a>
+                <h2 class="text-4xl md:text-6xl font-bold mt-4 mb-6 leading-tight">Temukan Berita & Dokumen Resmi Terbaru</h2>
+                <p class="text-lg text-blue-100 mb-8 leading-relaxed max-w-lg">Selamat datang di portal informasi kami. Akses berbagai pengumuman penting, artikel terbaru, dan unduh dokumen resmi dengan mudah, cepat, dan transparan.</p>
+                <div class="flex gap-4 justify-center md:justify-start">
+                    <a href="#berita" class="bg-white text-blue-700 px-8 py-3.5 rounded-xl font-bold shadow-xl shadow-blue-900/20 hover:shadow-2xl hover:-translate-y-1 transition-all inline-flex items-center">
+                        Jelajahi Berita <i class="fa-solid fa-arrow-down ml-2 animate-bounce"></i>
+                    </a>
+                    <a href="#kontak" class="bg-blue-600/50 backdrop-blur-md text-white border border-blue-400/50 px-8 py-3.5 rounded-xl font-bold hover:bg-blue-600 hover:border-blue-400 transition-all">
+                        Hubungi Kami
+                    </a>
+                </div>
             </div>
-            <div class="hidden md:block">
-                <i class="fa-regular fa-newspaper text-[150px] text-white/20 transform rotate-12"></i>
+            <div class="hidden md:block relative">
+                <i class="fa-regular fa-newspaper text-[200px] text-white/10 transform rotate-12 absolute -top-20 -right-20"></i>
+                <i class="fa-solid fa-file-invoice text-[120px] text-cyan-300/20 transform -rotate-12 absolute top-20 right-40"></i>
             </div>
         </div>
     </header>
 
-    <main class="container mx-auto px-6 py-12" id="berita">
+    <main class="container mx-auto px-6 py-16" id="berita">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
             
             <div class="lg:col-span-2">
                 <div class="flex items-center justify-between mb-8 border-b border-gray-200 pb-4">
                     <h3 class="text-3xl font-bold text-gray-800 flex items-center gap-3">
-                        <i class="fa-solid fa-fire text-red-500"></i> Berita Terkini
+                        <span class="bg-red-100 text-red-600 p-2 rounded-lg"><i class="fa-solid fa-fire"></i></span> 
+                        Berita Terkini
                     </h3>
                 </div>
                 
                 <div id="news-list" class="space-y-8">
-                    <div class="animate-pulse bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex gap-6">
-                        <div class="w-1/3 bg-gray-200 rounded-xl h-40"></div>
-                        <div class="w-2/3 space-y-4 py-2">
+                    <div class="animate-pulse bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col md:flex-row gap-6">
+                        <div class="w-full md:w-1/3 bg-gray-200 rounded-xl h-48 md:h-auto"></div>
+                        <div class="w-full md:w-2/3 space-y-4 py-2">
                             <div class="h-6 bg-gray-200 rounded w-3/4"></div>
                             <div class="h-4 bg-gray-200 rounded w-full"></div>
                             <div class="h-4 bg-gray-200 rounded w-5/6"></div>
@@ -67,26 +77,38 @@
             </div>
 
             <aside class="lg:col-span-1">
-                <div class="sticky top-28 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="bg-slate-900 px-6 py-5">
-                        <h3 class="text-xl font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-folder-open text-orange-400"></i> Dokumen Publik
-                        </h3>
-                        <p class="text-slate-400 text-sm mt-1">Unduh file dan surat resmi.</p>
-                    </div>
-                    
-                    <div id="doc-list" class="p-4 space-y-3 max-h-[600px] overflow-y-auto">
-                        <div class="animate-pulse flex items-center justify-between p-3 border border-gray-100 rounded-xl">
-                            <div class="w-3/4 space-y-2">
-                                <div class="h-4 bg-gray-200 rounded"></div>
-                                <div class="h-3 bg-gray-200 rounded w-1/2"></div>
+                <div class="sticky top-28 space-y-8">
+                    <div class="bg-white rounded-2xl shadow-lg shadow-gray-200/50 border border-gray-100 overflow-hidden">
+                        <div class="bg-slate-900 px-6 py-5 relative overflow-hidden">
+                            <div class="absolute top-0 right-0 p-4 opacity-10">
+                                <i class="fa-solid fa-folder-open text-6xl text-white"></i>
                             </div>
-                            <div class="w-8 h-8 bg-gray-200 rounded-full"></div>
+                            <h3 class="text-xl font-bold text-white flex items-center gap-2 relative z-10">
+                                <i class="fa-solid fa-box-archive text-orange-400"></i> Dokumen Publik
+                            </h3>
+                            <p class="text-slate-400 text-sm mt-1 relative z-10">Unduh file dan surat resmi.</p>
+                        </div>
+                        
+                        <div id="doc-list" class="p-4 space-y-3 max-h-[500px] overflow-y-auto custom-scrollbar">
+                            <div class="animate-pulse flex items-center justify-between p-3 border border-gray-100 rounded-xl">
+                                <div class="w-3/4 space-y-2">
+                                    <div class="h-4 bg-gray-200 rounded"></div>
+                                    <div class="h-3 bg-gray-200 rounded w-1/2"></div>
+                                </div>
+                                <div class="w-8 h-8 bg-gray-200 rounded-full"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-3 bg-gray-50 border-t border-gray-100 text-center">
+                            <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Update Realtime</span>
                         </div>
                     </div>
-                    
-                    <div class="p-4 bg-gray-50 border-t border-gray-100 text-center">
-                        <span class="text-xs text-gray-500 font-medium">Diperbarui secara berkala</span>
+
+                    <div class="bg-blue-50 rounded-2xl p-6 border border-blue-100 text-center">
+                        <i class="fa-solid fa-headset text-4xl text-blue-500 mb-3"></i>
+                        <h4 class="font-bold text-gray-800 mb-2">Butuh Bantuan?</h4>
+                        <p class="text-sm text-gray-600 mb-4">Jika Anda memiliki pertanyaan terkait layanan kami, silakan hubungi tim admin.</p>
+                        <a href="#kontak" class="text-blue-600 font-bold text-sm hover:underline">Hubungi Kami &rarr;</a>
                     </div>
                 </div>
             </aside>
@@ -94,84 +116,139 @@
         </div>
     </main>
 
-    <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800 mt-12">
-        <div class="container mx-auto px-6 text-center">
-            <div class="flex justify-center items-center gap-2 mb-4">
-                <i class="fa-solid fa-cube text-blue-500 text-2xl"></i>
-                <span class="text-xl font-bold text-white">Portal<span class="text-blue-500">Info</span></span>
+    <section id="kontak" class="bg-white py-20 border-t border-gray-100 relative">
+        <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-3 rounded-full border border-gray-100 shadow-sm">
+            <i class="fa-solid fa-envelope text-2xl text-blue-600"></i>
+        </div>
+        <div class="container mx-auto px-6 max-w-4xl">
+            <div class="text-center mb-12">
+                <span class="text-blue-600 font-bold tracking-wider text-sm uppercase">Layanan Pengaduan</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mt-2">Hubungi Kami</h2>
+                <p class="text-gray-500 mt-3 text-lg">Punya pertanyaan, kritik, atau saran? Kirim pesan langsung kepada admin.</p>
             </div>
-            <p>&copy; 2026 Portal Informasi Resmi. All rights reserved.</p>
+            
+            <div class="bg-gray-50 p-8 md:p-10 rounded-3xl shadow-inner border border-gray-100">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-2">Nama Lengkap</label>
+                        <div class="relative">
+                            <i class="fa-regular fa-user absolute left-4 top-4 text-gray-400"></i>
+                            <input type="text" id="contactName" placeholder="Masukkan nama Anda" class="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-2">Alamat Email</label>
+                        <div class="relative">
+                            <i class="fa-regular fa-envelope absolute left-4 top-4 text-gray-400"></i>
+                            <input type="email" id="contactEmail" placeholder="contoh@email.com" class="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <label class="block font-bold text-gray-700 mb-2">Isi Pesan</label>
+                    <textarea id="contactMessage" placeholder="Tuliskan pesan, pertanyaan, atau saran Anda di sini..." class="w-full p-4 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none h-40 transition-all resize-none"></textarea>
+                </div>
+                <button id="btnSend" onclick="sendMessage()" class="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold w-full hover:bg-blue-700 shadow-lg shadow-blue-600/30 transition-all transform active:scale-[0.98] flex justify-center items-center gap-2">
+                    <i class="fa-regular fa-paper-plane"></i> Kirim Pesan Sekarang
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center gap-3 mb-6 md:mb-0">
+                    <div class="bg-slate-800 p-2 rounded-lg">
+                        <i class="fa-solid fa-cube text-blue-500 text-2xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold text-white block leading-none">Portal<span class="text-blue-500">Info</span></span>
+                        <span class="text-xs text-slate-500">Official Government Portal</span>
+                    </div>
+                </div>
+                <div class="flex gap-6 text-sm font-medium">
+                    <a href="#" class="hover:text-white transition-colors">Beranda</a>
+                    <a href="#berita" class="hover:text-white transition-colors">Berita</a>
+                    <a href="#kontak" class="hover:text-white transition-colors">Kontak</a>
+                    <a href="login.html" class="hover:text-white transition-colors">Login Admin</a>
+                </div>
+            </div>
+            <hr class="border-slate-800 my-8">
+            <div class="text-center text-sm text-slate-600">
+                <p>&copy; 2026 Portal Informasi Resmi. Dibuat dengan <i class="fa-solid fa-heart text-red-900"></i> dan Laravel.</p>
+            </div>
         </div>
     </footer>
 
     <script src="config.js"></script>
     <script>
-        // Fungsi memformat tanggal (Opsional agar lebih cantik)
+        // Fungsi memformat tanggal
         function formatDate(dateString) {
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
             return new Date(dateString).toLocaleDateString('id-ID', options);
         }
 
-        // LOAD BERITA
+        // --- 1. LOAD BERITA ---
         fetch(`${API_URL}/news`)
             .then(res => res.json())
             .then(data => {
                 const list = document.getElementById('news-list');
                 
                 if (data.length === 0) {
-                    list.innerHTML = `<div class="text-center py-10 text-gray-400"><i class="fa-regular fa-folder-open text-5xl mb-3"></i><p>Belum ada berita yang diterbitkan.</p></div>`;
+                    list.innerHTML = `<div class="text-center py-12 bg-white rounded-2xl border border-gray-100"><div class="bg-gray-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4"><i class="fa-regular fa-newspaper text-4xl text-gray-300"></i></div><p class="text-gray-500 font-medium">Belum ada berita yang diterbitkan.</p></div>`;
                     return;
                 }
 
                 list.innerHTML = data.map(item => {
-                    // Cek apakah ada gambar? Jika ada pakai URL storage, jika tidak pakai gradient warna biru
                     const imageHtml = item.image_path 
-                        ? `<img src="${STORAGE_URL}${item.image_path}" alt="Sampul Berita" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">`
-                        : `<div class="w-full h-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center text-blue-400"><i class="fa-regular fa-image text-4xl"></i></div>`;
+                        ? `<img src="${STORAGE_URL}${item.image_path}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">`
+                        : `<div class="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex flex-col items-center justify-center text-gray-400"><i class="fa-regular fa-image text-4xl mb-2"></i><span class="text-xs font-bold uppercase tracking-wider">No Image</span></div>`;
 
                     return `
-                    <article class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col md:flex-row group hover:shadow-md transition-shadow">
-                        <div class="md:w-2/5 h-56 md:h-auto overflow-hidden relative">
+                    <article class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col md:flex-row group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-full">
+                        <div class="md:w-2/5 h-64 md:h-auto overflow-hidden relative shrink-0">
                             ${imageHtml}
-                            <div class="absolute top-4 left-4 bg-white/90 backdrop-blur text-blue-600 text-xs font-bold px-3 py-1 rounded-full shadow-sm">
-                                Berita
+                            <div class="absolute top-4 left-4 bg-white/90 backdrop-blur text-blue-600 text-[10px] font-bold px-3 py-1.5 rounded-full shadow-sm uppercase tracking-wide">
+                                Terbaru
                             </div>
                         </div>
                         
-                        <div class="p-6 md:w-3/5 flex flex-col justify-center">
-                            <div class="text-sm text-gray-400 mb-2 font-medium flex items-center gap-2">
-                                <i class="fa-regular fa-calendar"></i> ${formatDate(item.created_at)}
+                        <div class="p-8 md:w-3/5 flex flex-col justify-center relative">
+                            <div class="text-xs text-gray-400 mb-3 font-bold uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-regular fa-clock text-blue-500"></i> ${formatDate(item.created_at)}
                             </div>
-                            <h4 class="text-2xl font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition-colors leading-tight">
+                            <h4 class="text-2xl font-bold text-gray-800 mb-4 group-hover:text-blue-600 transition-colors leading-snug">
                                 ${item.title}
                             </h4>
-                            <p class="text-gray-600 line-clamp-3 leading-relaxed">
+                            <p class="text-gray-500 line-clamp-3 leading-relaxed mb-6 text-sm">
                                 ${item.content}
                             </p>
-                            <div class="mt-4">
-                                <span class="text-blue-600 font-bold text-sm cursor-pointer group-hover:underline">Baca selengkapnya <i class="fa-solid fa-arrow-right text-xs ml-1"></i></span>
+                            <div class="mt-auto pt-4 border-t border-gray-50">
+                                <span class="inline-flex items-center text-blue-600 font-bold text-sm cursor-pointer group-hover:translate-x-2 transition-transform">
+                                    Baca Selengkapnya <i class="fa-solid fa-arrow-right text-xs ml-2"></i>
+                                </span>
                             </div>
                         </div>
                     </article>
                 `}).join('');
             })
             .catch(() => {
-                document.getElementById('news-list').innerHTML = '<p class="text-red-500">Gagal memuat berita.</p>';
+                document.getElementById('news-list').innerHTML = '<div class="p-4 bg-red-50 text-red-600 rounded-lg text-center font-bold">Gagal memuat berita. Periksa koneksi server.</div>';
             });
 
-        // LOAD DOKUMEN
+        // --- 2. LOAD DOKUMEN ---
         fetch(`${API_URL}/documents`)
             .then(res => res.json())
             .then(data => {
                 const list = document.getElementById('doc-list');
 
                 if (data.length === 0) {
-                    list.innerHTML = `<div class="text-center py-6 text-gray-400"><p class="text-sm">Belum ada dokumen publik.</p></div>`;
+                    list.innerHTML = `<div class="text-center py-8 text-gray-400"><p class="text-sm">Belum ada dokumen publik.</p></div>`;
                     return;
                 }
 
                 list.innerHTML = data.map(item => {
-                    // Penentuan icon berdasarkan tipe file
                     let icon = 'fa-file-lines text-gray-500';
                     let bgIcon = 'bg-gray-100';
                     if(item.file_type.toLowerCase().includes('pdf')) {
@@ -181,26 +258,64 @@
                     }
 
                     return `
-                    <div class="group flex items-center justify-between p-3.5 border border-gray-100 hover:border-blue-200 hover:bg-blue-50/50 rounded-xl transition-all">
-                        <div class="flex items-center gap-4 overflow-hidden">
-                            <div class="w-10 h-10 ${bgIcon} rounded-lg flex items-center justify-center shrink-0">
-                                <i class="fa-solid ${icon} text-xl"></i>
+                    <div class="group flex items-center justify-between p-3.5 border border-gray-100 hover:border-blue-200 hover:bg-blue-50/30 rounded-xl transition-all cursor-pointer">
+                        <div class="flex items-center gap-4 overflow-hidden w-full">
+                            <div class="w-10 h-10 ${bgIcon} rounded-lg flex items-center justify-center shrink-0 shadow-sm">
+                                <i class="fa-solid ${icon} text-lg"></i>
                             </div>
-                            <div class="overflow-hidden">
+                            <div class="overflow-hidden w-full pr-2">
                                 <p class="font-bold text-gray-700 text-sm truncate group-hover:text-blue-700 transition-colors" title="${item.title}">${item.title}</p>
-                                <span class="text-[10px] font-bold text-gray-400 uppercase bg-gray-100 px-2 py-0.5 rounded">${item.file_type}</span>
-                                <span class="text-[10px] text-gray-400 ml-1">${formatDate(item.created_at)}</span>
+                                <div class="flex items-center gap-2 mt-0.5">
+                                    <span class="text-[10px] font-bold text-gray-400 uppercase bg-gray-100 px-1.5 py-0.5 rounded border border-gray-200">${item.file_type}</span>
+                                    <span class="text-[10px] text-gray-400">${formatDate(item.created_at)}</span>
+                                </div>
                             </div>
                         </div>
-                        <a href="${STORAGE_URL}${item.file_path}" target="_blank" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-blue-600 hover:text-white hover:shadow-md transition-all shrink-0 ml-2" title="Unduh File">
+                        <a href="${STORAGE_URL}${item.file_path}" target="_blank" class="w-9 h-9 flex items-center justify-center rounded-full bg-white border border-gray-200 text-gray-400 hover:bg-blue-600 hover:text-white hover:border-blue-600 shadow-sm hover:shadow-md transition-all shrink-0" title="Unduh File">
                             <i class="fa-solid fa-download text-xs"></i>
                         </a>
                     </div>
                 `}).join('');
             })
             .catch(() => {
-                document.getElementById('doc-list').innerHTML = '<p class="text-red-500 p-4">Gagal memuat dokumen.</p>';
+                document.getElementById('doc-list').innerHTML = '<p class="text-red-500 text-xs p-4 text-center">Gagal memuat dokumen.</p>';
             });
+
+        // --- 3. FUNGSI KIRIM PESAN ---
+        async function sendMessage() {
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const message = document.getElementById('contactMessage').value;
+            const btn = document.getElementById('btnSend');
+
+            if(!name || !email || !message) return alert("Mohon lengkapi formulir pesan Anda.");
+
+            // UI Loading
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim...';
+
+            try {
+                const res = await fetch(`${API_URL}/contact`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({name, email, message})
+                });
+
+                if(res.ok) {
+                    alert("✅ Pesan Anda berhasil dikirim! Tim kami akan segera merespons.");
+                    document.getElementById('contactName').value = '';
+                    document.getElementById('contactEmail').value = '';
+                    document.getElementById('contactMessage').value = '';
+                } else {
+                    alert("❌ Gagal mengirim pesan. Silakan coba lagi.");
+                }
+            } catch (error) {
+                alert("Terjadi kesalahan koneksi.");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-regular fa-paper-plane"></i> Kirim Pesan Sekarang';
+            }
+        }
     </script>
 </body>
 </html>
