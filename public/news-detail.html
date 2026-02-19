@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail Berita - Portal Informasi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 font-sans text-gray-800">
+
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="container mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors font-bold">
+                <i class="fa-solid fa-arrow-left"></i> Kembali ke Beranda
+            </a>
+            <div class="font-bold text-lg">Portal<span class="text-blue-600">Info</span></div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-6 py-10 max-w-4xl">
+        <div id="loading" class="text-center py-20">
+            <i class="fa-solid fa-circle-notch fa-spin text-4xl text-blue-500"></i>
+            <p class="mt-4 text-gray-500">Memuat berita...</p>
+        </div>
+
+        <article id="content-area" class="hidden bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-gray-100">
+            <div class="mb-8 border-b border-gray-100 pb-8">
+                <span class="bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Berita</span>
+                <h1 id="news-title" class="text-3xl md:text-5xl font-bold text-gray-900 mt-4 mb-4 leading-tight"></h1>
+                <div class="flex items-center text-gray-500 text-sm gap-4">
+                    <span><i class="fa-regular fa-calendar mr-2"></i> <span id="news-date"></span></span>
+                    <span><i class="fa-regular fa-clock mr-2"></i> <span id="news-time"></span></span>
+                </div>
+            </div>
+
+            <div id="news-image-container" class="mb-10 rounded-2xl overflow-hidden shadow-lg hidden">
+                <img id="news-image" src="" class="w-full h-auto object-cover">
+            </div>
+
+            <div id="news-body" class="prose prose-lg max-w-none text-gray-700 leading-relaxed whitespace-pre-line">
+                </div>
+        </article>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center mt-12">
+        <p>&copy; 2026 Portal Informasi Resmi.</p>
+    </footer>
+
+    <script src="config.js"></script>
+    <script>
+        // Ambil ID dari URL (contoh: news-detail.html?id=1)
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get('id');
+
+        if(!id) window.location.href = 'index.html'; // Jika tidak ada ID, tendang ke home
+
+        fetch(`${API_URL}/news/${id}`)
+            .then(res => {
+                if(!res.ok) throw new Error("Berita tidak ditemukan");
+                return res.json();
+            })
+            .then(data => {
+                // Sembunyikan Loading, Tampilkan Konten
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('content-area').classList.remove('hidden');
+
+                // Isi Data
+                document.getElementById('news-title').innerText = data.title;
+                document.getElementById('news-body').innerText = data.content;
+                
+                // Format Waktu
+                const date = new Date(data.created_at);
+                document.getElementById('news-date').innerText = date.toLocaleDateString('id-ID', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'});
+                document.getElementById('news-time').innerText = date.toLocaleTimeString('id-ID', {hour: '2-digit', minute: '2-digit'}) + ' WIB';
+
+                // Cek Gambar
+                if(data.image_path) {
+                    const imgContainer = document.getElementById('news-image-container');
+                    const img = document.getElementById('news-image');
+                    img.src = `${STORAGE_URL}${data.image_path}`;
+                    imgContainer.classList.remove('hidden');
+                }
+            })
+            .catch(err => {
+                document.getElementById('loading').innerHTML = `<p class="text-red-500 font-bold">${err.message}</p><a href="index.html" class="text-blue-500 underline mt-4 block">Kembali</a>`;
+            });
+    </script>
+</body>
+</html>

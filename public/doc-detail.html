@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail Dokumen - Portal Informasi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen font-sans text-gray-800">
+
+    <div class="container max-w-2xl px-6">
+        <a href="index.html" class="text-gray-500 hover:text-gray-800 font-bold mb-6 inline-block">
+            <i class="fa-solid fa-arrow-left mr-2"></i> Kembali ke Daftar
+        </a>
+
+        <div id="loading" class="text-center py-10">
+            <i class="fa-solid fa-circle-notch fa-spin text-3xl text-blue-500"></i>
+        </div>
+
+        <div id="content-area" class="hidden bg-white p-10 rounded-3xl shadow-xl border border-gray-100 text-center relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-purple-500"></div>
+            
+            <div id="icon-container" class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+                <i id="doc-icon" class="fa-solid fa-file text-5xl text-gray-400"></i>
+            </div>
+
+            <h1 id="doc-title" class="text-2xl font-bold text-gray-800 mb-2"></h1>
+            <p class="text-gray-500 text-sm mb-8">Diunggah pada: <span id="doc-date" class="font-bold"></span></p>
+
+            <div class="bg-blue-50 rounded-xl p-6 mb-8 text-left border border-blue-100">
+                <h3 class="font-bold text-blue-800 text-sm mb-2 uppercase tracking-wide">Informasi File</h3>
+                <div class="flex justify-between text-sm border-b border-blue-200 pb-2 mb-2">
+                    <span class="text-blue-600">Tipe Format</span>
+                    <span id="doc-type" class="font-bold text-gray-700 uppercase"></span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-blue-600">Status</span>
+                    <span class="font-bold text-green-600"><i class="fa-solid fa-check-circle mr-1"></i> Publik</span>
+                </div>
+            </div>
+
+            <a id="download-btn" href="#" target="_blank" class="w-full block bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-600/30 transition-all transform hover:-translate-y-1">
+                <i class="fa-solid fa-cloud-arrow-down mr-2"></i> Download Dokumen
+            </a>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get('id');
+        if(!id) window.location.href = 'index.html';
+
+        fetch(`${API_URL}/documents/${id}`)
+            .then(res => res.ok ? res.json() : Promise.reject("Dokumen tidak ditemukan"))
+            .then(data => {
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('content-area').classList.remove('hidden');
+
+                document.getElementById('doc-title').innerText = data.title;
+                document.getElementById('doc-type').innerText = data.file_type;
+                document.getElementById('doc-date').innerText = new Date(data.created_at).toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'});
+                
+                // Set Link Download
+                document.getElementById('download-btn').href = `${STORAGE_URL}${data.file_path}`;
+
+                // Atur Ikon
+                const icon = document.getElementById('doc-icon');
+                const container = document.getElementById('icon-container');
+                
+                if(data.file_type.includes('pdf')) {
+                    icon.className = 'fa-solid fa-file-pdf text-5xl text-red-500';
+                    container.className = 'w-24 h-24 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6';
+                } else {
+                    icon.className = 'fa-solid fa-file-word text-5xl text-blue-500';
+                    container.className = 'w-24 h-24 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6';
+                }
+            })
+            .catch(err => {
+                document.getElementById('loading').innerHTML = `<p class="text-red-500">${err}</p><a href="index.html" class="block mt-4 underline">Kembali</a>`;
+            });
+    </script>
+</body>
+</html>

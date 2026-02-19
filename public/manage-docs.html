@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <title>Kelola Dokumen - Portal Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-50 flex h-screen overflow-hidden font-sans text-slate-800">
+
+    <aside class="w-72 bg-slate-900 text-white flex flex-col shadow-2xl z-20">
+        <div class="h-20 flex items-center px-8 border-b border-slate-800">
+            <h1 class="font-bold text-xl tracking-wide flex items-center gap-3">
+                <div class="bg-blue-600 p-1.5 rounded-lg"><i class="fa-solid fa-cube text-white"></i></div>
+                Portal<span class="text-blue-400">Admin</span>
+            </h1>
+        </div>
+        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+             <a href="dashboard.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl"><i class="fa-solid fa-grid-2 w-6"></i> Dashboard</a>
+             <a href="manage-news.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl"><i class="fa-solid fa-list w-6"></i> Kelola Berita</a>
+             <a href="manage-docs.html" class="flex items-center px-4 py-3 bg-orange-600 text-white rounded-xl shadow-lg"><i class="fa-solid fa-folder-open w-6"></i> Kelola Dokumen</a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50">
+        <header class="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-10">
+            <h2 class="text-xl font-bold text-slate-700">Manajemen Dokumen</h2>
+            <a href="upload-doc.html" class="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg font-bold text-sm shadow flex items-center gap-2">
+                <i class="fa-solid fa-upload"></i> Upload Dokumen
+            </a>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-8">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                <table class="w-full text-left">
+                    <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase text-xs">
+                        <tr>
+                            <th class="px-6 py-4">Nama File</th>
+                            <th class="px-6 py-4">Tipe</th>
+                            <th class="px-6 py-4 text-center w-24">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="doc-table" class="divide-y divide-slate-100 text-sm">
+                        <tr><td colspan="3" class="px-6 py-8 text-center text-slate-400">Memuat data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="config.js"></script>
+    <script>
+        checkAuth();
+
+        fetch(`${API_URL}/documents`)
+            .then(res => res.json())
+            .then(data => {
+                const list = document.getElementById('doc-table');
+                if(data.length === 0) { list.innerHTML = '<tr><td colspan="3" class="px-6 py-8 text-center text-slate-400">Belum ada dokumen.</td></tr>'; return; }
+
+                list.innerHTML = data.map(item => `
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-6 py-4 font-bold text-slate-700">${item.title}</td>
+                        <td class="px-6 py-4 text-slate-500 uppercase text-xs font-bold bg-gray-100 rounded w-min px-2 py-1">${item.file_type}</td>
+                        <td class="px-6 py-4 text-center">
+                            <button onclick="deleteDoc(${item.id})" class="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-all" title="Hapus Dokumen">
+                                <i class="fa-regular fa-trash-can text-lg"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            });
+
+        async function deleteDoc(id) {
+            if(!confirm("Yakin hapus dokumen ini? File yang sudah dihapus tidak bisa dikembalikan.")) return;
+
+            try {
+                const res = await fetch(`${API_URL}/documents/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${getToken()}` }
+                });
+
+                if(res.ok) {
+                    alert("Dokumen berhasil dihapus.");
+                    location.reload();
+                } else {
+                    alert("Gagal menghapus.");
+                }
+            } catch (err) {
+                alert("Terjadi kesalahan koneksi.");
+            }
+        }
+    </script>
+</body>
+</html>

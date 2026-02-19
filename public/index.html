@@ -176,7 +176,7 @@
             </div>
             <hr class="border-slate-800 my-8">
             <div class="text-center text-sm text-slate-600">
-                <p>&copy; 2026 Portal Informasi Resmi. Dibuat dengan <i class="fa-solid fa-heart text-red-900"></i> dan Laravel.</p>
+                <p>&copy; 2026 Portal Informasi Resmi. </p>
             </div>
         </div>
     </footer>
@@ -225,9 +225,9 @@
                                 ${item.content}
                             </p>
                             <div class="mt-auto pt-4 border-t border-gray-50">
-                                <span class="inline-flex items-center text-blue-600 font-bold text-sm cursor-pointer group-hover:translate-x-2 transition-transform">
+                                <a href="news-detail.html?id=${item.id}" class="inline-flex items-center text-blue-600 font-bold text-sm cursor-pointer group-hover:translate-x-2 transition-transform">
                                     Baca Selengkapnya <i class="fa-solid fa-arrow-right text-xs ml-2"></i>
-                                </span>
+                                </a>
                             </div>
                         </div>
                     </article>
@@ -258,7 +258,7 @@
                     }
 
                     return `
-                    <div class="group flex items-center justify-between p-3.5 border border-gray-100 hover:border-blue-200 hover:bg-blue-50/30 rounded-xl transition-all cursor-pointer">
+                    <div onclick="window.location.href='doc-detail.html?id=${item.id}'" class="group flex items-center justify-between p-3.5 border border-gray-100 hover:border-blue-200 hover:bg-blue-50/30 rounded-xl transition-all cursor-pointer">
                         <div class="flex items-center gap-4 overflow-hidden w-full">
                             <div class="w-10 h-10 ${bgIcon} rounded-lg flex items-center justify-center shrink-0 shadow-sm">
                                 <i class="fa-solid ${icon} text-lg"></i>
@@ -271,9 +271,9 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="${STORAGE_URL}${item.file_path}" target="_blank" class="w-9 h-9 flex items-center justify-center rounded-full bg-white border border-gray-200 text-gray-400 hover:bg-blue-600 hover:text-white hover:border-blue-600 shadow-sm hover:shadow-md transition-all shrink-0" title="Unduh File">
-                            <i class="fa-solid fa-download text-xs"></i>
-                        </a>
+                        <div class="w-9 h-9 flex items-center justify-center rounded-full bg-white border border-gray-200 text-gray-400 hover:bg-blue-600 hover:text-white hover:border-blue-600 shadow-sm hover:shadow-md transition-all shrink-0">
+                            <i class="fa-solid fa-eye text-xs"></i>
+                        </div>
                     </div>
                 `}).join('');
             })

@@ -5,70 +5,136 @@
     <title>Tulis Berita - Portal Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
 </head>
-<body class="bg-gray-100 flex h-screen overflow-hidden font-sans">
+<body class="bg-slate-50 flex h-screen overflow-hidden font-sans text-slate-800">
 
-    <aside class="w-64 bg-slate-900 text-white flex flex-col shadow-xl z-20">
-        <div class="h-16 flex items-center px-6 border-b border-slate-800">
-            <h1 class="font-bold text-lg"><i class="fa-solid fa-cube text-blue-500"></i> PortalAdmin</h1>
+    <aside class="w-72 bg-slate-900 text-white flex flex-col shadow-2xl z-20 hidden md:flex">
+        <div class="h-20 flex items-center px-8 border-b border-slate-800">
+            <h1 class="font-bold text-xl tracking-wide flex items-center gap-3">
+                <div class="bg-blue-600 p-1.5 rounded-lg"><i class="fa-solid fa-cube text-white"></i></div>
+                Portal<span class="text-blue-400">Admin</span>
+            </h1>
         </div>
-        <nav class="flex-1 px-4 py-6 space-y-2">
-            <a href="dashboard.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl">
-                <i class="fa-solid fa-gauge-high w-6"></i> Dashboard
+        
+        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+            <a href="index.html" target="_blank" class="flex items-center px-4 py-3.5 bg-emerald-600/10 text-emerald-400 border border-emerald-600/20 hover:bg-emerald-600 hover:text-white rounded-xl transition-all group mb-8">
+                <i class="fa-solid fa-globe w-6 group-hover:animate-pulse"></i> <span class="font-semibold text-sm">Lihat Website</span>
             </a>
-            <a href="upload-news.html" class="flex items-center px-4 py-3 bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-600/20">
-                <i class="fa-regular fa-newspaper w-6"></i> Tulis Berita
+
+            <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Main Menu</p>
+            <a href="dashboard.html" class="flex items-center px-4 py-3.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all">
+                <i class="fa-solid fa-grid-2 w-6"></i> <span class="font-medium text-sm">Dashboard</span>
             </a>
-            <a href="upload-doc.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl">
-                <i class="fa-solid fa-file-pdf w-6"></i> Upload Dokumen
+
+            <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-8 mb-2">Content</p>
+            
+            <a href="upload-news.html" class="flex items-center px-4 py-3 bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-900/50">
+                <i class="fa-regular fa-newspaper w-6"></i> <span class="font-medium text-sm">Berita & Artikel</span>
+            </a>
+            
+            <a href="upload-doc.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group">
+                <i class="fa-solid fa-file-pdf w-6 group-hover:text-orange-400"></i> <span class="font-medium text-sm">Dokumen Publik</span>
+            </a>
+
+            <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-8 mb-2">Manajemen Data</p>
+            
+            <a href="manage-news.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group">
+                <i class="fa-solid fa-list-check w-6 group-hover:text-blue-400"></i> <span class="font-medium text-sm">Kelola Berita</span>
+            </a>
+            
+            <a href="manage-docs.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group">
+                <i class="fa-solid fa-folder-tree w-6 group-hover:text-orange-400"></i> <span class="font-medium text-sm">Kelola Dokumen</span>
+            </a>
+
+            <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-8 mb-2">Admin</p>
+            <a href="inbox.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group">
+                <i class="fa-solid fa-inbox w-6 group-hover:text-yellow-400"></i> <span class="font-medium text-sm">Inbox</span>
+            </a>
+            <a href="users.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group">
+                <i class="fa-solid fa-users-gear w-6 group-hover:text-purple-400"></i> <span class="font-medium text-sm">Users</span>
             </a>
         </nav>
+        
+        <div class="p-6 border-t border-slate-800">
+            <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-4 py-3 text-red-400 bg-red-500/10 hover:bg-red-500 hover:text-white rounded-xl transition-all font-bold text-sm">
+                <i class="fa-solid fa-power-off"></i> Logout
+            </button>
+        </div>
     </aside>
 
-    <main class="flex-1 overflow-y-auto p-8 bg-gray-50/50">
-        <div class="max-w-4xl mx-auto">
-            <div class="flex items-center justify-between mb-8">
-                <div>
-                    <h2 class="text-3xl font-bold text-gray-800">Tulis Berita Baru</h2>
-                    <p class="text-gray-500 mt-1">Publikasikan informasi terbaru ke website.</p>
-                </div>
-                <a href="dashboard.html" class="text-gray-500 hover:text-gray-800 bg-white px-4 py-2 border rounded-lg shadow-sm">Batal</a>
+    <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50 relative">
+        <header class="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-8 z-10 sticky top-0">
+            <div class="flex items-center gap-4">
+                <h2 class="text-xl font-bold text-slate-700">Editor Berita</h2>
+                <span class="bg-blue-50 text-blue-600 text-xs font-bold px-2 py-1 rounded">Draft</span>
             </div>
+            <div class="flex gap-3">
+                <a href="dashboard.html" class="px-4 py-2 text-sm font-bold text-slate-500 hover:text-red-500 transition-colors">Batal</a>
+                <button onclick="submitNews()" id="publishBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-bold shadow-lg shadow-blue-600/20 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Terbitkan
+                </button>
+            </div>
+        </header>
 
-            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    
-                    <div class="md:col-span-2 space-y-6">
-                        <div>
-                            <label class="block font-bold text-gray-700 mb-2">Judul Berita <span class="text-red-500">*</span></label>
-                            <input type="text" id="title" placeholder="Contoh: Rapat Koordinasi Tahunan 2026..." class="w-full border border-gray-300 p-3.5 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white transition-all">
-                        </div>
-                        <div>
-                            <label class="block font-bold text-gray-700 mb-2">Isi Berita <span class="text-red-500">*</span></label>
-                            <textarea id="content" placeholder="Ketik isi berita selengkapnya di sini..." class="w-full border border-gray-300 p-4 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none h-64 bg-gray-50 focus:bg-white transition-all"></textarea>
-                        </div>
+        <div class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 group transition-colors">
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Judul Artikel</label>
+                        <input type="text" id="title" placeholder="Tulis judul yang menarik di sini..." class="w-full text-3xl font-bold text-slate-800 placeholder:text-slate-300 border-none outline-none ring-0 focus:ring-0 p-0 transition-all bg-transparent">
                     </div>
 
-                    <div class="space-y-6">
-                        <div>
-                            <label class="block font-bold text-gray-700 mb-2">Gambar Sampul (Opsional)</label>
-                            <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:bg-blue-50 hover:border-blue-400 transition-colors relative cursor-pointer group">
-                                <input type="file" id="imageFile" accept="image/jpeg, image/png, image/jpg" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-                                <div class="text-gray-400 group-hover:text-blue-500 transition-colors">
-                                    <i class="fa-regular fa-image text-4xl mb-3"></i>
-                                    <p class="text-sm font-semibold text-gray-700">Pilih Gambar</p>
-                                    <p class="text-xs mt-1">Format: JPG, PNG (Max 2MB)</p>
+                    <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 flex flex-col h-[500px] transition-colors">
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Isi Berita</label>
+                        <textarea id="content" placeholder="Mulai ketik cerita Anda..." class="w-full flex-1 resize-none border-none outline-none ring-0 focus:ring-0 p-0 text-lg leading-relaxed text-slate-600 placeholder:text-slate-300 bg-transparent"></textarea>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                        <h3 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
+                            <i class="fa-regular fa-image text-blue-500"></i> Gambar Sampul
+                        </h3>
+                        
+                        <div class="border-2 border-dashed border-slate-200 rounded-2xl p-8 text-center hover:bg-blue-50 hover:border-blue-400 transition-all cursor-pointer relative group overflow-hidden">
+                            <input type="file" id="imageFile" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                            
+                            <div id="uploadPlaceholder">
+                                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                                    <i class="fa-solid fa-cloud-arrow-up text-xl"></i>
+                                </div>
+                                <p class="text-sm font-bold text-slate-600 group-hover:text-blue-600">Klik untuk Upload</p>
+                                <p class="text-xs text-slate-400 mt-1">PNG, JPG (Max 2MB)</p>
+                            </div>
+                            
+                            <div id="imagePreviewContainer" class="hidden absolute inset-0 bg-white rounded-2xl w-full h-full">
+                                <img id="imagePreview" src="" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 flex items-center justify-center bg-black/40 text-white font-bold opacity-0 group-hover:opacity-100 transition-opacity z-20 pointer-events-none">
+                                    Ganti Gambar
                                 </div>
                             </div>
-                            <p id="fileNamePreview" class="text-xs text-blue-600 font-bold mt-2 text-center hidden"></p>
                         </div>
-
-                        <button id="submitBtn" onclick="submitNews()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-600/30 transition-all flex justify-center items-center gap-2">
-                            <i class="fa-solid fa-paper-plane"></i> Terbitkan Berita
-                        </button>
+                        <p id="fileName" class="text-center text-xs text-blue-600 font-bold mt-3 truncate h-4"></p>
                     </div>
 
+                    <div class="bg-blue-50 p-6 rounded-3xl border border-blue-100">
+                        <h3 class="font-bold text-blue-800 mb-2 text-sm">💡 Tips Penulisan</h3>
+                        <ul class="text-xs text-blue-700 space-y-2 list-disc pl-4">
+                            <li>Gunakan judul yang singkat dan padat.</li>
+                            <li>Pastikan gambar berkualitas tinggi (HD).</li>
+                            <li>Periksa kembali ejaan sebelum menerbitkan.</li>
+                        </ul>
+                    </div>
                 </div>
+
             </div>
         </div>
     </main>
@@ -76,30 +142,39 @@
     <script src="config.js"></script>
     <script>
         checkAuth();
+        function logout() { localStorage.removeItem('token'); window.location.href = 'login.html'; }
 
-        // Fitur untuk menampilkan nama file gambar saat dipilih
-        document.getElementById('imageFile').addEventListener('change', function(e) {
-            const fileNamePreview = document.getElementById('fileNamePreview');
-            if(this.files[0]) {
-                fileNamePreview.textContent = "File terpilih: " + this.files[0].name;
-                fileNamePreview.classList.remove('hidden');
-            } else {
-                fileNamePreview.classList.add('hidden');
+        // Logic Preview Gambar
+        const imageInput = document.getElementById('imageFile');
+        const previewContainer = document.getElementById('imagePreviewContainer');
+        const previewImg = document.getElementById('imagePreview');
+        const placeholder = document.getElementById('uploadPlaceholder');
+        const fileNameLabel = document.getElementById('fileName');
+
+        imageInput.addEventListener('change', function(e) {
+            const file = this.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    previewImg.src = evt.target.result;
+                    previewContainer.classList.remove('hidden');
+                    placeholder.classList.add('hidden');
+                    fileNameLabel.textContent = file.name;
+                }
+                reader.readAsDataURL(file);
             }
         });
 
         async function submitNews() {
             const title = document.getElementById('title').value;
             const content = document.getElementById('content').value;
-            const imageInput = document.getElementById('imageFile');
-            const btn = document.getElementById('submitBtn');
+            const btn = document.getElementById('publishBtn');
 
             if (!title || !content) return alert("Judul dan Isi berita wajib diisi!");
 
             btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengunggah...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Proses...';
 
-            // Menggunakan FormData karena kita mengirim FILE (Gambar)
             const formData = new FormData();
             formData.append('title', title);
             formData.append('content', content);
@@ -110,25 +185,22 @@
             try {
                 const res = await fetch(`${API_URL}/news`, {
                     method: 'POST',
-                    headers: {
-                        // JANGAN set Content-Type kalau pakai FormData, biarkan browser yang atur
-                        'Authorization': `Bearer ${getToken()}`
-                    },
+                    headers: { 'Authorization': `Bearer ${getToken()}` },
                     body: formData
                 });
 
                 if (res.ok) {
-                    alert('Berita berhasil diterbitkan!');
-                    window.location.href = 'index.html'; // Lempar ke halaman depan untuk melihat hasil
+                    alert('✅ Berita Berhasil Diterbitkan!');
+                    window.location.href = 'manage-news.html'; // Setalah upload dialihkan ke kelola berita
                 } else {
                     const err = await res.json();
-                    alert('Gagal: ' + (err.message || 'Cek kembali isian Anda.'));
+                    alert('Gagal: ' + (err.message || 'Terjadi kesalahan.'));
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Terbitkan';
                 }
             } catch (error) {
-                alert('Terjadi kesalahan koneksi.');
-            } finally {
+                alert('Koneksi Error.');
                 btn.disabled = false;
-                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Terbitkan Berita';
             }
         }
     </script>
