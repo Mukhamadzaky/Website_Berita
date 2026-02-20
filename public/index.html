@@ -176,7 +176,7 @@
             </div>
             <hr class="border-slate-800 my-8">
             <div class="text-center text-sm text-slate-600">
-                <p>&copy; 2026 Portal Informasi Resmi. </p>
+                <p>&copy; 2026 Portal Informasi Resmi</p>
             </div>
         </div>
     </footer>
@@ -249,13 +249,20 @@
                 }
 
                 list.innerHTML = data.map(item => {
-                    let icon = 'fa-file-lines text-gray-500';
-                    let bgIcon = 'bg-gray-100';
-                    if(item.file_type.toLowerCase().includes('pdf')) {
-                        icon = 'fa-file-pdf text-red-500'; bgIcon = 'bg-red-50';
-                    } else if(item.file_type.toLowerCase().includes('doc')) {
-                        icon = 'fa-file-word text-blue-500'; bgIcon = 'bg-blue-50';
-                    }
+                   let icon = 'fa-file-lines text-gray-500';
+                        let bgIcon = 'bg-gray-100';
+
+                        if(item.file_type.toLowerCase().includes('pdf')) {
+                            icon = 'fa-file-pdf text-red-500'; 
+                            bgIcon = 'bg-red-50';
+                        } else if(item.file_type.toLowerCase().includes('doc')) {
+                            icon = 'fa-file-word text-blue-500'; 
+                            bgIcon = 'bg-blue-50';
+                        } else if(item.file_type.toLowerCase().includes('xls')) {
+                            // TAMBAHAN UNTUK EXCEL 👇
+                            icon = 'fa-file-excel text-green-500'; 
+                            bgIcon = 'bg-green-50';
+                        }
 
                     return `
                     <div onclick="window.location.href='doc-detail.html?id=${item.id}'" class="group flex items-center justify-between p-3.5 border border-gray-100 hover:border-blue-200 hover:bg-blue-50/30 rounded-xl transition-all cursor-pointer">

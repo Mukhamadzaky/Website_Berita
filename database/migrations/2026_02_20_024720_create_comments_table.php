@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('messages', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('news_id')->constrained()->onDelete('cascade'); // Relasi ke berita
             $table->string('name');
-            $table->string('email');
-            $table->text('message');
-            $table->boolean('is_read')->default(false); // <--- TAMBAHKAN BARIS INI
+            $table->text('comment');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('messages');
+        Schema::dropIfExists('comments');
     }
 };

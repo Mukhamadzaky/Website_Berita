@@ -14,6 +14,8 @@ Route::post('/login', [ApiController::class, 'login']);
 // --- BERITA ---
 Route::get('/news', [ApiController::class, 'getNews']);               // Ambil SEMUA berita
 Route::get('/news/{id}', [ApiController::class, 'showNews']);         // <--- TAMBAHAN PENTING (Untuk Detail Berita)
+Route::get('/news/{id}/comments', [ApiController::class, 'getComments']);
+Route::post('/news/{id}/comments', [ApiController::class, 'storeComment']);
 
 // --- DOKUMEN ---
 Route::get('/documents', [ApiController::class, 'getDocuments']);     // Ambil SEMUA dokumen
@@ -42,5 +44,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Fitur Dashboard Admin
     Route::get('/dashboard-stats', [ApiController::class, 'getDashboardStats']); 
     Route::get('/users', [ApiController::class, 'getUsers']);                   
-    Route::get('/inbox', [ApiController::class, 'getMessages']);                
+    Route::get('/inbox', [ApiController::class, 'getMessages']);  
+    // Tambahkan baris ini di dalam sini:
+    Route::get('/profile', [ApiController::class, 'profile']);              
 });

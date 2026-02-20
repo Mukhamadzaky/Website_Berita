@@ -59,7 +59,6 @@ class ApiController extends Controller
         return response()->json(News::latest()->get());
     }
 
-    // [BARU] Ambil 1 Berita berdasarkan ID
     public function showNews($id) {
         $news = News::find($id);
         if (!$news) return response()->json(['message' => 'Data not found'], 404);
@@ -86,6 +85,19 @@ class ApiController extends Controller
         return response()->json(['message' => 'Berita berhasil diterbitkan!']);
     }
 
+    public function destroyNews($id) {
+        $news = News::find($id);
+        if (!$news) return response()->json(['message' => 'Data tidak ditemukan'], 404);
+
+        // Hapus gambar fisik jika ada
+        if ($news->image_path) {
+            Storage::disk('public')->delete($news->image_path);
+        }
+
+        $news->delete();
+        return response()->json(['message' => 'Berita berhasil dihapus']);
+    }
+
     // ==========================================
     // DOCUMENTS (DOKUMEN)
     // ==========================================
@@ -93,7 +105,6 @@ class ApiController extends Controller
         return response()->json(Document::latest()->get());
     }
 
-    // [BARU] Ambil 1 Dokumen berdasarkan ID
     public function showDocument($id) {
         $doc = Document::find($id);
         if (!$doc) return response()->json(['message' => 'Data not found'], 404);
@@ -103,7 +114,8 @@ class ApiController extends Controller
     public function storeDocument(Request $request) {
         $request->validate([
             'title' => 'required',
-            'file' => 'required|mimes:pdf,doc,docx|max:10240'
+            // TAMBAHKAN xls dan xlsx DI SINI 👇
+            'file' => 'required|mimes:pdf,doc,docx,xls,xlsx|max:10240' 
         ]);
 
         if ($request->hasFile('file')) {
@@ -121,51 +133,6 @@ class ApiController extends Controller
         return response()->json(['message' => 'Gagal upload'], 400);
     }
 
-    // ==========================================
-    // FITUR TAMBAHAN (Dashboard & Inbox)
-    // ==========================================
-
-    // 1. Dashboard Stats
-    public function getDashboardStats() {
-        return response()->json([
-            'total_news' => News::count(),
-            'total_docs' => Document::count(),
-            'total_users' => User::count(),
-            'total_messages' => \App\Models\Message::count()
-        ]);
-    }
-
-    // 2. User Management
-    public function getUsers() {
-        return response()->json(User::latest()->get());
-    }
-
-    // 3. Message / Inbox System
-    public function storeMessage(Request $request) {
-        $request->validate(['name'=>'required', 'email'=>'required', 'message'=>'required']);
-        \App\Models\Message::create($request->all());
-        return response()->json(['message' => 'Pesan terkirim!']);
-    }
-
-    public function getMessages() {
-        return response()->json(\App\Models\Message::latest()->get());
-    }
-
-    // --- HAPUS DATA ---
-
-    public function destroyNews($id) {
-        $news = News::find($id);
-        if (!$news) return response()->json(['message' => 'Data tidak ditemukan'], 404);
-
-        // Hapus gambar fisik jika ada
-        if ($news->image_path) {
-            Storage::disk('public')->delete($news->image_path);
-        }
-
-        $news->delete();
-        return response()->json(['message' => 'Berita berhasil dihapus']);
-    }
-
     public function destroyDocument($id) {
         $doc = Document::find($id);
         if (!$doc) return response()->json(['message' => 'Data tidak ditemukan'], 404);
@@ -177,5 +144,73 @@ class ApiController extends Controller
 
         $doc->delete();
         return response()->json(['message' => 'Dokumen berhasil dihapus']);
+    }
+
+    // ==========================================
+    // FITUR TAMBAHAN (Dashboard & Inbox)
+    // ==========================================
+
+    // 1. Dashboard Stats (Termasuk Pengecekan Pesan Baru)
+    public function getDashboardStats() {
+        return response()->json([
+            'total_news' => News::count(),
+            'total_docs' => Document::count(),
+            'total_users' => User::count(),
+            'total_messages' => \App\Models\Message::count(),
+            // Logika untuk menampilkan notifikasi titik merah di dashboard
+            'unread_messages' => \App\Models\Message::where('is_read', false)->count() 
+        ]);
+    }
+
+    // --- AMBIL DATA USER LOGIN ---
+    public function profile(Request $request) {
+        // Mengembalikan data user yang sedang memiliki token valid
+        return response()->json($request->user());
+    }
+
+    // 2. User Management
+    public function getUsers() {
+        return response()->json(User::latest()->get());
+    }
+
+    // --- KOMENTAR BERITA ---
+    
+    // Ambil komentar berdasarkan ID Berita
+    public function getComments($newsId) {
+        $comments = \App\Models\Comment::where('news_id', $newsId)->latest()->get();
+        return response()->json($comments);
+    }
+
+    // Simpan komentar baru
+    public function storeComment(Request $request, $newsId) {
+        $request->validate([
+            'name' => 'required',
+            'comment' => 'required'
+        ]);
+
+        \App\Models\Comment::create([
+            'news_id' => $newsId,
+            'name' => $request->name,
+            'comment' => $request->comment
+        ]);
+
+        return response()->json(['message' => 'Komentar berhasil ditambahkan!']);
+    }
+
+    // 3. Message / Inbox System
+    public function storeMessage(Request $request) {
+        $request->validate(['name'=>'required', 'email'=>'required', 'message'=>'required']);
+        \App\Models\Message::create($request->all());
+        return response()->json(['message' => 'Pesan terkirim!']);
+    }
+
+    public function getMessages() {
+        // Ambil semua data pesan
+        $messages = \App\Models\Message::latest()->get();
+        
+        // Logika: Saat admin membuka inbox, ubah semua pesan yang belum dibaca (false) menjadi sudah dibaca (true)
+        \App\Models\Message::where('is_read', false)->update(['is_read' => true]);
+        
+        return response()->json($messages);
     }
 }

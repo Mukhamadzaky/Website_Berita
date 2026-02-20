@@ -10,36 +10,68 @@
 
     <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div class="container mx-auto px-6 h-16 flex items-center justify-between">
-            <a href="index.html" class="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors font-bold">
+            <a href="index.html" class="flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors font-bold text-sm">
                 <i class="fa-solid fa-arrow-left"></i> Kembali ke Beranda
             </a>
-            <div class="font-bold text-lg">Portal<span class="text-blue-600">Info</span></div>
+            <div class="font-bold text-lg flex items-center gap-2">
+                <i class="fa-solid fa-cube text-blue-600"></i> Portal<span class="text-blue-600">Info</span>
+            </div>
         </div>
     </nav>
 
     <main class="container mx-auto px-6 py-10 max-w-4xl">
+        
         <div id="loading" class="text-center py-20">
             <i class="fa-solid fa-circle-notch fa-spin text-4xl text-blue-500"></i>
-            <p class="mt-4 text-gray-500">Memuat berita...</p>
+            <p class="mt-4 text-gray-500 font-medium">Memuat berita...</p>
         </div>
 
-        <article id="content-area" class="hidden bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-gray-100">
+        <article id="content-area" class="hidden bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-gray-100 mb-8">
             <div class="mb-8 border-b border-gray-100 pb-8">
-                <span class="bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Berita</span>
-                <h1 id="news-title" class="text-3xl md:text-5xl font-bold text-gray-900 mt-4 mb-4 leading-tight"></h1>
+                <span class="bg-blue-50 text-blue-600 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider border border-blue-100">Berita Terkini</span>
+                <h1 id="news-title" class="text-3xl md:text-5xl font-bold text-gray-900 mt-6 mb-4 leading-tight"></h1>
                 <div class="flex items-center text-gray-500 text-sm gap-4">
-                    <span><i class="fa-regular fa-calendar mr-2"></i> <span id="news-date"></span></span>
-                    <span><i class="fa-regular fa-clock mr-2"></i> <span id="news-time"></span></span>
+                    <span><i class="fa-regular fa-calendar-check text-blue-500 mr-2"></i> <span id="news-date"></span></span>
+                    <span><i class="fa-regular fa-clock text-blue-500 mr-2"></i> <span id="news-time"></span></span>
                 </div>
             </div>
 
-            <div id="news-image-container" class="mb-10 rounded-2xl overflow-hidden shadow-lg hidden">
-                <img id="news-image" src="" class="w-full h-auto object-cover">
+            <div id="news-image-container" class="mb-10 rounded-2xl overflow-hidden shadow-md hidden border border-gray-100">
+                <img id="news-image" src="" class="w-full max-h-[500px] object-cover hover:scale-105 transition-transform duration-700">
             </div>
 
-            <div id="news-body" class="prose prose-lg max-w-none text-gray-700 leading-relaxed whitespace-pre-line">
+            <div id="news-body" class="prose prose-lg max-w-none text-gray-700 leading-relaxed whitespace-pre-line text-lg">
                 </div>
         </article>
+
+        <section id="comment-section" class="hidden">
+            <div class="bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-gray-100">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                    <i class="fa-regular fa-comments text-blue-500"></i> Diskusi & Komentar
+                </h3>
+
+                <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 mb-10">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <input type="text" id="commentName" placeholder="Nama Anda" class="w-full p-3.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <textarea id="commentText" placeholder="Tulis komentar atau pendapat Anda di sini..." class="w-full p-4 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none h-28 resize-none transition-all"></textarea>
+                    </div>
+                    <div class="text-right">
+                        <button id="btnSubmitComment" onclick="postComment()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-blue-600/30 transition-all transform active:scale-95">
+                            Kirim Komentar <i class="fa-solid fa-paper-plane ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="comments-list" class="space-y-6">
+                    <div class="text-center py-6 text-gray-400 text-sm">Memuat komentar...</div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <footer class="bg-slate-900 text-slate-400 py-8 text-center mt-12">
@@ -48,42 +80,116 @@
 
     <script src="config.js"></script>
     <script>
-        // Ambil ID dari URL (contoh: news-detail.html?id=1)
         const params = new URLSearchParams(window.location.search);
-        const id = params.get('id');
+        const newsId = params.get('id');
 
-        if(!id) window.location.href = 'index.html'; // Jika tidak ada ID, tendang ke home
+        if(!newsId) window.location.href = 'index.html';
 
-        fetch(`${API_URL}/news/${id}`)
+        // 1. LOAD DATA BERITA
+        fetch(`${API_URL}/news/${newsId}`)
             .then(res => {
                 if(!res.ok) throw new Error("Berita tidak ditemukan");
                 return res.json();
             })
             .then(data => {
-                // Sembunyikan Loading, Tampilkan Konten
                 document.getElementById('loading').classList.add('hidden');
                 document.getElementById('content-area').classList.remove('hidden');
+                document.getElementById('comment-section').classList.remove('hidden'); // Tampilkan section komentar
 
-                // Isi Data
                 document.getElementById('news-title').innerText = data.title;
                 document.getElementById('news-body').innerText = data.content;
                 
-                // Format Waktu
                 const date = new Date(data.created_at);
                 document.getElementById('news-date').innerText = date.toLocaleDateString('id-ID', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'});
                 document.getElementById('news-time').innerText = date.toLocaleTimeString('id-ID', {hour: '2-digit', minute: '2-digit'}) + ' WIB';
 
-                // Cek Gambar
                 if(data.image_path) {
                     const imgContainer = document.getElementById('news-image-container');
                     const img = document.getElementById('news-image');
                     img.src = `${STORAGE_URL}${data.image_path}`;
                     imgContainer.classList.remove('hidden');
                 }
+
+                // Setelah berita berhasil diload, load komentarnya
+                loadComments();
             })
             .catch(err => {
-                document.getElementById('loading').innerHTML = `<p class="text-red-500 font-bold">${err.message}</p><a href="index.html" class="text-blue-500 underline mt-4 block">Kembali</a>`;
+                document.getElementById('loading').innerHTML = `
+                    <div class="text-red-500 mb-4"><i class="fa-regular fa-face-frown text-6xl"></i></div>
+                    <p class="text-xl font-bold text-gray-700">${err.message}</p>
+                    <a href="index.html" class="text-blue-600 font-bold mt-6 inline-block hover:underline">Kembali ke Beranda</a>
+                `;
             });
+
+        // 2. FUNGSI LOAD KOMENTAR
+        function loadComments() {
+            fetch(`${API_URL}/news/${newsId}/comments`)
+                .then(res => res.json())
+                .then(data => {
+                    const list = document.getElementById('comments-list');
+                    
+                    if(data.length === 0) {
+                        list.innerHTML = `<div class="text-center py-8 text-gray-400 bg-gray-50 rounded-2xl border border-dashed border-gray-200"><i class="fa-regular fa-comments text-3xl mb-2 text-gray-300"></i><p>Belum ada komentar. Jadilah yang pertama berkomentar!</p></div>`;
+                        return;
+                    }
+
+                    list.innerHTML = data.map(comment => {
+                        const date = new Date(comment.created_at);
+                        const timeStr = date.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year:'numeric'}) + ' - ' + date.toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'});
+                        
+                        return `
+                        <div class="flex gap-4 p-5 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-blue-100 to-blue-200 text-blue-700 font-bold flex items-center justify-center shrink-0 text-lg border border-blue-200">
+                                ${comment.name.charAt(0).toUpperCase()}
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex justify-between items-start mb-1">
+                                    <h4 class="font-bold text-gray-800">${comment.name}</h4>
+                                    <span class="text-[10px] text-gray-400 font-medium bg-gray-100 px-2 py-1 rounded-full">${timeStr}</span>
+                                </div>
+                                <p class="text-gray-600 text-sm leading-relaxed">${comment.comment}</p>
+                            </div>
+                        </div>
+                        `;
+                    }).join('');
+                });
+        }
+
+        // 3. FUNGSI SUBMIT KOMENTAR BARU
+        async function postComment() {
+            const name = document.getElementById('commentName').value;
+            const comment = document.getElementById('commentText').value;
+            const btn = document.getElementById('btnSubmitComment');
+
+            if(!name || !comment) return alert('Nama dan isi komentar wajib diisi!');
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim...';
+
+            try {
+                const res = await fetch(`${API_URL}/news/${newsId}/comments`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, comment })
+                });
+
+                if(res.ok) {
+                    // Bersihkan form
+                    document.getElementById('commentName').value = '';
+                    document.getElementById('commentText').value = '';
+                    
+                    // Reload daftar komentar
+                    loadComments();
+                } else {
+                    alert('Gagal mengirim komentar.');
+                }
+            } catch (err) {
+                alert('Terjadi kesalahan koneksi.');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Kirim Komentar <i class="fa-solid fa-paper-plane ml-2"></i>';
+            }
+        }
     </script>
 </body>
 </html>

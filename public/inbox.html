@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <title>Inbox - Portal Admin</title>
+    <meta charset="UTF-8">
+    <title>Inbox Pengaduan - Portal Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
 </head>
 <body class="bg-slate-50 flex h-screen overflow-hidden font-sans text-slate-800">
 
-    <aside class="w-72 bg-slate-900 text-white flex flex-col shadow-2xl z-20">
+    <aside class="w-72 bg-slate-900 text-white flex flex-col shadow-2xl z-20 transition-all duration-300">
         <div class="h-20 flex items-center px-8 border-b border-slate-800">
             <h1 class="font-bold text-xl tracking-wide flex items-center gap-3">
                 <div class="bg-blue-600 p-1.5 rounded-lg"><i class="fa-solid fa-cube text-white"></i></div>
@@ -17,29 +24,52 @@
         
         <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
             <a href="index.html" target="_blank" class="flex items-center px-4 py-3.5 bg-emerald-600/10 text-emerald-400 border border-emerald-600/20 hover:bg-emerald-600 hover:text-white rounded-xl transition-all group mb-8">
-                <i class="fa-solid fa-globe w-6"></i> <span class="font-semibold text-sm">Lihat Website</span>
+                <i class="fa-solid fa-globe w-6 group-hover:animate-pulse"></i> <span class="font-semibold text-sm">Beranda</span>
             </a>
+
             <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Main Menu</p>
-            <a href="dashboard.html" class="flex items-center px-4 py-3.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all"><i class="fa-solid fa-grid-2 w-6"></i> <span class="font-medium text-sm">Dashboard</span></a>
-            
+            <a href="dashboard.html" class="flex items-center px-4 py-3.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all">
+                <i class="fa-solid fa-grid-2 w-6"></i> <span class="font-medium text-sm">Dashboard</span>
+            </a>
+
             <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-8 mb-2">Content</p>
-            <a href="upload-news.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl"><i class="fa-regular fa-newspaper w-6"></i> <span class="font-medium text-sm">Berita</span></a>
-            <a href="upload-doc.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl"><i class="fa-solid fa-file-pdf w-6"></i> <span class="font-medium text-sm">Dokumen</span></a>
+            <a href="upload-news.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group">
+                <i class="fa-regular fa-newspaper w-6 group-hover:text-blue-400"></i> <span class="font-medium text-sm">Tulis Berita</span>
+            </a>
+            <a href="upload-doc.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group">
+                <i class="fa-solid fa-file-pdf w-6 group-hover:text-orange-400"></i> <span class="font-medium text-sm">Upload Dokumen</span>
+            </a>
+
+            <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-8 mb-2">Manajemen Data</p>
+            <a href="manage-news.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group">
+                <i class="fa-solid fa-list-check w-6 group-hover:text-blue-400"></i> <span class="font-medium text-sm">Kelola Berita</span>
+            </a>
+            <a href="manage-docs.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group">
+                <i class="fa-solid fa-folder-tree w-6 group-hover:text-orange-400"></i> <span class="font-medium text-sm">Kelola Dokumen</span>
+            </a>
 
             <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-8 mb-2">Admin</p>
             <a href="inbox.html" class="flex items-center px-4 py-3 bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-900/50">
                 <i class="fa-solid fa-inbox w-6"></i> <span class="font-medium text-sm">Inbox</span>
             </a>
-            <a href="users.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl"><i class="fa-solid fa-users-gear w-6"></i> <span class="font-medium text-sm">Users</span></a>
+            <a href="users.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group">
+                <i class="fa-solid fa-users-gear w-6 group-hover:text-purple-400"></i> <span class="font-medium text-sm">Users</span>
+            </a>
         </nav>
+        
         <div class="p-6 border-t border-slate-800">
-            <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-4 py-3 text-red-400 bg-red-500/10 hover:bg-red-500 hover:text-white rounded-xl font-bold text-sm"><i class="fa-solid fa-power-off"></i> Logout</button>
+            <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-4 py-3 text-red-400 bg-red-500/10 hover:bg-red-500 hover:text-white rounded-xl transition-all font-bold text-sm">
+                <i class="fa-solid fa-power-off"></i> Logout
+            </button>
         </div>
     </aside>
 
     <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50">
         <header class="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-8 z-10 sticky top-0">
-            <h2 class="text-xl font-bold text-slate-700">Kotak Masuk</h2>
+            <h2 class="text-xl font-bold text-slate-700">Kotak Pengaduan</h2>
+            <div class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 border border-blue-100">
+                <i class="fa-solid fa-envelope"></i> Pesan Publik
+            </div>
         </header>
 
         <div class="flex-1 overflow-y-auto p-8">
@@ -47,9 +77,9 @@
                 <table class="w-full text-left">
                     <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase text-xs tracking-wider">
                         <tr>
-                            <th class="px-6 py-4">Pengirim</th>
-                            <th class="px-6 py-4">Pesan</th>
-                            <th class="px-6 py-4 w-40 text-right">Waktu</th>
+                            <th class="px-6 py-4 w-1/4">Pengirim</th>
+                            <th class="px-6 py-4 w-1/2">Isi Pesan</th>
+                            <th class="px-6 py-4 w-1/4 text-right">Tanggal Masuk</th>
                         </tr>
                     </thead>
                     <tbody id="msg-list" class="divide-y divide-slate-100 text-sm">
@@ -62,6 +92,7 @@
 
     <script src="config.js"></script>
     <script>
+        checkAuth();
         function logout() { localStorage.removeItem('token'); window.location.href = 'login.html'; }
         
         fetch(`${API_URL}/inbox`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
@@ -69,30 +100,50 @@
         .then(data => {
             const list = document.getElementById('msg-list');
             if(data.length === 0) {
-                list.innerHTML = '<tr><td colspan="3" class="px-6 py-10 text-center text-slate-400"><i class="fa-regular fa-envelope-open text-4xl mb-3 block"></i>Belum ada pesan masuk.</td></tr>';
+                list.innerHTML = `
+                    <tr>
+                        <td colspan="3" class="px-6 py-16 text-center text-slate-400">
+                            <div class="bg-slate-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-100">
+                                <i class="fa-solid fa-envelope-open text-4xl text-slate-300"></i>
+                            </div>
+                            <p class="font-bold text-slate-500">Belum ada pesan masuk</p>
+                            <p class="text-xs mt-1">Pesan dari halaman depan akan muncul di sini.</p>
+                        </td>
+                    </tr>`;
                 return;
             }
+
             list.innerHTML = data.map(item => `
-                <tr class="hover:bg-blue-50/50 transition-colors group cursor-default">
-                    <td class="px-6 py-5">
+                <tr class="hover:bg-blue-50/50 transition-colors group">
+                    <td class="px-6 py-5 align-top">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-slate-100 text-slate-500 font-bold flex items-center justify-center shrink-0">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white font-bold flex items-center justify-center shrink-0 shadow-md">
                                 ${item.name.charAt(0).toUpperCase()}
                             </div>
                             <div>
-                                <p class="font-bold text-slate-800 group-hover:text-blue-600">${item.name}</p>
-                                <p class="text-xs text-slate-400">${item.email}</p>
+                                <p class="font-bold text-slate-800 group-hover:text-blue-600 transition-colors">${item.name}</p>
+                                <p class="text-xs text-slate-400 font-mono mt-0.5">${item.email}</p>
                             </div>
                         </div>
                     </td>
-                    <td class="px-6 py-5">
-                        <p class="text-slate-600 line-clamp-2">${item.message}</p>
+                    <td class="px-6 py-5 align-top">
+                        <p class="text-slate-600 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100 shadow-inner group-hover:bg-white transition-colors">
+                            ${item.message}
+                        </p>
                     </td>
-                    <td class="px-6 py-5 text-right text-slate-400 text-xs font-medium">
-                        ${new Date(item.created_at).toLocaleDateString('id-ID', {day: 'numeric', month: 'short'})}
+                    <td class="px-6 py-5 text-right align-top">
+                        <span class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg whitespace-nowrap">
+                            ${new Date(item.created_at).toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: 'numeric'})}
+                        </span>
+                        <p class="text-[10px] text-slate-400 mt-2">
+                            ${new Date(item.created_at).toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'})} WIB
+                        </p>
                     </td>
                 </tr>
             `).join('');
+        })
+        .catch(err => {
+            document.getElementById('msg-list').innerHTML = `<tr><td colspan="3" class="text-center py-6 text-red-500 font-bold">Gagal memuat pesan. Pastikan Anda sudah login admin.</td></tr>`;
         });
     </script>
 </body>

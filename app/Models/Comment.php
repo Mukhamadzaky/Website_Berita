@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Message extends Model
+class Comment extends Model
 {
     use HasFactory;
-
-    // BARIS INI WAJIB ADA AGAR PESAN BISA DISIMPAN
-    protected $fillable = ['name', 'email', 'message'];
+    
+    // Wajib ditambahkan agar bisa diisi
+    protected $fillable = ['news_id', 'name', 'comment'];
 }

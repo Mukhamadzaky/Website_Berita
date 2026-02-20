@@ -5,64 +5,138 @@
     <title>Upload Dokumen - Portal Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
 </head>
-<body class="bg-gray-100 flex h-screen overflow-hidden font-sans">
+<body class="bg-slate-50 flex h-screen overflow-hidden font-sans text-slate-800">
 
-    <aside class="w-64 bg-slate-900 text-white flex flex-col shadow-xl z-20">
-        <div class="h-16 flex items-center px-6 border-b border-slate-800">
-            <h1 class="font-bold text-lg"><i class="fa-solid fa-cube text-blue-500"></i> PortalAdmin</h1>
+    <aside class="w-72 bg-slate-900 text-white flex flex-col shadow-2xl z-20 transition-all duration-300">
+        <div class="h-20 flex items-center px-8 border-b border-slate-800">
+            <h1 class="font-bold text-xl tracking-wide flex items-center gap-3">
+                <div class="bg-blue-600 p-1.5 rounded-lg"><i class="fa-solid fa-cube text-white"></i></div>
+                Portal<span class="text-blue-400">Admin</span>
+            </h1>
         </div>
-        <nav class="flex-1 px-4 py-6 space-y-2">
-            <a href="dashboard.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl">
-                <i class="fa-solid fa-gauge-high w-6"></i> Dashboard
+        
+        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+            <a href="index.html" class="flex items-center px-4 py-3.5 bg-emerald-600/10 text-emerald-400 border border-emerald-600/20 hover:bg-emerald-600 hover:text-white rounded-xl transition-all group mb-8">
+                <i class="fa-solid fa-globe w-6 group-hover:animate-pulse"></i> <span class="font-semibold text-sm">Beranda</span>
             </a>
-            <a href="upload-news.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl">
-                <i class="fa-regular fa-newspaper w-6"></i> Tulis Berita
+
+            <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Main Menu</p>
+            <a href="dashboard.html" class="flex items-center px-4 py-3.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all">
+                <i class="fa-solid fa-grid-2 w-6"></i> <span class="font-medium text-sm">Dashboard</span>
             </a>
-            <a href="upload-doc.html" class="flex items-center px-4 py-3 bg-orange-500 text-white rounded-xl shadow-lg shadow-orange-500/20">
-                <i class="fa-solid fa-file-pdf w-6"></i> Upload Dokumen
+
+            <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-8 mb-2">Content</p>
+            <a href="upload-news.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group">
+                <i class="fa-regular fa-newspaper w-6 group-hover:text-blue-400"></i> <span class="font-medium text-sm">Tulis Berita</span>
+            </a>
+            
+            <a href="upload-doc.html" class="flex items-center px-4 py-3 bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-900/50">
+                <i class="fa-solid fa-file-pdf w-6"></i> <span class="font-medium text-sm">Upload Dokumen</span>
+            </a>
+
+            <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-8 mb-2">Manajemen Data</p>
+            <a href="manage-news.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group">
+                <i class="fa-solid fa-list-check w-6 group-hover:text-blue-400"></i> <span class="font-medium text-sm">Kelola Berita</span>
+            </a>
+            <a href="manage-docs.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group">
+                <i class="fa-solid fa-folder-tree w-6 group-hover:text-orange-400"></i> <span class="font-medium text-sm">Kelola Dokumen</span>
+            </a>
+
+            <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-8 mb-2">Admin</p>
+            <a href="inbox.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group">
+                <div class="relative w-6">
+                    <i class="fa-solid fa-inbox group-hover:text-yellow-400"></i>
+                    <span id="badge-dot" class="absolute -top-1 right-0 w-2 h-2 bg-red-500 rounded-full hidden"></span>
+                </div>
+                <span class="font-medium text-sm">Inbox</span>
+            </a>
+            <a href="users.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group">
+                <i class="fa-solid fa-users-gear w-6 group-hover:text-purple-400"></i> <span class="font-medium text-sm">Users</span>
             </a>
         </nav>
+        
+        <div class="p-6 border-t border-slate-800">
+            <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-4 py-3 text-red-400 bg-red-500/10 hover:bg-red-500 hover:text-white rounded-xl transition-all font-bold text-sm">
+                <i class="fa-solid fa-power-off"></i> Logout
+            </button>
+        </div>
     </aside>
 
-    <main class="flex-1 overflow-y-auto p-8 bg-gray-50/50">
-        <div class="max-w-2xl mx-auto">
-            <div class="flex items-center justify-between mb-8">
-                <div>
-                    <h2 class="text-3xl font-bold text-gray-800">Pusat Unduhan</h2>
-                    <p class="text-gray-500 mt-1">Unggah dokumen resmi (PDF/Word) untuk publik.</p>
-                </div>
-                <a href="dashboard.html" class="text-gray-500 hover:text-gray-800 bg-white px-4 py-2 border rounded-lg shadow-sm">Batal</a>
+    <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50 relative">
+        
+        <header class="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-8 z-10 sticky top-0">
+            <div class="flex items-center gap-4">
+                <h2 class="text-xl font-bold text-slate-700">Upload Dokumen Baru</h2>
             </div>
-
-            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-                <div class="space-y-6">
-                    <div>
-                        <label class="block font-bold text-gray-700 mb-2">Nama Dokumen <span class="text-red-500">*</span></label>
-                        <input type="text" id="docTitle" placeholder="Contoh: Surat Keputusan No.1 Tahun 2026..." class="w-full border border-gray-300 p-3.5 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none bg-gray-50 focus:bg-white transition-all">
+            
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-4">
+                    <div class="text-right hidden md:block">
+                        <p id="admin-name" class="text-sm font-bold text-slate-700">Memuat...</p>
+                        <p id="realtime-clock" class="text-xs font-mono font-bold text-blue-600 tracking-wider mt-0.5">00:00:00 WIB</p>
                     </div>
-
-                    <div>
-                        <label class="block font-bold text-gray-700 mb-2">File Dokumen <span class="text-red-500">*</span></label>
-                        <div class="border-2 border-dashed border-gray-300 bg-gray-50 rounded-2xl p-10 text-center hover:bg-orange-50 hover:border-orange-400 transition-all relative cursor-pointer group">
-                            <input type="file" id="docFile" accept=".pdf,.doc,.docx" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-                            
-                            <div class="text-gray-400 group-hover:text-orange-500 transition-colors">
-                                <div class="bg-white w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
-                                    <i class="fa-solid fa-cloud-arrow-up text-4xl"></i>
-                                </div>
-                                <h4 class="text-xl font-bold text-gray-700 mb-1">Klik atau Drop file di sini</h4>
-                                <p class="text-sm font-medium">Mendukung format: .PDF, .DOC, .DOCX</p>
-                                <p class="text-xs mt-2 text-gray-400">Ukuran maksimal file: 10MB</p>
-                            </div>
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 p-[2px] shadow-md">
+                        <div id="admin-avatar" class="w-full h-full bg-white rounded-full flex items-center justify-center font-bold text-slate-700 text-sm">
+                            <i class="fa-solid fa-spinner fa-spin text-xs"></i>
                         </div>
-                        <p id="docNamePreview" class="text-sm text-orange-600 font-bold mt-3 text-center hidden"></p>
                     </div>
-
-                    <button id="submitDocBtn" onclick="submitDoc()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-orange-500/30 transition-all flex justify-center items-center gap-2 mt-4">
-                        <i class="fa-solid fa-upload"></i> Mulai Unggah
-                    </button>
                 </div>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-3xl mx-auto">
+                
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h2 class="text-3xl font-bold text-gray-800">Pusat Unduhan</h2>
+                        <p class="text-gray-500 mt-1">Unggah dokumen resmi (PDF/Word/Excel) untuk publik.</p>
+                    </div>
+                    <a href="manage-docs.html" class="text-slate-500 hover:text-slate-800 bg-white px-4 py-2 border border-slate-200 rounded-lg shadow-sm font-bold text-sm transition-colors">Batal</a>
+                </div>
+
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+                    <div class="space-y-8">
+                        
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-2">Nama Dokumen <span class="text-red-500">*</span></label>
+                            <input type="text" id="docTitle" placeholder="Tulis Judul Dokumen (Misal: Laporan Keuangan 2026)" class="w-full border border-slate-200 p-4 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-slate-50 focus:bg-white transition-all">
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-2">File Dokumen <span class="text-red-500">*</span></label>
+                            
+                            <div class="border-2 border-dashed border-slate-300 bg-slate-50 rounded-2xl p-12 text-center hover:bg-blue-50 hover:border-blue-400 transition-all relative cursor-pointer group">
+                                
+                                <input type="file" id="docFile" accept=".pdf,.doc,.docx,.xls,.xlsx" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                                
+                                <div class="text-slate-400 group-hover:text-blue-500 transition-colors">
+                                    <div class="bg-white w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm group-hover:scale-110 transition-transform">
+                                        <i class="fa-solid fa-cloud-arrow-up text-4xl"></i>
+                                    </div>
+                                    <h4 class="text-xl font-bold text-slate-700 mb-1">Klik atau Drop file di sini</h4>
+                                    <p class="text-sm font-medium">Mendukung format: .PDF, .DOCX, .XLSX</p>
+                                    <p class="text-xs mt-2 text-slate-400 bg-white border border-slate-200 rounded-full px-3 py-1 inline-block">Maksimal 10MB</p>
+                                </div>
+                            </div>
+                            
+                            <p id="docNamePreview" class="text-sm text-blue-600 font-bold mt-4 text-center hidden"></p>
+                        </div>
+
+                        <button id="submitDocBtn" onclick="submitDoc()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-600/30 transition-all flex justify-center items-center gap-2 mt-4 transform active:scale-[0.98]">
+                            <i class="fa-solid fa-upload"></i> Mulai Unggah Dokumen
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </main>
@@ -70,6 +144,36 @@
     <script src="config.js"></script>
     <script>
         checkAuth();
+        function logout() { localStorage.removeItem('token'); window.location.href = 'login.html'; }
+
+        // 1. FUNGSI JAM REALTIME
+        function startRealtimeClock() {
+            setInterval(() => {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                document.getElementById('realtime-clock').innerText = timeString + ' WIB';
+            }, 1000);
+        }
+        startRealtimeClock();
+
+        // 2. AMBIL DATA NAMA USER
+        fetch(`${API_URL}/profile`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
+        .then(res => res.json())
+        .then(user => {
+            if(user && user.name) {
+                document.getElementById('admin-name').innerText = user.name;
+                document.getElementById('admin-avatar').innerText = user.name.charAt(0).toUpperCase();
+            }
+        });
+
+        // 3. CEK NOTIFIKASI INBOX
+        fetch(`${API_URL}/dashboard-stats`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
+        .then(res => res.json())
+        .then(data => {
+            if(data.unread_messages > 0) {
+                document.getElementById('badge-dot').classList.remove('hidden');
+            }
+        });
 
         // Tampilkan nama dokumen saat dipilih
         document.getElementById('docFile').addEventListener('change', function(e) {
@@ -82,6 +186,7 @@
             }
         });
 
+        // Proses Submit
         async function submitDoc() {
             const title = document.getElementById('docTitle').value;
             const fileInput = document.getElementById('docFile');
@@ -91,7 +196,7 @@
             if(fileInput.files.length === 0) return alert("Mohon pilih file terlebih dahulu!");
 
             btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengunggah...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sedang Mengunggah...';
 
             const formData = new FormData();
             formData.append('title', title);
@@ -107,17 +212,19 @@
                 });
 
                 if (res.ok) {
-                    alert('Dokumen berhasil diunggah!');
-                    window.location.href = 'index.html';
+                    alert('✅ Dokumen berhasil diunggah!');
+                    // Redirect ke halaman kelola dokumen setelah berhasil
+                    window.location.href = 'manage-docs.html';
                 } else {
                     const err = await res.json();
-                    alert('Gagal: ' + (err.message || 'Cek format atau ukuran file'));
+                    alert('Gagal: ' + (err.message || 'Cek format atau ukuran file.'));
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa-solid fa-upload"></i> Mulai Unggah Dokumen';
                 }
             } catch (error) {
-                alert('Terjadi kesalahan koneksi.');
-            } finally {
+                alert('Terjadi kesalahan koneksi. Pastikan server aktif.');
                 btn.disabled = false;
-                btn.innerHTML = '<i class="fa-solid fa-upload"></i> Mulai Unggah';
+                btn.innerHTML = '<i class="fa-solid fa-upload"></i> Mulai Unggah Dokumen';
             }
         }
     </script>
