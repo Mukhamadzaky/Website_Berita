@@ -33,7 +33,7 @@
             </h1>
         </div>
         
-        <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+        <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto" id="sidebar-nav">
             
             <a href="index.html" class="flex items-center w-full px-4 py-3 bg-emerald-600/10 text-emerald-400 border border-emerald-600/20 hover:bg-emerald-600 hover:text-white rounded-xl transition-colors group mb-6 no-select cursor-pointer">
                 <div class="w-8 flex items-center"><i class="fa-solid fa-globe text-lg"></i></div>
@@ -42,19 +42,19 @@
 
             <div class="mb-6">
                 <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Main Menu</p>
-                <a href="dashboard.html" class="flex items-center w-full px-4 py-3 bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-900/50 no-select cursor-pointer transition-colors">
-                    <div class="w-8 flex items-center"><i class="fa-solid fa-grid-2 text-lg"></i></div>
+                <a href="dashboard.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-grid-2 text-lg group-hover:text-blue-400 transition-colors"></i></div>
                     <span class="font-medium text-sm">Dashboard</span>
                 </a>
             </div>
 
             <div class="mb-6 space-y-1">
                 <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Content</p>
-                <a href="upload-news.html" class="flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                <a href="upload-news.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
                     <div class="w-8 flex items-center"><i class="fa-regular fa-newspaper text-lg group-hover:text-blue-400 transition-colors"></i></div>
                     <span class="font-medium text-sm">Berita & Artikel</span>
                 </a>
-                <a href="upload-doc.html" class="flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                <a href="upload-doc.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
                     <div class="w-8 flex items-center"><i class="fa-solid fa-file-pdf text-lg group-hover:text-orange-400 transition-colors"></i></div>
                     <span class="font-medium text-sm">Dokumen Publik</span>
                 </a>
@@ -62,11 +62,11 @@
 
             <div class="mb-6 space-y-1">
                 <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Manajemen Data</p>
-                <a href="manage-news.html" class="flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                <a href="manage-news.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
                     <div class="w-8 flex items-center"><i class="fa-solid fa-list-check text-lg group-hover:text-blue-400 transition-colors"></i></div>
                     <span class="font-medium text-sm">Kelola Berita</span>
                 </a>
-                <a href="manage-docs.html" class="flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                <a href="manage-docs.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
                     <div class="w-8 flex items-center"><i class="fa-solid fa-folder-tree text-lg group-hover:text-orange-400 transition-colors"></i></div>
                     <span class="font-medium text-sm">Kelola Dokumen</span>
                 </a>
@@ -74,14 +74,14 @@
 
             <div class="mb-6 space-y-1">
                 <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Admin</p>
-                <a href="inbox.html" class="flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                <a href="inbox.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
                     <div class="relative w-8 flex items-center">
                         <i class="fa-solid fa-inbox text-lg group-hover:text-yellow-400 transition-colors"></i>
                         <span id="badge-dot" class="absolute -top-1 left-3 w-2.5 h-2.5 bg-red-500 border-2 border-slate-900 rounded-full hidden"></span>
                     </div>
                     <span class="font-medium text-sm">Inbox</span>
                 </a>
-                <a href="users.html" class="flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                <a href="users.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
                     <div class="w-8 flex items-center"><i class="fa-solid fa-users-gear text-lg group-hover:text-purple-400 transition-colors"></i></div>
                     <span class="font-medium text-sm">Users</span>
                 </a>
@@ -93,8 +93,24 @@
                 <i class="fa-solid fa-power-off"></i> Logout
             </button>
         </div>
-    </aside>
 
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const currentPath = window.location.pathname.split('/').pop() || 'dashboard.html';
+                document.querySelectorAll('#sidebar-nav .nav-item').forEach(item => {
+                    if (item.getAttribute('href') === currentPath) {
+                        item.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-slate-800', 'group');
+                        item.classList.add('bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-900/50');
+                        // Matikan efek hover biru pada icon yang sudah aktif
+                        const icon = item.querySelector('i');
+                        if(icon) {
+                            icon.className = icon.className.replace(/group-hover:text-[a-z]+-\d+/g, '');
+                        }
+                    }
+                });
+            });
+        </script>
+    </aside>
     <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50">
         <header class="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-8 z-10 sticky top-0">
             <h2 class="text-xl font-bold text-slate-700">Overview</h2>
@@ -116,7 +132,6 @@
             
             <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-3xl p-8 mb-10 text-white shadow-xl shadow-blue-600/20 relative overflow-hidden no-select">
                 <div class="relative z-10">
-                    <h2 class="text-3xl font-bold mb-2">Selamat Datang di Control Panel 👋</h2>
                     <p class="text-blue-100 max-w-xl">Kelola seluruh konten website, pantau statistik, dan respon pesan masuk dalam satu tempat yang terintegrasi.</p>
                 </div>
                 <i class="fa-solid fa-chart-line absolute -bottom-4 -right-4 text-9xl text-white/10 rotate-12"></i>
