@@ -11,59 +11,85 @@
         ::-webkit-scrollbar-track { background: #f1f5f9; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Mencegah Teks Terblok Biru Saat Diklik */
+        .no-select {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            outline: none !important;
+        }
     </style>
 </head>
 <body class="bg-slate-50 flex h-screen overflow-hidden font-sans text-slate-800">
 
     <aside class="w-72 bg-slate-900 text-white flex flex-col shadow-2xl z-20 transition-all duration-300">
-        <div class="h-20 flex items-center px-8 border-b border-slate-800">
+        <div class="h-20 flex items-center px-8 border-b border-slate-800 no-select">
             <h1 class="font-bold text-xl tracking-wide flex items-center gap-3">
                 <div class="bg-blue-600 p-1.5 rounded-lg"><i class="fa-solid fa-cube text-white"></i></div>
                 Portal<span class="text-blue-400">Admin</span>
             </h1>
         </div>
         
-        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
-            <a href="index.html" class="flex items-center px-4 py-3.5 bg-emerald-600/10 text-emerald-400 border border-emerald-600/20 hover:bg-emerald-600 hover:text-white rounded-xl transition-all group mb-8">
-                <i class="fa-solid fa-globe w-6 group-hover:animate-pulse"></i> <span class="font-semibold text-sm">Beranda</span>
+        <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+            
+            <a href="index.html" class="flex items-center w-full px-4 py-3 bg-emerald-600/10 text-emerald-400 border border-emerald-600/20 hover:bg-emerald-600 hover:text-white rounded-xl transition-colors group mb-6 no-select cursor-pointer">
+                <div class="w-8 flex items-center"><i class="fa-solid fa-globe text-lg"></i></div>
+                <span class="font-semibold text-sm">Beranda</span>
             </a>
 
-            <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Main Menu</p>
-            <a href="dashboard.html" class="flex items-center px-4 py-3.5 bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-900/50">
-                <i class="fa-solid fa-grid-2 w-6"></i> <span class="font-medium text-sm">Dashboard</span>
-            </a>
+            <div class="mb-6">
+                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Main Menu</p>
+                <a href="dashboard.html" class="flex items-center w-full px-4 py-3 bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-900/50 no-select cursor-pointer transition-colors">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-grid-2 text-lg"></i></div>
+                    <span class="font-medium text-sm">Dashboard</span>
+                </a>
+            </div>
 
-            <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-8 mb-2">Content</p>
-            <a href="upload-news.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group">
-                <i class="fa-regular fa-newspaper w-6 group-hover:text-blue-400"></i> <span class="font-medium text-sm">Tulis Berita</span>
-            </a>
-            <a href="upload-doc.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group">
-                <i class="fa-solid fa-file-pdf w-6 group-hover:text-orange-400"></i> <span class="font-medium text-sm">Upload Dokumen</span>
-            </a>
+            <div class="mb-6 space-y-1">
+                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Content</p>
+                <a href="upload-news.html" class="flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-regular fa-newspaper text-lg group-hover:text-blue-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Berita & Artikel</span>
+                </a>
+                <a href="upload-doc.html" class="flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-file-pdf text-lg group-hover:text-orange-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Dokumen Publik</span>
+                </a>
+            </div>
 
-            <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-8 mb-2">Manajemen Data</p>
-            <a href="manage-news.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group">
-                <i class="fa-solid fa-list-check w-6 group-hover:text-blue-400"></i> <span class="font-medium text-sm">Kelola Berita</span>
-            </a>
-            <a href="manage-docs.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group">
-                <i class="fa-solid fa-folder-tree w-6 group-hover:text-orange-400"></i> <span class="font-medium text-sm">Kelola Dokumen</span>
-            </a>
+            <div class="mb-6 space-y-1">
+                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Manajemen Data</p>
+                <a href="manage-news.html" class="flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-list-check text-lg group-hover:text-blue-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Kelola Berita</span>
+                </a>
+                <a href="manage-docs.html" class="flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-folder-tree text-lg group-hover:text-orange-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Kelola Dokumen</span>
+                </a>
+            </div>
 
-            <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-8 mb-2">Admin</p>
-            <a href="inbox.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group">
-                <div class="relative w-6">
-                    <i class="fa-solid fa-inbox group-hover:text-yellow-400"></i>
-                    <span id="badge-dot" class="absolute -top-1 right-0 w-2 h-2 bg-red-500 rounded-full hidden"></span>
-                </div>
-                <span class="font-medium text-sm">Inbox</span>
-            </a>
-            <a href="users.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group">
-                <i class="fa-solid fa-users-gear w-6 group-hover:text-purple-400"></i> <span class="font-medium text-sm">Users</span>
-            </a>
+            <div class="mb-6 space-y-1">
+                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Admin</p>
+                <a href="inbox.html" class="flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="relative w-8 flex items-center">
+                        <i class="fa-solid fa-inbox text-lg group-hover:text-yellow-400 transition-colors"></i>
+                        <span id="badge-dot" class="absolute -top-1 left-3 w-2.5 h-2.5 bg-red-500 border-2 border-slate-900 rounded-full hidden"></span>
+                    </div>
+                    <span class="font-medium text-sm">Inbox</span>
+                </a>
+                <a href="users.html" class="flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-users-gear text-lg group-hover:text-purple-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Users</span>
+                </a>
+            </div>
         </nav>
 
         <div class="p-6 border-t border-slate-800">
-            <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-4 py-3 text-red-400 bg-red-500/10 hover:bg-red-500 hover:text-white rounded-xl transition-all font-bold text-sm">
+            <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-4 py-3 text-red-400 bg-red-500/10 hover:bg-red-500 hover:text-white rounded-xl transition-colors font-bold text-sm no-select cursor-pointer">
                 <i class="fa-solid fa-power-off"></i> Logout
             </button>
         </div>
@@ -74,23 +100,21 @@
             <h2 class="text-xl font-bold text-slate-700">Overview</h2>
             
             <div class="flex items-center gap-4">
-                <div class="text-right hidden md:block">
+                <div class="text-right hidden md:block no-select">
                     <p id="admin-name" class="text-sm font-bold text-slate-700">Memuat...</p>
                     <p id="realtime-clock" class="text-xs font-mono font-bold text-blue-600 tracking-wider mt-0.5">00:00:00 WIB</p>
                 </div>
-                
-                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 p-[2px] shadow-md">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 p-[2px] shadow-md no-select">
                     <div id="admin-avatar" class="w-full h-full bg-white rounded-full flex items-center justify-center font-bold text-slate-700 text-sm">
                         <i class="fa-solid fa-spinner fa-spin text-xs"></i>
                     </div>
                 </div>
             </div>
-
         </header>
 
         <div class="flex-1 overflow-y-auto p-8">
             
-            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-3xl p-8 mb-10 text-white shadow-xl shadow-blue-600/20 relative overflow-hidden">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-3xl p-8 mb-10 text-white shadow-xl shadow-blue-600/20 relative overflow-hidden no-select">
                 <div class="relative z-10">
                     <h2 class="text-3xl font-bold mb-2">Selamat Datang di Control Panel 👋</h2>
                     <p class="text-blue-100 max-w-xl">Kelola seluruh konten website, pantau statistik, dan respon pesan masuk dalam satu tempat yang terintegrasi.</p>
@@ -98,7 +122,7 @@
                 <i class="fa-solid fa-chart-line absolute -bottom-4 -right-4 text-9xl text-white/10 rotate-12"></i>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10 no-select">
                 <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
                     <div class="flex justify-between items-start mb-4">
                         <div class="p-3 bg-blue-50 rounded-xl text-blue-600"><i class="fa-regular fa-newspaper text-xl"></i></div>
@@ -131,9 +155,9 @@
                 </div>
             </div>
 
-            <h3 class="text-lg font-bold text-slate-700 mb-4">Aksi Cepat</h3>
+            <h3 class="text-lg font-bold text-slate-700 mb-4 no-select">Aksi Cepat</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <a href="upload-news.html" class="group flex items-center p-6 bg-white border border-slate-200 rounded-2xl hover:border-blue-500 hover:shadow-lg transition-all cursor-pointer">
+                <a href="upload-news.html" class="group flex items-center p-6 bg-white border border-slate-200 rounded-2xl hover:border-blue-500 hover:shadow-lg transition-all cursor-pointer no-select">
                     <div class="w-14 h-14 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors mr-6">
                         <i class="fa-solid fa-pen-nib text-2xl"></i>
                     </div>
@@ -144,7 +168,7 @@
                     <i class="fa-solid fa-chevron-right ml-auto text-slate-300 group-hover:text-blue-600"></i>
                 </a>
                 
-                <a href="inbox.html" class="group flex items-center p-6 bg-white border border-slate-200 rounded-2xl hover:border-yellow-500 hover:shadow-lg transition-all cursor-pointer">
+                <a href="inbox.html" class="group flex items-center p-6 bg-white border border-slate-200 rounded-2xl hover:border-yellow-500 hover:shadow-lg transition-all cursor-pointer no-select">
                     <div class="w-14 h-14 rounded-full bg-yellow-50 flex items-center justify-center text-yellow-600 group-hover:bg-yellow-500 group-hover:text-white transition-colors mr-6">
                         <i class="fa-solid fa-envelope-open-text text-2xl"></i>
                     </div>
@@ -164,30 +188,24 @@
         checkAuth();
         function logout() { localStorage.removeItem('token'); window.location.href = 'login.html'; }
 
-        // 1. FUNGSI JAM REALTIME
         function startRealtimeClock() {
             setInterval(() => {
                 const now = new Date();
-                // Format jam: 09:05:30 WIB
                 const timeString = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 document.getElementById('realtime-clock').innerText = timeString + ' WIB';
             }, 1000);
         }
-        startRealtimeClock(); // Jalankan jamnya
+        startRealtimeClock();
 
-        // 2. AMBIL DATA NAMA USER YANG SEDANG LOGIN
         fetch(`${API_URL}/profile`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
         .then(res => res.json())
         .then(user => {
             if(user && user.name) {
-                // Tampilkan nama aslinya
                 document.getElementById('admin-name').innerText = user.name;
-                // Ubah gambar profil menjadi HURUF PERTAMA namanya
                 document.getElementById('admin-avatar').innerText = user.name.charAt(0).toUpperCase();
             }
         });
 
-        // 3. AMBIL STATISTIK DASHBOARD SEPERTI BIASA
         fetch(`${API_URL}/dashboard-stats`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
         .then(res => res.json())
         .then(data => {

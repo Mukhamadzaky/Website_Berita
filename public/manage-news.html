@@ -1,45 +1,127 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <meta charset="UTF-8">
     <title>Kelola Berita - Portal Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Mencegah Teks Terblok Biru */
+        .no-select {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            outline: none !important;
+        }
+    </style>
 </head>
 <body class="bg-slate-50 flex h-screen overflow-hidden font-sans text-slate-800">
 
-    <aside class="w-72 bg-slate-900 text-white flex flex-col shadow-2xl z-20">
-        <div class="h-20 flex items-center px-8 border-b border-slate-800">
+    <aside class="w-72 bg-slate-900 text-white flex flex-col shadow-2xl z-20 transition-all duration-300">
+        <div class="h-20 flex items-center px-8 border-b border-slate-800 no-select">
             <h1 class="font-bold text-xl tracking-wide flex items-center gap-3">
                 <div class="bg-blue-600 p-1.5 rounded-lg"><i class="fa-solid fa-cube text-white"></i></div>
                 Portal<span class="text-blue-400">Admin</span>
             </h1>
         </div>
-        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto" id="sidebar-nav">
-            <a href="dashboard.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl"><i class="fa-solid fa-grid-2 w-6"></i> Dashboard</a>
-             <a href="manage-news.html" class="flex items-center px-4 py-3 bg-blue-600 text-white rounded-xl shadow-lg"><i class="fa-solid fa-list w-6"></i> Kelola Berita</a>
-             <a href="manage-docs.html" class="flex items-center px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl"><i class="fa-solid fa-folder-open w-6"></i> Kelola Dokumen</a>
-             </nav>
+        
+        <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+            <a href="index.html" class="flex items-center w-full px-4 py-3.5 bg-emerald-600/10 text-emerald-400 border border-emerald-600/20 hover:bg-emerald-600 hover:text-white rounded-xl transition-all group mb-6 no-select cursor-pointer">
+                <i class="fa-solid fa-globe w-6 group-hover:animate-pulse"></i> <span class="font-semibold text-sm">Beranda</span>
+            </a>
+
+            <div class="mb-6">
+                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Main Menu</p>
+                <a href="dashboard.html" class="flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group no-select cursor-pointer">
+                    <i class="fa-solid fa-grid-2 w-6 group-hover:text-blue-400 transition-colors"></i> <span class="font-medium text-sm">Dashboard</span>
+                </a>
+            </div>
+
+            <div class="mb-6 space-y-1">
+                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Content</p>
+                <a href="upload-news.html" class="flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group no-select cursor-pointer">
+                    <i class="fa-regular fa-newspaper w-6 group-hover:text-blue-400 transition-colors"></i> <span class="font-medium text-sm">Berita & Artikel</span>
+                </a>
+                <a href="upload-doc.html" class="flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group no-select cursor-pointer">
+                    <i class="fa-solid fa-file-pdf w-6 group-hover:text-orange-400 transition-colors"></i> <span class="font-medium text-sm">Dokumen Publik</span>
+                </a>
+            </div>
+
+            <div class="mb-6 space-y-1">
+                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Manajemen Data</p>
+                
+                <a href="manage-news.html" class="flex items-center w-full px-4 py-3.5 bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-900/50 no-select cursor-pointer">
+                    <i class="fa-solid fa-list-check w-6"></i> <span class="font-medium text-sm">Kelola Berita</span>
+                </a>
+                
+                <a href="manage-docs.html" class="flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group no-select cursor-pointer">
+                    <i class="fa-solid fa-folder-tree w-6 group-hover:text-orange-400 transition-colors"></i> <span class="font-medium text-sm">Kelola Dokumen</span>
+                </a>
+            </div>
+
+            <div class="mb-6 space-y-1">
+                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Admin</p>
+                <a href="inbox.html" class="flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group no-select cursor-pointer">
+                    <div class="relative w-6">
+                        <i class="fa-solid fa-inbox group-hover:text-yellow-400 transition-colors"></i>
+                        <span id="badge-dot" class="absolute -top-1 right-0 w-2 h-2 bg-red-500 rounded-full hidden"></span>
+                    </div>
+                    <span class="font-medium text-sm">Inbox</span>
+                </a>
+                <a href="users.html" class="flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group no-select cursor-pointer">
+                    <i class="fa-solid fa-users-gear w-6 group-hover:text-purple-400 transition-colors"></i> <span class="font-medium text-sm">Users</span>
+                </a>
+            </div>
+        </nav>
+
+        <div class="p-6 border-t border-slate-800">
+            <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-4 py-3 text-red-400 bg-red-500/10 hover:bg-red-500 hover:text-white rounded-xl transition-all font-bold text-sm no-select cursor-pointer">
+                <i class="fa-solid fa-power-off"></i> Logout
+            </button>
+        </div>
     </aside>
 
     <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50">
-        <header class="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-10">
-            <h2 class="text-xl font-bold text-slate-700">Manajemen Berita</h2>
-            <a href="upload-news.html" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold text-sm shadow flex items-center gap-2">
-                <i class="fa-solid fa-plus"></i> Tambah Baru
-            </a>
+        <header class="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-8 z-10 sticky top-0">
+            <h2 class="text-xl font-bold text-slate-700">Kelola Berita</h2>
+            
+            <div class="flex items-center gap-6">
+                <a href="upload-news.html" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-lg shadow-blue-600/20 flex items-center gap-2 transition-all mr-4">
+                    <i class="fa-solid fa-plus"></i> Tambah Berita
+                </a>
+                
+                <div class="flex items-center gap-4 border-l border-slate-200 pl-6">
+                    <div class="text-right hidden md:block no-select">
+                        <p id="admin-name" class="text-sm font-bold text-slate-700">Memuat...</p>
+                        <p id="realtime-clock" class="text-xs font-mono font-bold text-blue-600 tracking-wider mt-0.5">00:00:00 WIB</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 p-[2px] shadow-md no-select">
+                        <div id="admin-avatar" class="w-full h-full bg-white rounded-full flex items-center justify-center font-bold text-slate-700 text-sm">
+                            <i class="fa-solid fa-spinner fa-spin text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </header>
 
         <div class="flex-1 overflow-y-auto p-8">
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
                 <table class="w-full text-left">
-                    <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase text-xs">
+                    <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase text-xs tracking-wider">
                         <tr>
                             <th class="px-6 py-4">Judul Berita</th>
-                            <th class="px-6 py-4">Tanggal</th>
-                            <th class="px-6 py-4 text-center w-24">Aksi</th>
+                            <th class="px-6 py-4">Tanggal Upload</th>
+                            <th class="px-6 py-4 text-center w-32">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody id="news-table" class="divide-y divide-slate-100 text-sm">
+                    <tbody id="news-list" class="divide-y divide-slate-100 text-sm">
                         <tr><td colspan="3" class="px-6 py-8 text-center text-slate-400">Memuat data...</td></tr>
                     </tbody>
                 </table>
@@ -50,46 +132,67 @@
     <script src="config.js"></script>
     <script>
         checkAuth();
+        function logout() { localStorage.removeItem('token'); window.location.href = 'login.html'; }
 
-        // Load Data
+        // FUNGSI JAM & PROFIL
+        function startRealtimeClock() {
+            setInterval(() => {
+                const now = new Date();
+                document.getElementById('realtime-clock').innerText = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' WIB';
+            }, 1000);
+        }
+        startRealtimeClock();
+
+        fetch(`${API_URL}/profile`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
+        .then(res => res.json())
+        .then(user => {
+            if(user && user.name) {
+                document.getElementById('admin-name').innerText = user.name;
+                document.getElementById('admin-avatar').innerText = user.name.charAt(0).toUpperCase();
+            }
+        });
+
+        fetch(`${API_URL}/dashboard-stats`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
+        .then(res => res.json())
+        .then(data => {
+            if(data.unread_messages > 0) document.getElementById('badge-dot').classList.remove('hidden');
+        });
+
+        // LOAD DATA BERITA
         fetch(`${API_URL}/news`)
             .then(res => res.json())
             .then(data => {
-                const list = document.getElementById('news-table');
+                const list = document.getElementById('news-list');
                 if(data.length === 0) { list.innerHTML = '<tr><td colspan="3" class="px-6 py-8 text-center text-slate-400">Belum ada berita.</td></tr>'; return; }
 
                 list.innerHTML = data.map(item => `
                     <tr class="hover:bg-slate-50 transition-colors">
                         <td class="px-6 py-4 font-bold text-slate-700">${item.title}</td>
-                        <td class="px-6 py-4 text-slate-500">${new Date(item.created_at).toLocaleDateString()}</td>
+                        <td class="px-6 py-4 text-slate-500">${new Date(item.created_at).toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}</td>
                         <td class="px-6 py-4 text-center">
-                            <button onclick="deleteItem(${item.id})" class="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-all" title="Hapus Berita">
-                                <i class="fa-regular fa-trash-can text-lg"></i>
+                            <button onclick="deleteNews(${item.id})" class="text-red-500 bg-red-50 hover:bg-red-500 hover:text-white w-8 h-8 rounded-lg transition-all shadow-sm" title="Hapus">
+                                <i class="fa-regular fa-trash-can"></i>
                             </button>
                         </td>
                     </tr>
                 `).join('');
             });
 
-        // Fungsi Hapus
-        async function deleteItem(id) {
-            if(!confirm("Apakah Anda yakin ingin menghapus berita ini secara permanen?")) return;
-
+        // FUNGSI HAPUS
+        async function deleteNews(id) {
+            if(!confirm("Yakin ingin menghapus berita ini selamanya?")) return;
             try {
                 const res = await fetch(`${API_URL}/news/${id}`, {
                     method: 'DELETE',
                     headers: { 'Authorization': `Bearer ${getToken()}` }
                 });
-
                 if(res.ok) {
-                    alert("Berita berhasil dihapus.");
-                    location.reload(); // Refresh halaman
+                    alert("✅ Berita berhasil dihapus");
+                    location.reload();
                 } else {
                     alert("Gagal menghapus.");
                 }
-            } catch (err) {
-                alert("Terjadi kesalahan koneksi.");
-            }
+            } catch (err) { alert("Error koneksi"); }
         }
     </script>
 </body>
