@@ -2,16 +2,17 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kelola Berita - Portal Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #f1f5f9; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         
-        /* Mencegah Teks Terblok Biru */
         .no-select {
             -webkit-tap-highlight-color: transparent;
             -webkit-user-select: none;
@@ -22,82 +23,126 @@
         }
     </style>
 </head>
-<body class="bg-slate-50 flex h-screen overflow-hidden font-sans text-slate-800">
+<body class="bg-slate-50 flex h-screen overflow-hidden font-sans text-slate-800 relative">
 
-    <aside class="w-72 bg-slate-900 text-white flex flex-col shadow-2xl z-20 transition-all duration-300">
-        <div class="h-20 flex items-center px-8 border-b border-slate-800 no-select">
+    <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/60 z-30 hidden md:hidden backdrop-blur-sm transition-opacity" onclick="toggleSidebar()"></div>
+
+    <aside id="sidebar" class="fixed md:relative inset-y-0 left-0 transform -translate-x-full md:translate-x-0 w-72 bg-slate-900 text-white flex flex-col shadow-2xl z-40 transition-transform duration-300 ease-in-out h-full">
+        <div class="h-20 flex items-center justify-between px-8 border-b border-slate-800 no-select">
             <h1 class="font-bold text-xl tracking-wide flex items-center gap-3">
                 <div class="bg-blue-600 p-1.5 rounded-lg"><i class="fa-solid fa-cube text-white"></i></div>
                 Portal<span class="text-blue-400">Admin</span>
             </h1>
+            <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
         </div>
         
-        <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-            <a href="index.html" class="flex items-center w-full px-4 py-3.5 bg-emerald-600/10 text-emerald-400 border border-emerald-600/20 hover:bg-emerald-600 hover:text-white rounded-xl transition-all group mb-6 no-select cursor-pointer">
-                <i class="fa-solid fa-globe w-6 group-hover:animate-pulse"></i> <span class="font-semibold text-sm">Beranda</span>
+        <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto" id="sidebar-nav">
+            <a href="index.html" class="flex items-center w-full px-4 py-3 bg-emerald-600/10 text-emerald-400 border border-emerald-600/20 hover:bg-emerald-600 hover:text-white rounded-xl transition-colors group mb-6 no-select cursor-pointer">
+                <div class="w-8 flex items-center"><i class="fa-solid fa-globe text-lg"></i></div>
+                <span class="font-semibold text-sm">Lihat Website</span>
             </a>
 
             <div class="mb-6">
                 <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Main Menu</p>
-                <a href="dashboard.html" class="flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group no-select cursor-pointer">
-                    <i class="fa-solid fa-grid-2 w-6 group-hover:text-blue-400 transition-colors"></i> <span class="font-medium text-sm">Dashboard</span>
+                <a href="dashboard.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-grid-2 text-lg group-hover:text-blue-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Dashboard</span>
                 </a>
             </div>
 
             <div class="mb-6 space-y-1">
-                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Content</p>
-                <a href="upload-news.html" class="flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group no-select cursor-pointer">
-                    <i class="fa-regular fa-newspaper w-6 group-hover:text-blue-400 transition-colors"></i> <span class="font-medium text-sm">Berita & Artikel</span>
+                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Publikasi & Media</p>
+                <a href="upload-news.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-regular fa-newspaper text-lg group-hover:text-blue-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Berita & Artikel</span>
                 </a>
-                <a href="upload-doc.html" class="flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group no-select cursor-pointer">
-                    <i class="fa-solid fa-file-pdf w-6 group-hover:text-orange-400 transition-colors"></i> <span class="font-medium text-sm">Dokumen Publik</span>
+                <a href="upload-doc.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-file-pdf text-lg group-hover:text-orange-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Dokumen Publik</span>
                 </a>
-            </div>
-
-            <div class="mb-6 space-y-1">
-                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Manajemen Data</p>
-                
-                <a href="manage-news.html" class="flex items-center w-full px-4 py-3.5 bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-900/50 no-select cursor-pointer">
-                    <i class="fa-solid fa-list-check w-6"></i> <span class="font-medium text-sm">Kelola Berita</span>
-                </a>
-                
-                <a href="manage-docs.html" class="flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group no-select cursor-pointer">
-                    <i class="fa-solid fa-folder-tree w-6 group-hover:text-orange-400 transition-colors"></i> <span class="font-medium text-sm">Kelola Dokumen</span>
+                <a href="gallery.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-regular fa-images text-lg group-hover:text-pink-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Galeri Dokumentasi</span>
                 </a>
             </div>
 
             <div class="mb-6 space-y-1">
-                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Admin</p>
-                <a href="inbox.html" class="flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group no-select cursor-pointer">
-                    <div class="relative w-6">
-                        <i class="fa-solid fa-inbox group-hover:text-yellow-400 transition-colors"></i>
-                        <span id="badge-dot" class="absolute -top-1 right-0 w-2 h-2 bg-red-500 rounded-full hidden"></span>
+                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Event Organisasi</p>
+                <a href="agenda.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-calendar-days text-lg group-hover:text-emerald-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Agenda Kegiatan</span>
+                </a>
+                <a href="event-registrations.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-clipboard-list text-lg group-hover:text-emerald-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Pendaftaran Peserta</span>
+                </a>
+            </div>
+
+            <div class="mb-6 space-y-1">
+                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Database Utama</p>
+                <a href="manage-news.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-list-check text-lg group-hover:text-blue-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Kelola Berita</span>
+                </a>
+                <a href="manage-docs.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-folder-tree text-lg group-hover:text-orange-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Kelola Dokumen</span>
+                </a>
+                <a href="manage-members.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-id-card-clip text-lg group-hover:text-indigo-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Data Pengurus</span>
+                </a>
+            </div>
+
+            <div class="mb-6 space-y-1">
+                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Interaksi & Sistem</p>
+                <a href="inbox.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="relative w-8 flex items-center">
+                        <i class="fa-solid fa-inbox text-lg group-hover:text-yellow-400 transition-colors"></i>
+                        <span id="badge-dot" class="absolute -top-1 left-3 w-2.5 h-2.5 bg-red-500 border-2 border-slate-900 rounded-full hidden"></span>
                     </div>
-                    <span class="font-medium text-sm">Inbox</span>
+                    <span class="font-medium text-sm">Pesan Masuk</span>
                 </a>
-                <a href="users.html" class="flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all group no-select cursor-pointer">
-                    <i class="fa-solid fa-users-gear w-6 group-hover:text-purple-400 transition-colors"></i> <span class="font-medium text-sm">Users</span>
+                <a href="aspirations.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-bullhorn text-lg group-hover:text-yellow-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Kotak Aspirasi</span>
+                </a>
+                <a href="users.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-users-gear text-lg group-hover:text-purple-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Akses Admin</span>
+                </a>
+                <a href="settings.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-screwdriver-wrench text-lg group-hover:text-slate-300 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Pengaturan Web</span>
                 </a>
             </div>
         </nav>
 
         <div class="p-6 border-t border-slate-800">
-            <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-4 py-3 text-red-400 bg-red-500/10 hover:bg-red-500 hover:text-white rounded-xl transition-all font-bold text-sm no-select cursor-pointer">
+            <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-4 py-3 text-red-400 bg-red-500/10 hover:bg-red-500 hover:text-white rounded-xl transition-colors font-bold text-sm no-select cursor-pointer">
                 <i class="fa-solid fa-power-off"></i> Logout
             </button>
         </div>
     </aside>
 
-    <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50">
-        <header class="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-8 z-10 sticky top-0">
-            <h2 class="text-xl font-bold text-slate-700">Kelola Berita</h2>
+    <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50 w-full transition-opacity duration-300" id="main-content">
+        
+        <header class="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-4 md:px-8 z-10 sticky top-0 w-full">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="md:hidden text-slate-500 hover:text-blue-600 focus:outline-none p-2 rounded-lg bg-slate-100 transition-colors">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+                <h2 class="text-xl font-bold text-slate-700">Kelola Berita</h2>
+            </div>
             
-            <div class="flex items-center gap-6">
-                <a href="upload-news.html" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-lg shadow-blue-600/20 flex items-center gap-2 transition-all mr-4">
-                    <i class="fa-solid fa-plus"></i> Tambah Berita
+            <div class="flex items-center gap-4 md:gap-6">
+                <a href="upload-news.html" class="nav-item bg-blue-600 hover:bg-blue-700 text-white px-3 md:px-4 py-2 rounded-lg font-bold text-sm shadow-lg shadow-blue-600/20 flex items-center gap-2 transition-all">
+                    <i class="fa-solid fa-plus"></i> <span class="hidden sm:inline">Tambah Berita</span>
                 </a>
                 
-                <div class="flex items-center gap-4 border-l border-slate-200 pl-6">
+                <div class="flex items-center gap-4 md:border-l md:border-slate-200 md:pl-6">
                     <div class="text-right hidden md:block no-select">
                         <p id="admin-name" class="text-sm font-bold text-slate-700">Memuat...</p>
                         <p id="realtime-clock" class="text-xs font-mono font-bold text-blue-600 tracking-wider mt-0.5">00:00:00 WIB</p>
@@ -111,75 +156,127 @@
             </div>
         </header>
 
-        <div class="flex-1 overflow-y-auto p-8">
+        <div class="flex-1 overflow-y-auto p-4 md:p-8 w-full" id="inner-content">
             <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
-                <table class="w-full text-left">
-                    <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase text-xs tracking-wider">
-                        <tr>
-                            <th class="px-6 py-4">Judul Berita</th>
-                            <th class="px-6 py-4">Tanggal Upload</th>
-                            <th class="px-6 py-4 text-center w-32">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="news-list" class="divide-y divide-slate-100 text-sm">
-                        <tr><td colspan="3" class="px-6 py-8 text-center text-slate-400">Memuat data...</td></tr>
-                    </tbody>
-                </table>
+                <div class="overflow-x-auto w-full">
+                    <table class="w-full text-left min-w-full">
+                        <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase text-xs tracking-wider">
+                            <tr>
+                                <th class="px-6 py-4 whitespace-nowrap">Judul Berita</th>
+                                <th class="px-6 py-4 whitespace-nowrap">Tanggal Upload</th>
+                                <th class="px-6 py-4 text-center w-32 whitespace-nowrap">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="news-list" class="divide-y divide-slate-100 text-sm">
+                            <tr><td colspan="3" class="px-6 py-8 text-center text-slate-400">Memuat data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+
     </main>
 
     <script src="config.js"></script>
     <script>
-        checkAuth();
+        // Mempertahankan fungsi auth
+        try { checkAuth(); } catch(e) { console.log("Bypass config.js check"); }
         function logout() { localStorage.removeItem('token'); window.location.href = 'login.html'; }
 
-        // FUNGSI JAM & PROFIL
-        function startRealtimeClock() {
-            setInterval(() => {
-                const now = new Date();
-                document.getElementById('realtime-clock').innerText = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' WIB';
-            }, 1000);
+        // Fungsi Toggle Sidebar Mobile
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            document.getElementById('sidebar-overlay').classList.toggle('hidden');
         }
-        startRealtimeClock();
 
-        fetch(`${API_URL}/profile`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
-        .then(res => res.json())
-        .then(user => {
-            if(user && user.name) {
-                document.getElementById('admin-name').innerText = user.name;
-                document.getElementById('admin-avatar').innerText = user.name.charAt(0).toUpperCase();
+        // ========================================================
+        // FUNGSI UPDATE WARNA SIDEBAR (TAHAN REFRESH)
+        // ========================================================
+        function updateSidebarActiveState(targetUrl = null) {
+            let path = targetUrl;
+            if (!path) {
+                path = window.location.pathname.split('/').pop(); 
+                path = path.split('?')[0].split('#')[0]; 
+                if (path === '' || path === '/') path = 'dashboard.html'; 
             }
-        });
 
-        fetch(`${API_URL}/dashboard-stats`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
-        .then(res => res.json())
-        .then(data => {
-            if(data.unread_messages > 0) document.getElementById('badge-dot').classList.remove('hidden');
-        });
-
-        // LOAD DATA BERITA
-        fetch(`${API_URL}/news`)
-            .then(res => res.json())
-            .then(data => {
-                const list = document.getElementById('news-list');
-                if(data.length === 0) { list.innerHTML = '<tr><td colspan="3" class="px-6 py-8 text-center text-slate-400">Belum ada berita.</td></tr>'; return; }
-
-                list.innerHTML = data.map(item => `
-                    <tr class="hover:bg-slate-50 transition-colors">
-                        <td class="px-6 py-4 font-bold text-slate-700">${item.title}</td>
-                        <td class="px-6 py-4 text-slate-500">${new Date(item.created_at).toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}</td>
-                        <td class="px-6 py-4 text-center">
-                            <button onclick="deleteNews(${item.id})" class="text-red-500 bg-red-50 hover:bg-red-500 hover:text-white w-8 h-8 rounded-lg transition-all shadow-sm" title="Hapus">
-                                <i class="fa-regular fa-trash-can"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `).join('');
+            document.querySelectorAll('#sidebar-nav a.nav-item').forEach(item => {
+                item.classList.remove('bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-900/50');
+                item.classList.add('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
+                
+                const icon = item.querySelector('i');
+                if(icon) icon.className = icon.className.replace(/group-hover:text-[a-z]+-\d+/g, '');
+                
+                if (item.getAttribute('href') === path) {
+                    item.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
+                    item.classList.add('bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-900/50');
+                }
             });
+        }
 
-        // FUNGSI HAPUS
-        async function deleteNews(id) {
+        // ========================================================
+        // FUNGSI INIT HALAMAN KONTEN & LOGIC TABEL BERITA
+        // ========================================================
+        function initPageContent() {
+            // Load Profile Header
+            try {
+                fetch(`${API_URL}/profile`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
+                .then(res => res.json())
+                .then(user => {
+                    if(user && user.name) {
+                        const nameEl = document.getElementById('admin-name');
+                        const avatarEl = document.getElementById('admin-avatar');
+                        if(nameEl) nameEl.innerText = user.name;
+                        if(avatarEl) avatarEl.innerText = user.name.charAt(0).toUpperCase();
+                    }
+                });
+            } catch(e) {}
+
+            // Load Notifikasi Dot
+            try {
+                fetch(`${API_URL}/dashboard-stats`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
+                .then(res => res.json())
+                .then(data => {
+                    if(data.unread_messages > 0) {
+                        const dot = document.getElementById('badge-dot');
+                        if(dot) dot.classList.remove('hidden');
+                    }
+                });
+            } catch(e) {}
+
+            // LOAD DATA BERITA
+            const newsList = document.getElementById('news-list');
+            if(newsList) {
+                try {
+                    fetch(`${API_URL}/news`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if(data.length === 0) { 
+                            newsList.innerHTML = '<tr><td colspan="3" class="px-6 py-8 text-center text-slate-400">Belum ada berita.</td></tr>'; 
+                            return; 
+                        }
+
+                        newsList.innerHTML = data.map(item => `
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4 font-bold text-slate-700 whitespace-nowrap">${item.title}</td>
+                                <td class="px-6 py-4 text-slate-500 whitespace-nowrap">${new Date(item.created_at).toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}</td>
+                                <td class="px-6 py-4 text-center whitespace-nowrap">
+                                    <button onclick="deleteNews(${item.id})" class="text-red-500 bg-red-50 hover:bg-red-500 hover:text-white w-8 h-8 rounded-lg transition-all shadow-sm" title="Hapus">
+                                        <i class="fa-regular fa-trash-can"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        `).join('');
+                    })
+                    .catch(err => {
+                        newsList.innerHTML = '<tr><td colspan="3" class="px-6 py-8 text-center text-red-500">Gagal mengambil data berita.</td></tr>';
+                    });
+                } catch(e) { console.log('Bypass fetch news error'); }
+            }
+        }
+
+        // FUNGSI HAPUS BERITA
+        window.deleteNews = async function(id) {
             if(!confirm("Yakin ingin menghapus berita ini selamanya?")) return;
             try {
                 const res = await fetch(`${API_URL}/news/${id}`, {
@@ -188,12 +285,72 @@
                 });
                 if(res.ok) {
                     alert("✅ Berita berhasil dihapus");
-                    location.reload();
+                    initPageContent(); // Refresh tabel tanpa reload halaman
                 } else {
                     alert("Gagal menghapus.");
                 }
             } catch (err) { alert("Error koneksi"); }
         }
+
+        // ========================================================
+        // ENGINE SPA ROUTER
+        // ========================================================
+        document.addEventListener("DOMContentLoaded", () => {
+            updateSidebarActiveState(); 
+            initPageContent();
+
+            const mainContent = document.getElementById('main-content');
+
+            document.querySelectorAll('a.nav-item').forEach(link => {
+                link.addEventListener('click', async function(e) {
+                    const url = this.getAttribute('href');
+                    
+                    if(url === '#' || url.startsWith('http')) return;
+                    e.preventDefault(); 
+                    
+                    updateSidebarActiveState(url);
+
+                    try {
+                        mainContent.style.opacity = '0.4';
+
+                        const response = await fetch(url);
+                        if (!response.ok) throw new Error('Halaman tidak ditemukan');
+                        const htmlText = await response.text();
+
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(htmlText, 'text/html');
+                        const newMain = doc.querySelector('main');
+
+                        if(newMain) {
+                            mainContent.innerHTML = newMain.innerHTML;
+                            window.history.pushState({ path: url }, '', url);
+                            mainContent.scrollTo(0, 0);
+                            
+                            initPageContent();
+                        } else {
+                            window.location.href = url;
+                        }
+
+                        setTimeout(() => mainContent.style.opacity = '1', 50);
+                        if(window.innerWidth < 768) toggleSidebar();
+
+                    } catch(error) {
+                        console.error("Gagal SPA routing:", error);
+                        window.location.href = url; 
+                    }
+                });
+            });
+
+            window.addEventListener('popstate', () => window.location.reload());
+        });
+
+        // Jam Realtime Global
+        setInterval(() => {
+            const clockEl = document.getElementById('realtime-clock');
+            if(clockEl) {
+                clockEl.innerText = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' WIB';
+            }
+        }, 1000);
     </script>
 </body>
 </html>

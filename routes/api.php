@@ -46,5 +46,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users', [ApiController::class, 'getUsers']);                   
     Route::get('/inbox', [ApiController::class, 'getMessages']);  
     // Tambahkan baris ini di dalam sini:
-    Route::get('/profile', [ApiController::class, 'profile']);              
+    Route::get('/profile', [ApiController::class, 'profile']);     
+    
+    Route::get('/agendas', [ApiController::class, 'getAgendas']);
+Route::post('/agendas', [ApiController::class, 'storeAgenda']);
+Route::delete('/agendas/{id}', [ApiController::class, 'destroyAgenda']);
+
+Route::get('/galleries', [ApiController::class, 'getGalleries']);
+Route::post('/galleries', [ApiController::class, 'storeGallery']);
+Route::delete('/galleries/{id}', [ApiController::class, 'destroyGallery']);
 });

@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\News;
 use App\Models\Document;
+use App\Models\Agenda; // Pastikan Model Agenda sudah dibuat
+use App\Models\Gallery; // Pastikan Model Gallery sudah dibuat
+use App\Models\Message;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -89,7 +93,6 @@ class ApiController extends Controller
         $news = News::find($id);
         if (!$news) return response()->json(['message' => 'Data tidak ditemukan'], 404);
 
-        // Hapus gambar fisik jika ada
         if ($news->image_path) {
             Storage::disk('public')->delete($news->image_path);
         }
@@ -114,7 +117,6 @@ class ApiController extends Controller
     public function storeDocument(Request $request) {
         $request->validate([
             'title' => 'required',
-            // TAMBAHKAN xls dan xlsx DI SINI 👇
             'file' => 'required|mimes:pdf,doc,docx,xls,xlsx|max:10240' 
         ]);
 
@@ -137,7 +139,6 @@ class ApiController extends Controller
         $doc = Document::find($id);
         if (!$doc) return response()->json(['message' => 'Data tidak ditemukan'], 404);
 
-        // Hapus file fisik
         if ($doc->file_path) {
             Storage::disk('public')->delete($doc->file_path);
         }
@@ -147,48 +148,122 @@ class ApiController extends Controller
     }
 
     // ==========================================
+    // AGENDA (KEGIATAN / EVENT) - [BARU]
+    // ==========================================
+    public function getAgendas() {
+        // Mengambil agenda dan mengurutkannya berdasarkan tanggal event terdekat
+        return response()->json(Agenda::orderBy('event_date', 'asc')->get());
+    }
+
+    public function storeAgenda(Request $request) {
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'event_date' => 'required|date',
+            'location' => 'required',
+            'status' => 'nullable|in:upcoming,ongoing,finished'
+        ]);
+
+        Agenda::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'event_date' => $request->event_date,
+            'location' => $request->location,
+            'status' => $request->status ?? 'upcoming'
+        ]);
+
+        return response()->json(['message' => 'Agenda berhasil ditambahkan!']);
+    }
+
+    public function destroyAgenda($id) {
+        $agenda = Agenda::find($id);
+        if (!$agenda) return response()->json(['message' => 'Agenda tidak ditemukan'], 404);
+        
+        $agenda->delete();
+        return response()->json(['message' => 'Agenda berhasil dihapus']);
+    }
+
+    // ==========================================
+    // GALLERY (DOKUMENTASI FOTO) - [BARU]
+    // ==========================================
+    public function getGalleries(Request $request) {
+        $query = Gallery::query();
+
+        // Jika ada filter kategori di request
+        if ($request->has('category') && $request->category !== 'Semua') {
+            $query->where('category', $request->category);
+        }
+
+        return response()->json($query->latest()->get());
+    }
+
+    public function storeGallery(Request $request) {
+        $request->validate([
+            'title' => 'required',
+            'category' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120' // Max 5MB
+        ]);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('gallery_images', 'public');
+            
+            Gallery::create([
+                'title' => $request->title,
+                'category' => $request->category,
+                'image_path' => $path
+            ]);
+            
+            return response()->json(['message' => 'Foto berhasil diunggah ke galeri!']);
+        }
+        return response()->json(['message' => 'Gagal upload foto'], 400);
+    }
+
+    public function destroyGallery($id) {
+        $gallery = Gallery::find($id);
+        if (!$gallery) return response()->json(['message' => 'Foto tidak ditemukan'], 404);
+
+        if ($gallery->image_path) {
+            Storage::disk('public')->delete($gallery->image_path);
+        }
+
+        $gallery->delete();
+        return response()->json(['message' => 'Foto berhasil dihapus']);
+    }
+
+    // ==========================================
     // FITUR TAMBAHAN (Dashboard & Inbox)
     // ==========================================
 
-    // 1. Dashboard Stats (Termasuk Pengecekan Pesan Baru)
     public function getDashboardStats() {
         return response()->json([
             'total_news' => News::count(),
             'total_docs' => Document::count(),
             'total_users' => User::count(),
-            'total_messages' => \App\Models\Message::count(),
-            // Logika untuk menampilkan notifikasi titik merah di dashboard
-            'unread_messages' => \App\Models\Message::where('is_read', false)->count() 
+            'total_messages' => Message::count(),
+            'unread_messages' => Message::where('is_read', false)->count() 
         ]);
     }
 
-    // --- AMBIL DATA USER LOGIN ---
     public function profile(Request $request) {
-        // Mengembalikan data user yang sedang memiliki token valid
         return response()->json($request->user());
     }
 
-    // 2. User Management
     public function getUsers() {
         return response()->json(User::latest()->get());
     }
 
-    // --- KOMENTAR BERITA ---
-    
-    // Ambil komentar berdasarkan ID Berita
     public function getComments($newsId) {
-        $comments = \App\Models\Comment::where('news_id', $newsId)->latest()->get();
+        $comments = Comment::where('news_id', $newsId)->latest()->get();
         return response()->json($comments);
     }
 
-    // Simpan komentar baru
     public function storeComment(Request $request, $newsId) {
         $request->validate([
             'name' => 'required',
             'comment' => 'required'
         ]);
 
-        \App\Models\Comment::create([
+        Comment::create([
             'news_id' => $newsId,
             'name' => $request->name,
             'comment' => $request->comment
@@ -197,19 +272,15 @@ class ApiController extends Controller
         return response()->json(['message' => 'Komentar berhasil ditambahkan!']);
     }
 
-    // 3. Message / Inbox System
     public function storeMessage(Request $request) {
         $request->validate(['name'=>'required', 'email'=>'required', 'message'=>'required']);
-        \App\Models\Message::create($request->all());
+        Message::create($request->all());
         return response()->json(['message' => 'Pesan terkirim!']);
     }
 
     public function getMessages() {
-        // Ambil semua data pesan
-        $messages = \App\Models\Message::latest()->get();
-        
-        // Logika: Saat admin membuka inbox, ubah semua pesan yang belum dibaca (false) menjadi sudah dibaca (true)
-        \App\Models\Message::where('is_read', false)->update(['is_read' => true]);
+        $messages = Message::latest()->get();
+        Message::where('is_read', false)->update(['is_read' => true]);
         
         return response()->json($messages);
     }

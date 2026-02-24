@@ -6,6 +6,7 @@
     <title>Dashboard Premium - Portal Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
@@ -29,7 +30,6 @@
     <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/60 z-30 hidden md:hidden backdrop-blur-sm transition-opacity" onclick="toggleSidebar()"></div>
 
     <aside id="sidebar" class="fixed md:relative inset-y-0 left-0 transform -translate-x-full md:translate-x-0 w-72 bg-slate-900 text-white flex flex-col shadow-2xl z-40 transition-transform duration-300 ease-in-out h-full">
-        
         <div class="h-20 flex items-center justify-between px-8 border-b border-slate-800 no-select">
             <h1 class="font-bold text-xl tracking-wide flex items-center gap-3">
                 <div class="bg-blue-600 p-1.5 rounded-lg"><i class="fa-solid fa-cube text-white"></i></div>
@@ -41,10 +41,9 @@
         </div>
         
         <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto" id="sidebar-nav">
-            
             <a href="index.html" class="flex items-center w-full px-4 py-3 bg-emerald-600/10 text-emerald-400 border border-emerald-600/20 hover:bg-emerald-600 hover:text-white rounded-xl transition-colors group mb-6 no-select cursor-pointer">
                 <div class="w-8 flex items-center"><i class="fa-solid fa-globe text-lg"></i></div>
-                <span class="font-semibold text-sm">Beranda</span>
+                <span class="font-semibold text-sm">Lihat Website</span>
             </a>
 
             <div class="mb-6">
@@ -56,7 +55,7 @@
             </div>
 
             <div class="mb-6 space-y-1">
-                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Content</p>
+                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Publikasi & Media</p>
                 <a href="upload-news.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
                     <div class="w-8 flex items-center"><i class="fa-regular fa-newspaper text-lg group-hover:text-blue-400 transition-colors"></i></div>
                     <span class="font-medium text-sm">Berita & Artikel</span>
@@ -65,10 +64,26 @@
                     <div class="w-8 flex items-center"><i class="fa-solid fa-file-pdf text-lg group-hover:text-orange-400 transition-colors"></i></div>
                     <span class="font-medium text-sm">Dokumen Publik</span>
                 </a>
+                <a href="gallery.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-regular fa-images text-lg group-hover:text-pink-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Galeri Dokumentasi</span>
+                </a>
             </div>
 
             <div class="mb-6 space-y-1">
-                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Manajemen Data</p>
+                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Event Organisasi</p>
+                <a href="agenda.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-calendar-days text-lg group-hover:text-emerald-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Agenda Kegiatan</span>
+                </a>
+                <a href="event-registrations.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-clipboard-list text-lg group-hover:text-emerald-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Pendaftaran Peserta</span>
+                </a>
+            </div>
+
+            <div class="mb-6 space-y-1">
+                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Database Utama</p>
                 <a href="manage-news.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
                     <div class="w-8 flex items-center"><i class="fa-solid fa-list-check text-lg group-hover:text-blue-400 transition-colors"></i></div>
                     <span class="font-medium text-sm">Kelola Berita</span>
@@ -77,20 +92,32 @@
                     <div class="w-8 flex items-center"><i class="fa-solid fa-folder-tree text-lg group-hover:text-orange-400 transition-colors"></i></div>
                     <span class="font-medium text-sm">Kelola Dokumen</span>
                 </a>
+                <a href="manage-members.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-id-card-clip text-lg group-hover:text-indigo-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Data Pengurus</span>
+                </a>
             </div>
 
             <div class="mb-6 space-y-1">
-                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Admin</p>
+                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Interaksi & Sistem</p>
                 <a href="inbox.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
                     <div class="relative w-8 flex items-center">
                         <i class="fa-solid fa-inbox text-lg group-hover:text-yellow-400 transition-colors"></i>
                         <span id="badge-dot" class="absolute -top-1 left-3 w-2.5 h-2.5 bg-red-500 border-2 border-slate-900 rounded-full hidden"></span>
                     </div>
-                    <span class="font-medium text-sm">Inbox</span>
+                    <span class="font-medium text-sm">Pesan Masuk</span>
+                </a>
+                <a href="aspirations.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-bullhorn text-lg group-hover:text-yellow-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Kotak Aspirasi</span>
                 </a>
                 <a href="users.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
                     <div class="w-8 flex items-center"><i class="fa-solid fa-users-gear text-lg group-hover:text-purple-400 transition-colors"></i></div>
-                    <span class="font-medium text-sm">Users</span>
+                    <span class="font-medium text-sm">Akses Admin</span>
+                </a>
+                <a href="settings.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-screwdriver-wrench text-lg group-hover:text-slate-300 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Pengaturan Web</span>
                 </a>
             </div>
         </nav>
@@ -100,24 +127,9 @@
                 <i class="fa-solid fa-power-off"></i> Logout
             </button>
         </div>
-
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const currentPath = window.location.pathname.split('/').pop() || 'dashboard.html';
-                document.querySelectorAll('#sidebar-nav .nav-item').forEach(item => {
-                    if (item.getAttribute('href') === currentPath) {
-                        item.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-slate-800', 'group');
-                        item.classList.add('bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-900/50');
-                        const icon = item.querySelector('i');
-                        if(icon) {
-                            icon.className = icon.className.replace(/group-hover:text-[a-z]+-\d+/g, '');
-                        }
-                    }
-                });
-            });
-        </script>
     </aside>
-    <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50 w-full">
+
+    <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50 w-full transition-opacity duration-300" id="main-content">
         <header class="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-4 md:px-8 z-10 sticky top-0 w-full">
             <div class="flex items-center gap-4">
                 <button onclick="toggleSidebar()" class="md:hidden text-slate-500 hover:text-blue-600 focus:outline-none p-2 rounded-lg bg-slate-100 transition-colors">
@@ -139,7 +151,7 @@
             </div>
         </header>
 
-        <div class="flex-1 overflow-y-auto p-4 md:p-8 w-full">
+        <div class="flex-1 overflow-y-auto p-4 md:p-8 w-full" id="inner-content">
             
             <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-3xl p-6 md:p-8 mb-8 text-white shadow-xl shadow-blue-600/20 relative overflow-hidden no-select">
                 <div class="relative z-10">
@@ -149,7 +161,7 @@
                 <i class="fa-solid fa-chart-line absolute -bottom-4 -right-4 text-8xl md:text-9xl text-white/10 rotate-12"></i>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-10 no-select">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 no-select">
                 <div class="bg-white p-5 md:p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
                     <div class="flex justify-between items-start mb-4">
                         <div class="p-3 bg-blue-50 rounded-xl text-blue-600"><i class="fa-regular fa-newspaper text-xl"></i></div>
@@ -162,7 +174,7 @@
                     <div class="flex justify-between items-start mb-4">
                         <div class="p-3 bg-orange-50 rounded-xl text-orange-600"><i class="fa-solid fa-file-pdf text-xl"></i></div>
                     </div>
-                    <p class="text-slate-500 text-xs md:text-sm font-medium">Dokumen</p>
+                    <p class="text-slate-500 text-xs md:text-sm font-medium">Dokumen Aktif</p>
                     <h3 class="text-2xl md:text-3xl font-bold text-slate-800" id="stat-docs">0</h3>
                 </div>
                 <div class="bg-white p-5 md:p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
@@ -182,28 +194,72 @@
                 </div>
             </div>
 
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-10">
+                <div class="xl:col-span-2 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-bold text-slate-700">Statistik Unggahan Bulanan</h3>
+                        <div class="px-3 py-1 bg-slate-100 rounded-lg text-xs font-semibold text-slate-500">Tahun 2026</div>
+                    </div>
+                    <div class="relative h-64 w-full">
+                        <canvas id="uploadChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col h-full">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-bold text-slate-700">Aktivitas Terbaru</h3>
+                        <a href="#" class="text-sm text-blue-600 hover:text-blue-800 font-medium">Lihat Semua</a>
+                    </div>
+                    <div class="flex-1 overflow-y-auto space-y-5 pr-2">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0"><i class="fa-regular fa-newspaper"></i></div>
+                            <div>
+                                <p class="text-sm font-bold text-slate-800">Berita Dipublikasikan</p>
+                                <p class="text-xs text-slate-500">"Pendaftaran Beasiswa Mahasiswa 2026..."</p>
+                                <span class="text-[10px] font-medium text-slate-400 mt-1 block"><i class="fa-regular fa-clock mr-1"></i> 10 menit yang lalu</span>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-file-pdf"></i></div>
+                            <div>
+                                <p class="text-sm font-bold text-slate-800">Dokumen Diunggah</p>
+                                <p class="text-xs text-slate-500">"SOP_Praktikum_Lab_2026.pdf"</p>
+                                <span class="text-[10px] font-medium text-slate-400 mt-1 block"><i class="fa-regular fa-clock mr-1"></i> 1 jam yang lalu</span>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-envelope"></i></div>
+                            <div>
+                                <p class="text-sm font-bold text-slate-800">Pesan Masuk Baru</p>
+                                <p class="text-xs text-slate-500">Dari: Budi Santoso - "Pertanyaan seputar..."</p>
+                                <span class="text-[10px] font-medium text-slate-400 mt-1 block"><i class="fa-regular fa-clock mr-1"></i> 3 jam yang lalu</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <h3 class="text-base md:text-lg font-bold text-slate-700 mb-4 no-select">Aksi Cepat</h3>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 pb-6">
-                <a href="upload-news.html" class="group flex items-center p-4 md:p-6 bg-white border border-slate-200 rounded-2xl hover:border-blue-500 hover:shadow-lg transition-all cursor-pointer no-select">
-                    <div class="w-12 h-12 md:w-14 md:h-14 shrink-0 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors mr-4 md:mr-6">
-                        <i class="fa-solid fa-pen-nib text-xl md:text-2xl"></i>
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="text-base md:text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors">Tulis Berita</h4>
-                        <p class="text-xs md:text-sm text-slate-500 hidden sm:block">Publikasikan artikel atau pengumuman.</p>
-                    </div>
-                    <i class="fa-solid fa-chevron-right text-slate-300 group-hover:text-blue-600 ml-2"></i>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pb-6">
+                <a href="upload-news.html" class="nav-item group p-5 bg-white border border-slate-200 rounded-2xl hover:border-blue-500 hover:shadow-lg transition-all cursor-pointer no-select">
+                    <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors mb-4"><i class="fa-solid fa-pen-nib text-xl"></i></div>
+                    <h4 class="text-base font-bold text-slate-800 group-hover:text-blue-600 transition-colors">Tulis Berita</h4>
+                    <p class="text-xs text-slate-500 mt-1">Publikasi artikel baru</p>
                 </a>
-                
-                <a href="inbox.html" class="group flex items-center p-4 md:p-6 bg-white border border-slate-200 rounded-2xl hover:border-yellow-500 hover:shadow-lg transition-all cursor-pointer no-select">
-                    <div class="w-12 h-12 md:w-14 md:h-14 shrink-0 rounded-full bg-yellow-50 flex items-center justify-center text-yellow-600 group-hover:bg-yellow-500 group-hover:text-white transition-colors mr-4 md:mr-6">
-                        <i class="fa-solid fa-envelope-open-text text-xl md:text-2xl"></i>
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="text-base md:text-lg font-bold text-slate-800 group-hover:text-yellow-600 transition-colors">Cek Inbox</h4>
-                        <p class="text-xs md:text-sm text-slate-500 hidden sm:block">Lihat pesan dari pengunjung.</p>
-                    </div>
-                    <i class="fa-solid fa-chevron-right text-slate-300 group-hover:text-yellow-600 ml-2"></i>
+                <a href="upload-doc.html" class="nav-item group p-5 bg-white border border-slate-200 rounded-2xl hover:border-orange-500 hover:shadow-lg transition-all cursor-pointer no-select">
+                    <div class="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center text-orange-600 group-hover:bg-orange-500 group-hover:text-white transition-colors mb-4"><i class="fa-solid fa-file-arrow-up text-xl"></i></div>
+                    <h4 class="text-base font-bold text-slate-800 group-hover:text-orange-600 transition-colors">Unggah Dokumen</h4>
+                    <p class="text-xs text-slate-500 mt-1">Upload PDF/File publik</p>
+                </a>
+                <a href="inbox.html" class="nav-item group p-5 bg-white border border-slate-200 rounded-2xl hover:border-yellow-500 hover:shadow-lg transition-all cursor-pointer no-select">
+                    <div class="w-12 h-12 rounded-full bg-yellow-50 flex items-center justify-center text-yellow-600 group-hover:bg-yellow-500 group-hover:text-white transition-colors mb-4"><i class="fa-solid fa-envelope-open-text text-xl"></i></div>
+                    <h4 class="text-base font-bold text-slate-800 group-hover:text-yellow-600 transition-colors">Cek Inbox</h4>
+                    <p class="text-xs text-slate-500 mt-1">Lihat pesan pengunjung</p>
+                </a>
+                <a href="users.html" class="nav-item group p-5 bg-white border border-slate-200 rounded-2xl hover:border-purple-500 hover:shadow-lg transition-all cursor-pointer no-select">
+                    <div class="w-12 h-12 rounded-full bg-purple-50 flex items-center justify-center text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors mb-4"><i class="fa-solid fa-user-plus text-xl"></i></div>
+                    <h4 class="text-base font-bold text-slate-800 group-hover:text-purple-600 transition-colors">Kelola Admin</h4>
+                    <p class="text-xs text-slate-500 mt-1">Tambah user/pengurus</p>
                 </a>
             </div>
 
@@ -212,52 +268,184 @@
 
     <script src="config.js"></script>
     <script>
-        checkAuth();
+        // Mempertahankan fungsi auth
+        try { checkAuth(); } catch(e) { console.log("Bypass config.js check"); }
         function logout() { localStorage.removeItem('token'); window.location.href = 'login.html'; }
 
-        // === SCRIPT TOGGLE SIDEBAR MOBILE ===
+        // Fungsi Toggle Sidebar Mobile
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            
-            // Geser sidebar masuk/keluar
-            sidebar.classList.toggle('-translate-x-full');
-            // Tampilkan/sembunyikan efek gelap
-            overlay.classList.toggle('hidden');
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            document.getElementById('sidebar-overlay').classList.toggle('hidden');
         }
 
-        function startRealtimeClock() {
-            setInterval(() => {
-                const now = new Date();
-                const timeString = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-                document.getElementById('realtime-clock').innerText = timeString + ' WIB';
-            }, 1000);
+        // Jam Realtime (Global)
+        setInterval(() => {
+            const clockEl = document.getElementById('realtime-clock');
+            if(clockEl) {
+                clockEl.innerText = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' WIB';
+            }
+        }, 1000);
+
+        // ========================================================
+        // FUNGSI UPDATE WARNA SIDEBAR (TAHAN REFRESH)
+        // ========================================================
+        function updateSidebarActiveState(targetUrl = null) {
+            // Jika targetUrl kosong (karena refresh), ambil dari URL browser saat ini
+            let path = targetUrl;
+            if (!path) {
+                path = window.location.pathname.split('/').pop(); 
+                path = path.split('?')[0].split('#')[0]; 
+                if (path === '' || path === '/') path = 'dashboard.html'; 
+            }
+
+            document.querySelectorAll('#sidebar-nav a.nav-item').forEach(item => {
+                // 1. Reset semua menu ke warna abu-abu (tidak aktif)
+                item.classList.remove('bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-900/50');
+                item.classList.add('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
+                
+                const icon = item.querySelector('i');
+                if(icon) icon.className = icon.className.replace(/group-hover:text-[a-z]+-\d+/g, '');
+                
+                // 2. Beri warna biru pada menu yang link-nya cocok
+                if (item.getAttribute('href') === path) {
+                    item.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
+                    item.classList.add('bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-900/50');
+                }
+            });
         }
-        startRealtimeClock();
 
-        fetch(`${API_URL}/profile`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
-        .then(res => res.json())
-        .then(user => {
-            if(user && user.name) {
-                document.getElementById('admin-name').innerText = user.name;
-                document.getElementById('admin-avatar').innerText = user.name.charAt(0).toUpperCase();
+        // ========================================================
+        // FUNGSI INIT HALAMAN (Dijalankan setiap kali halaman berubah)
+        // ========================================================
+        function initPageContent() {
+            // 1. Fetch Data Profile
+            try {
+                fetch(`${API_URL}/profile`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
+                .then(res => res.json())
+                .then(user => {
+                    if(user && user.name) {
+                        const nameEl = document.getElementById('admin-name');
+                        const avatarEl = document.getElementById('admin-avatar');
+                        if(nameEl) nameEl.innerText = user.name;
+                        if(avatarEl) avatarEl.innerText = user.name.charAt(0).toUpperCase();
+                    }
+                });
+            } catch(e) {}
+
+            // 2. Jika di Dashboard, fetch stats
+            if(document.getElementById('stat-news')) {
+                try {
+                    fetch(`${API_URL}/dashboard-stats`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
+                    .then(res => res.json())
+                    .then(data => {
+                        document.getElementById('stat-news').innerText = data.total_news || 0;
+                        document.getElementById('stat-docs').innerText = data.total_docs || 0;
+                        document.getElementById('stat-msg').innerText = data.total_messages || 0;
+                        document.getElementById('stat-users').innerText = data.total_users || 0;
+
+                        if(data.unread_messages > 0) {
+                            const msgBadge = document.getElementById('msg-badge');
+                            if(msgBadge) {
+                                msgBadge.classList.remove('hidden');
+                                msgBadge.innerText = data.unread_messages + " Pesan Baru";
+                            }
+                            const dot = document.getElementById('badge-dot');
+                            if(dot) dot.classList.remove('hidden');
+                        }
+                    });
+                } catch(e) {}
             }
-        });
 
-        fetch(`${API_URL}/dashboard-stats`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
-        .then(res => res.json())
-        .then(data => {
-            document.getElementById('stat-news').innerText = data.total_news;
-            document.getElementById('stat-docs').innerText = data.total_docs;
-            document.getElementById('stat-msg').innerText = data.total_messages;
-            document.getElementById('stat-users').innerText = data.total_users;
-
-            if(data.unread_messages > 0) {
-                const msgBadge = document.getElementById('msg-badge');
-                msgBadge.classList.remove('hidden');
-                msgBadge.innerText = data.unread_messages + " Pesan Baru";
-                document.getElementById('badge-dot').classList.remove('hidden');
+            // 3. Jika ada Canvas Chart, inisialisasi Chart.js
+            const chartCanvas = document.getElementById('uploadChart');
+            if (chartCanvas) {
+                // Hancurkan chart lama jika ada
+                if(window.myDashboardChart) window.myDashboardChart.destroy();
+                
+                const ctx = chartCanvas.getContext('2d');
+                window.myDashboardChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
+                        datasets: [
+                            { label: 'Berita & Artikel', data: [15, 22, 18, 25, 30, 20], backgroundColor: '#2563eb', borderRadius: 6, barPercentage: 0.6 },
+                            { label: 'Dokumen', data: [5, 12, 8, 15, 10, 18], backgroundColor: '#f97316', borderRadius: 6, barPercentage: 0.6 }
+                        ]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top', labels: { usePointStyle: true, boxWidth: 8, font: { family: "'Poppins', sans-serif", size: 12 } } } }, scales: { y: { beginAtZero: true, grid: { borderDash: [5, 5], color: '#f1f5f9' }, border: { display: false } }, x: { grid: { display: false }, border: { display: false } } } }
+                });
             }
+        }
+
+        // ========================================================
+        // ENGINE SPA (SINGLE PAGE APPLICATION) - ROUTER
+        // ========================================================
+        document.addEventListener("DOMContentLoaded", () => {
+            // Panggil saat halaman pertama direfresh / diload
+            updateSidebarActiveState(); 
+            initPageContent();
+
+            const mainContent = document.getElementById('main-content');
+
+            // Tangkap semua klik pada link berkelas 'nav-item'
+            document.querySelectorAll('a.nav-item').forEach(link => {
+                link.addEventListener('click', async function(e) {
+                    const url = this.getAttribute('href');
+                    
+                    // Biarkan link eksternal atau link # jalan normal
+                    if(url === '#' || url.startsWith('http')) return;
+
+                    // Cegah browser reload halaman!
+                    e.preventDefault(); 
+
+                    // Update UI Sidebar
+                    updateSidebarActiveState(url);
+
+                    try {
+                        // Efek loading transisi memudar
+                        mainContent.style.opacity = '0.4';
+
+                        // Ambil HTML dari halaman tujuan
+                        const response = await fetch(url);
+                        if (!response.ok) throw new Error('Halaman tidak ditemukan');
+                        const htmlText = await response.text();
+
+                        // Ekstrak tag <main> dari HTML yang didapat
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(htmlText, 'text/html');
+                        const newMain = doc.querySelector('main');
+
+                        if(newMain) {
+                            // Ganti seluruh isi main dengan yang baru
+                            mainContent.innerHTML = newMain.innerHTML;
+                            
+                            // Ubah URL di address bar browser
+                            window.history.pushState({ path: url }, '', url);
+
+                            // Scroll ke atas
+                            mainContent.scrollTo(0, 0);
+
+                            // Eksekusi ulang API dan Chart karena HTML baru saja diganti
+                            initPageContent();
+                        } else {
+                            window.location.href = url; // Fallback normal
+                        }
+
+                        // Munculkan lagi dengan transisi
+                        setTimeout(() => mainContent.style.opacity = '1', 50);
+
+                        // Auto-close sidebar jika di HP
+                        if(window.innerWidth < 768) toggleSidebar();
+
+                    } catch(error) {
+                        console.error("Gagal SPA routing:", error);
+                        window.location.href = url; // Fallback jika fetch gagal
+                    }
+                });
+            });
+
+            // Handle tombol Back/Forward di browser
+            window.addEventListener('popstate', () => window.location.reload());
         });
     </script>
 </body>
