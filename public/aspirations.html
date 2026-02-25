@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kotak Aspirasi - Portal Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .no-select {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            outline: none !important;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 flex h-screen overflow-hidden font-sans text-slate-800 relative">
+
+    <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/60 z-30 hidden md:hidden backdrop-blur-sm transition-opacity" onclick="toggleSidebar()"></div>
+
+    <aside id="sidebar" class="fixed md:relative inset-y-0 left-0 transform -translate-x-full md:translate-x-0 w-72 bg-slate-900 text-white flex flex-col shadow-2xl z-40 transition-transform duration-300 ease-in-out h-full">
+        <div class="h-20 flex items-center justify-between px-8 border-b border-slate-800 no-select">
+            <h1 class="font-bold text-xl tracking-wide flex items-center gap-3">
+                <div class="bg-blue-600 p-1.5 rounded-lg"><i class="fa-solid fa-cube text-white"></i></div>
+                Portal<span class="text-blue-400">Admin</span>
+            </h1>
+            <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        
+        <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto" id="sidebar-nav">
+            <a href="index.html" target="_blank" class="flex items-center w-full px-4 py-3 bg-emerald-600/10 text-emerald-400 border border-emerald-600/20 hover:bg-emerald-600 hover:text-white rounded-xl transition-colors group mb-6 no-select cursor-pointer">
+                <div class="w-8 flex items-center"><i class="fa-solid fa-globe text-lg"></i></div>
+                <span class="font-semibold text-sm">Lihat Website</span>
+            </a>
+
+            <div class="mb-6">
+                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Main Menu</p>
+                <a href="dashboard.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-grid-2 text-lg group-hover:text-blue-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Dashboard</span>
+                </a>
+            </div>
+
+            <div class="mb-6 space-y-1">
+                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Publikasi & Media</p>
+                <a href="upload-news.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-regular fa-newspaper text-lg group-hover:text-blue-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Berita & Artikel</span>
+                </a>
+                <a href="upload-doc.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-file-pdf text-lg group-hover:text-orange-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Dokumen Publik</span>
+                </a>
+                <a href="gallery.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-regular fa-images text-lg group-hover:text-pink-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Galeri Dokumentasi</span>
+                </a>
+            </div>
+
+            <div class="mb-6 space-y-1">
+                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Event Organisasi</p>
+                <a href="agenda.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-calendar-days text-lg group-hover:text-emerald-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Agenda Kegiatan</span>
+                </a>
+                <a href="event-registrations.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-clipboard-list text-lg group-hover:text-emerald-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Pendaftaran Peserta</span>
+                </a>
+            </div>
+
+            <div class="mb-6 space-y-1">
+                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Database Utama</p>
+                <a href="manage-news.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-list-check text-lg group-hover:text-blue-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Kelola Berita</span>
+                </a>
+                <a href="manage-docs.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-folder-tree text-lg group-hover:text-orange-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Kelola Dokumen</span>
+                </a>
+                <a href="manage-members.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-id-card-clip text-lg group-hover:text-indigo-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Data Pengurus</span>
+                </a>
+            </div>
+
+            <div class="mb-6 space-y-1">
+                <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 no-select">Interaksi & Sistem</p>
+                <a href="inbox.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="relative w-8 flex items-center">
+                        <i class="fa-solid fa-inbox text-lg group-hover:text-yellow-400 transition-colors"></i>
+                        <span id="badge-dot" class="absolute -top-1 left-3 w-2.5 h-2.5 bg-red-500 border-2 border-slate-900 rounded-full hidden"></span>
+                    </div>
+                    <span class="font-medium text-sm">Pesan Masuk</span>
+                </a>
+                <a href="aspirations.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-bullhorn text-lg group-hover:text-yellow-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Kotak Aspirasi</span>
+                </a>
+                <a href="users.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-users-gear text-lg group-hover:text-purple-400 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Akses Admin</span>
+                </a>
+                <a href="settings.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-screwdriver-wrench text-lg group-hover:text-slate-300 transition-colors"></i></div>
+                    <span class="font-medium text-sm">Pengaturan Web</span>
+                </a>
+            </div>
+        </nav>
+
+        <div class="p-6 border-t border-slate-800">
+            <button onclick="window.logout()" class="w-full flex items-center justify-center gap-2 px-4 py-3 text-red-400 bg-red-500/10 hover:bg-red-500 hover:text-white rounded-xl transition-colors font-bold text-sm no-select cursor-pointer">
+                <i class="fa-solid fa-power-off"></i> Logout
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50 w-full transition-opacity duration-300" id="main-content">
+        
+        <header class="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-4 md:px-8 z-10 sticky top-0 w-full">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="md:hidden text-slate-500 hover:text-blue-600 focus:outline-none p-2 rounded-lg bg-slate-100 transition-colors">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+                <h2 class="text-lg md:text-xl font-bold text-slate-700">Kotak Aspirasi</h2>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <div class="text-right hidden sm:block no-select">
+                    <p id="admin-name" class="text-sm font-bold text-slate-700">Memuat...</p>
+                    <p id="realtime-clock" class="text-xs font-mono font-bold text-blue-600 tracking-wider mt-0.5">00:00:00 WIB</p>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-yellow-400 to-orange-500 p-[2px] shadow-md no-select">
+                    <div id="admin-avatar" class="w-full h-full bg-white rounded-full flex items-center justify-center font-bold text-slate-700 text-sm">
+                        <i class="fa-solid fa-spinner fa-spin text-xs"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-4 md:p-8 w-full" id="inner-content">
+            
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8">
+                <div>
+                    <h1 class="text-2xl font-bold text-slate-800">Suara Mahasiswa</h1>
+                    <p class="text-sm text-slate-500 mt-1">Tindak lanjuti kritik, saran, dan keluhan terkait akademik maupun fasilitas.</p>
+                </div>
+
+                <div class="flex bg-white rounded-xl p-1 shadow-sm border border-slate-200 no-select w-full lg:w-auto overflow-x-auto">
+                    <button class="flex-1 lg:flex-none px-5 py-2 text-sm font-bold bg-slate-800 text-white rounded-lg shadow-sm whitespace-nowrap">Masuk (4)</button>
+                    <button class="flex-1 lg:flex-none px-5 py-2 text-sm font-bold text-slate-500 hover:text-slate-800 transition-colors whitespace-nowrap">Diproses (1)</button>
+                    <button class="flex-1 lg:flex-none px-5 py-2 text-sm font-bold text-slate-500 hover:text-slate-800 transition-colors whitespace-nowrap">Selesai (12)</button>
+                </div>
+            </div>
+
+            <div class="space-y-4" id="aspirations-list">
+                
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-yellow-400 transition-colors flex flex-col md:flex-row gap-6">
+                    <div class="md:w-64 shrink-0 border-b md:border-b-0 md:border-r border-slate-100 pb-4 md:pb-0 md:pr-6">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="bg-red-100 text-red-600 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">Fasilitas</span>
+                            <span class="text-xs font-bold text-slate-400">#ASP-20260225-01</span>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-lg leading-tight mb-1">AC Lab Komputer 3 Mati</h3>
+                        <p class="text-xs text-slate-500 font-medium">Dari: <span class="text-slate-700">Mahasiswa Anonim</span></p>
+                        <p class="text-xs text-slate-400 mt-2"><i class="fa-regular fa-clock mr-1"></i> Hari ini, 08:30 WIB</p>
+                    </div>
+
+                    <div class="flex-1">
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            "Permisi, saya ingin melaporkan bahwa AC di Lab Komputer 3 (Gedung B) mati sejak hari Senin kemarin. Ruangannya jadi sangat panas saat praktikum siang hari, mohon segera ditindaklanjuti ke pihak Sarpras. Terima kasih."
+                        </p>
+                        <div class="mt-4 bg-yellow-50/50 border border-yellow-100 rounded-xl p-4 hidden">
+                            <p class="text-xs font-bold text-yellow-700 mb-1">Tanggapan HIMAIF:</p>
+                            <p class="text-sm text-slate-600">Belum ada tanggapan.</p>
+                        </div>
+                    </div>
+
+                    <div class="shrink-0 flex flex-row md:flex-col gap-2 justify-end">
+                        <button class="flex-1 md:flex-none bg-yellow-50 text-yellow-600 hover:bg-yellow-500 hover:text-white px-4 py-2 rounded-xl text-sm font-bold transition-colors border border-yellow-200 hover:border-transparent flex items-center justify-center gap-2 shadow-sm">
+                            <i class="fa-solid fa-reply"></i> Tanggapi
+                        </button>
+                        <button class="flex-1 md:flex-none bg-white text-slate-500 hover:bg-slate-100 px-4 py-2 rounded-xl text-sm font-bold transition-colors border border-slate-200 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-check-double"></i> Tandai Selesai
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-yellow-400 transition-colors flex flex-col md:flex-row gap-6 opacity-80">
+                    <div class="md:w-64 shrink-0 border-b md:border-b-0 md:border-r border-slate-100 pb-4 md:pb-0 md:pr-6">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">Akademik</span>
+                            <span class="text-xs font-bold text-slate-400">#ASP-20260224-05</span>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-lg leading-tight mb-1">Jadwal UTS Bentrok</h3>
+                        <p class="text-xs text-slate-500 font-medium">Dari: <span class="text-slate-700">Angkatan 2024</span></p>
+                        <p class="text-xs text-slate-400 mt-2"><i class="fa-regular fa-clock mr-1"></i> Kemarin, 14:15 WIB</p>
+                    </div>
+
+                    <div class="flex-1">
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            "Mohon bantuan advokasi ke prodi, jadwal UTS Sistem Operasi kelas A bentrok dengan jadwal praktikum Jaringan Komputer di hari Kamis depan."
+                        </p>
+                        <div class="mt-4 bg-emerald-50 border border-emerald-100 rounded-xl p-4">
+                            <p class="text-xs font-bold text-emerald-700 mb-1"><i class="fa-solid fa-headset mr-1"></i> Sedang Diproses (Departemen Advokasi)</p>
+                            <p class="text-sm text-emerald-600/80">Laporan sudah kami terima dan sedang dikoordinasikan dengan Bpk. Kaprodi. Mohon menunggu info selanjutnya.</p>
+                        </div>
+                    </div>
+
+                    <div class="shrink-0 flex flex-row md:flex-col gap-2 justify-end">
+                        <button class="flex-1 md:flex-none bg-emerald-600 text-white hover:bg-emerald-700 px-4 py-2 rounded-xl text-sm font-bold transition-colors shadow-sm shadow-emerald-600/20 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-check"></i> Selesai
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-yellow-400 transition-colors flex flex-col md:flex-row gap-6">
+                    <div class="md:w-64 shrink-0 border-b md:border-b-0 md:border-r border-slate-100 pb-4 md:pb-0 md:pr-6">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="bg-purple-100 text-purple-600 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">Organisasi</span>
+                            <span class="text-xs font-bold text-slate-400">#ASP-20260222-12</span>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-lg leading-tight mb-1">Usulan Lomba E-Sport</h3>
+                        <p class="text-xs text-slate-500 font-medium">Dari: <span class="text-slate-700">Reza M.</span></p>
+                        <p class="text-xs text-slate-400 mt-2"><i class="fa-regular fa-clock mr-1"></i> 22 Feb 2026</p>
+                    </div>
+
+                    <div class="flex-1">
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            "Kak, saran dong untuk Dies Natalis HIMAIF tahun ini diadakan lomba E-Sport (MLBB / Valorant) antar angkatan biar lebih seru dan ramai."
+                        </p>
+                    </div>
+
+                    <div class="shrink-0 flex flex-row md:flex-col gap-2 justify-end">
+                        <button class="flex-1 md:flex-none bg-yellow-50 text-yellow-600 hover:bg-yellow-500 hover:text-white px-4 py-2 rounded-xl text-sm font-bold transition-colors border border-yellow-200 hover:border-transparent flex items-center justify-center gap-2 shadow-sm">
+                            <i class="fa-solid fa-reply"></i> Tanggapi
+                        </button>
+                        <button class="flex-1 md:flex-none bg-white text-slate-500 hover:bg-slate-100 px-4 py-2 rounded-xl text-sm font-bold transition-colors border border-slate-200 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-check-double"></i> Tandai Selesai
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script src="config.js"></script>
+    <script src="admin-core.js"></script>
+</body>
+</html>
