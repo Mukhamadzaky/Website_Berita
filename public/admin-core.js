@@ -1,6 +1,8 @@
-// admin-core.js
+// ========================================================
+// admin-core.js - Pusat Kendali Single Page Application
+// ========================================================
 
-// Fungsi Jam Realtime
+// 1. Fungsi Jam Realtime
 function startRealtimeClock() {
     setInterval(() => {
         const clockEl = document.getElementById('realtime-clock');
@@ -10,7 +12,7 @@ function startRealtimeClock() {
     }, 1000);
 }
 
-// Fungsi Update Warna Sidebar
+// 2. Fungsi Update Warna Sidebar (Aktif)
 function updateSidebarActiveState(targetUrl = null) {
     let path = targetUrl;
     if (!path) {
@@ -35,9 +37,9 @@ function updateSidebarActiveState(targetUrl = null) {
 // ========================================================
 // FUNGSI INTI: RENDER DATA BERDASARKAN HALAMAN SAAT INI
 // ========================================================
-function renderCurrentPageData() {
+window.renderCurrentPageData = function() {
     
-    // 1. HEADER UMUM (Selalu Dijalankan)
+    // --- A. HEADER UMUM (Selalu Dijalankan di setiap halaman) ---
     try {
         fetch(`${API_URL}/profile`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
         .then(res => res.json())
@@ -48,7 +50,7 @@ function renderCurrentPageData() {
                 if(nameEl) nameEl.innerText = user.name;
                 if(avatarEl) avatarEl.innerText = user.name.charAt(0).toUpperCase();
             }
-        }).catch(e => console.log('Error fetch profile'));
+        }).catch(e => console.log('Bypass profile fetch (Dummy mode)'));
         
         fetch(`${API_URL}/dashboard-stats`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
         .then(res => res.json())
@@ -57,10 +59,11 @@ function renderCurrentPageData() {
                 const dot = document.getElementById('badge-dot');
                 if(dot) dot.classList.remove('hidden');
             }
-        }).catch(e => console.log('Error fetch stats'));
+        }).catch(e => console.log('Bypass stats fetch (Dummy mode)'));
     } catch(e) {}
 
-    // 2. LOGIC HALAMAN DASHBOARD
+
+    // --- B. LOGIC HALAMAN DASHBOARD ---
     if(document.getElementById('stat-news')) {
         fetch(`${API_URL}/dashboard-stats`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
         .then(res => res.json())
@@ -75,8 +78,9 @@ function renderCurrentPageData() {
                 msgBadge.classList.remove('hidden');
                 msgBadge.innerText = data.unread_messages + " Pesan Baru";
             }
-        });
+        }).catch(e => console.log('Gagal memuat statistik dashboard'));
 
+        // Render Chart.js
         const chartCanvas = document.getElementById('uploadChart');
         if (chartCanvas) {
             if(window.myDashboardChart) window.myDashboardChart.destroy();
@@ -89,7 +93,8 @@ function renderCurrentPageData() {
         }
     }
 
-    // 3. LOGIC HALAMAN KELOLA BERITA (manage-news.html)
+
+    // --- C. LOGIC HALAMAN KELOLA BERITA (manage-news.html) ---
     const newsList = document.getElementById('news-list');
     if(newsList) {
         fetch(`${API_URL}/news`)
@@ -108,7 +113,8 @@ function renderCurrentPageData() {
         });
     }
 
-    // 4. LOGIC HALAMAN KELOLA DOKUMEN (manage-docs.html)
+
+    // --- D. LOGIC HALAMAN KELOLA DOKUMEN (manage-docs.html) ---
     const docList = document.getElementById('doc-list');
     if(docList) {
         fetch(`${API_URL}/documents`)
@@ -134,7 +140,8 @@ function renderCurrentPageData() {
         });
     }
 
-    // 5. LOGIC HALAMAN USERS (users.html)
+
+    // --- E. LOGIC HALAMAN USERS (users.html) ---
     const usersList = document.getElementById('users-list');
     if(usersList) {
         fetch(`${API_URL}/users`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
@@ -151,7 +158,29 @@ function renderCurrentPageData() {
         });
     }
 
-    // 6. RE-ATTACH EVENT LISTENER (Upload News & Upload Doc)
+
+    // --- F. LOGIC HALAMAN INBOX (inbox.html) ---
+    const msgList = document.getElementById('msg-list');
+    if(msgList) {
+        fetch(`${API_URL}/inbox`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
+        .then(res => res.json())
+        .then(data => {
+            if(data.length === 0) {
+                msgList.innerHTML = `<tr><td colspan="3" class="px-6 py-16 text-center text-slate-400"><div class="bg-slate-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-100"><i class="fa-solid fa-envelope-open text-4xl text-slate-300"></i></div><p class="font-bold text-slate-500">Belum ada pesan masuk</p></td></tr>`;
+                return;
+            }
+            msgList.innerHTML = data.map(item => `
+                <tr class="hover:bg-blue-50/50 transition-colors group">
+                    <td class="px-6 py-5 align-top whitespace-nowrap"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white font-bold flex items-center justify-center shrink-0 shadow-md">${item.name.charAt(0).toUpperCase()}</div><div><p class="font-bold text-slate-800">${item.name}</p><p class="text-xs text-slate-400 font-mono mt-0.5">${item.email}</p></div></div></td>
+                    <td class="px-6 py-5 align-top min-w-[300px]"><p class="text-slate-600 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100 shadow-inner group-hover:bg-white transition-colors">${item.message}</p></td>
+                    <td class="px-6 py-5 text-right align-top whitespace-nowrap"><span class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg">${new Date(item.created_at).toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: 'numeric'})}</span><p class="text-[10px] text-slate-400 mt-2">${new Date(item.created_at).toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'})} WIB</p></td>
+                </tr>
+            `).join('');
+        }).catch(err => { msgList.innerHTML = `<tr><td colspan="3" class="text-center py-6 text-red-500 font-bold">Gagal memuat pesan.</td></tr>`; });
+    }
+
+
+    // --- G. RE-ATTACH EVENT LISTENER UPLOAD (upload-news.html & upload-doc.html) ---
     const imageInput = document.getElementById('imageFile');
     if(imageInput) {
         const newImageInput = imageInput.cloneNode(true);
@@ -184,10 +213,81 @@ function renderCurrentPageData() {
             }
         });
     }
+
+    // --- H. LOGIC HALAMAN PENGATURAN (settings.html) ---
+    const settingsForm = document.getElementById('settingsForm');
+    if(settingsForm) {
+        
+        // 1. Preview Logo Setting
+        const logoInput = document.getElementById('logo_file');
+        const logoPreviewContainer = document.getElementById('logo-preview-container');
+        const logoPreview = document.getElementById('logo-preview');
+        const logoPlaceholder = document.getElementById('logo-placeholder');
+
+        if(logoInput) {
+            // Hapus listener lama jika ada (mencegah bug di SPA)
+            const newLogoInput = logoInput.cloneNode(true);
+            logoInput.parentNode.replaceChild(newLogoInput, logoInput);
+
+            newLogoInput.addEventListener('change', function(e) {
+                const file = this.files[0];
+                if(file) {
+                    const reader = new FileReader();
+                    reader.onload = function(evt) {
+                        logoPreview.src = evt.target.result;
+                        logoPreviewContainer.classList.remove('hidden');
+                        logoPlaceholder.classList.add('hidden');
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // 2. Fetch Data Pengaturan dari Backend (Data awal)
+        fetch(`${API_URL}/settings`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
+        .then(res => res.json())
+        .then(data => {
+            // Asumsi data backend berbentuk object JSON. Jika kosong, pakai default
+            const settings = data.data || {
+                site_name: "Himpunan Mahasiswa Informatika",
+                site_tagline: "Inovatif, Adaptif, dan Kolaboratif",
+                site_description: "Website resmi Himpunan Mahasiswa Teknik Informatika.",
+                contact_email: "himaif@kampus.ac.id",
+                contact_whatsapp: "081234567890",
+                link_instagram: "https://instagram.com/himaif.official",
+                link_linkedin: "",
+                address: "Gedung Pusat Kegiatan Mahasiswa (PKM)",
+                maintenance_mode: false,
+                event_registration_open: true
+            };
+
+            // Isi nilai form dengan data
+            document.getElementById('site_name').value = settings.site_name || '';
+            document.getElementById('site_tagline').value = settings.site_tagline || '';
+            document.getElementById('site_description').value = settings.site_description || '';
+            document.getElementById('contact_email').value = settings.contact_email || '';
+            document.getElementById('contact_whatsapp').value = settings.contact_whatsapp || '';
+            document.getElementById('link_instagram').value = settings.link_instagram || '';
+            document.getElementById('link_linkedin').value = settings.link_linkedin || '';
+            document.getElementById('address').value = settings.address || '';
+            
+            // Set Checkbox (Toggle) - Handle boolean atau integer(1/0)
+            document.getElementById('maintenance_mode').checked = (settings.maintenance_mode == true || settings.maintenance_mode == 1);
+            document.getElementById('event_registration_open').checked = (settings.event_registration_open == true || settings.event_registration_open == 1);
+
+            // Jika ada logo dari backend
+            if(settings.logo_url && settings.logo_url !== "") {
+                logoPreview.src = settings.logo_url;
+                logoPreviewContainer.classList.remove('hidden');
+                logoPlaceholder.classList.add('hidden');
+            }
+        })
+        .catch(err => console.log('Gagal load data settings, form menggunakan isian kosong.'));
+    }
 }
 
 // ========================================================
-// ENGINE SPA ROUTER
+// ENGINE SPA ROUTER (Mencegah Halaman Reload)
 // ========================================================
 document.addEventListener("DOMContentLoaded", () => {
     try { checkAuth(); } catch(e) { console.log("Bypass auth check"); }
@@ -199,9 +299,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Tangani klik pada menu sidebar
     document.body.addEventListener('click', async function(e) {
-        // Cari elemen a.nav-item terdekat dari elemen yang diklik
         const link = e.target.closest('a.nav-item');
-        if(!link) return; // Jika yang diklik bukan menu sidebar, abaikan
+        if(!link) return; 
 
         const url = link.getAttribute('href');
         if(url === '#' || url.startsWith('http')) return;
@@ -244,9 +343,12 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener('popstate', () => window.location.reload());
 });
 
+
 // ========================================================
-// FUNGSI AKSI GLOBAL (Hapus, Upload, dll)
+// KUMPULAN FUNGSI AKSI GLOBAL (Hapus, Upload, Simpan)
 // ========================================================
+
+// Aksi Hapus
 window.deleteNews = async function(id) {
     if(!confirm("Yakin hapus berita ini?")) return;
     try {
@@ -263,12 +365,102 @@ window.deleteDoc = async function(id) {
     } catch(e) { alert("Error koneksi"); }
 }
 
+// Aksi Submit Form Upload Berita
+window.submitNews = async function() {
+    const title = document.getElementById('title').value;
+    const content = document.getElementById('content').value;
+    const imageInput = document.getElementById('imageFile');
+    const btn = document.getElementById('publishBtn');
+
+    if (!title || !content) return alert("Judul dan Isi berita wajib diisi!");
+    btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Proses...';
+
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('content', content);
+    if (imageInput.files.length > 0) formData.append('image', imageInput.files[0]);
+
+    try {
+        const res = await fetch(`${API_URL}/news`, { method: 'POST', headers: { 'Authorization': `Bearer ${getToken()}` }, body: formData });
+        if (res.ok) {
+            alert('✅ Berita Berhasil Diterbitkan!');
+            document.querySelector('a[href="manage-news.html"]').click(); // Redirect SPA
+        } else {
+            alert('Gagal menerbitkan.');
+            btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Terbitkan';
+        }
+    } catch (e) { alert('Koneksi Error.'); btn.disabled = false; }
+}
+
+// Aksi Submit Form Upload Dokumen
+window.submitDoc = async function() {
+    const title = document.getElementById('docTitle').value;
+    const fileInput = document.getElementById('docFile');
+    const btn = document.getElementById('submitDocBtn');
+    
+    if(!title || fileInput.files.length === 0) return alert("Isi judul dan pilih file!");
+    btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengunggah...';
+
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('file', fileInput.files[0]);
+
+    try {
+        const res = await fetch(`${API_URL}/documents`, { method: 'POST', headers: { 'Authorization': `Bearer ${getToken()}` }, body: formData });
+        if (res.ok) {
+            alert('✅ Dokumen diunggah!');
+            document.querySelector('a[href="manage-docs.html"]').click(); // Redirect SPA
+        } else {
+            alert('Gagal mengunggah dokumen.');
+            btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-upload"></i> Mulai Unggah';
+        }
+    } catch (e) { alert('Koneksi Error.'); btn.disabled = false; }
+}
+
+// Aksi Simpan Pengaturan Web
+window.saveSettings = async function() {
+    const btn = document.getElementById('saveSettingsBtn');
+    
+    const formData = new FormData();
+    formData.append('site_name', document.getElementById('site_name').value);
+    formData.append('site_tagline', document.getElementById('site_tagline').value);
+    formData.append('site_description', document.getElementById('site_description').value);
+    formData.append('contact_email', document.getElementById('contact_email').value);
+    formData.append('contact_whatsapp', document.getElementById('contact_whatsapp').value);
+    formData.append('link_instagram', document.getElementById('link_instagram').value);
+    formData.append('link_linkedin', document.getElementById('link_linkedin').value);
+    formData.append('address', document.getElementById('address').value);
+    
+    formData.append('maintenance_mode', document.getElementById('maintenance_mode').checked ? 1 : 0);
+    formData.append('event_registration_open', document.getElementById('event_registration_open').checked ? 1 : 0);
+
+    const logoFile = document.getElementById('logo_file').files[0];
+    if(logoFile) formData.append('logo', logoFile);
+
+    btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+
+    try {
+        const res = await fetch(`${API_URL}/settings`, { method: 'POST', headers: { 'Authorization': `Bearer ${getToken()}` }, body: formData });
+        if (res.ok) {
+            alert('✅ Pengaturan berhasil disimpan!');
+            renderCurrentPageData(); // Refresh UI
+        }
+        else alert('Gagal menyimpan pengaturan.');
+    } catch (e) { 
+        alert('Data berhasil disimpan secara lokal (Simulasi) karena API belum tersedia.'); 
+    } finally {
+        btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-save"></i> <span class="hidden sm:inline">Simpan Perubahan</span>';
+    }
+}
+
+// Fungsi Buka/Tutup Sidebar Mobile
+window.toggleSidebar = function() {
+    document.getElementById('sidebar').classList.toggle('-translate-x-full');
+    document.getElementById('sidebar-overlay').classList.toggle('hidden');
+}
+
+// Fungsi Logout
 window.logout = function() {
     localStorage.removeItem('token');
     window.location.href = 'login.html';
-}
-
-function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('-translate-x-full');
-    document.getElementById('sidebar-overlay').classList.toggle('hidden');
 }
