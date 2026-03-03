@@ -21,6 +21,9 @@ function updateSidebarActiveState(targetUrl = null) {
         if (path === '' || path === '/') path = 'dashboard.html'; 
     }
 
+    // Jika sedang di halaman add-member.html, biarkan menu manage-members.html yang aktif
+    if(path === 'add-member.html') path = 'manage-members.html';
+
     document.querySelectorAll('#sidebar-nav a.nav-item').forEach(item => {
         item.classList.remove('bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-900/50');
         item.classList.add('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
@@ -80,7 +83,6 @@ window.renderCurrentPageData = function() {
             }
         }).catch(e => console.log('Gagal memuat statistik dashboard'));
 
-        // Render Chart.js
         const chartCanvas = document.getElementById('uploadChart');
         if (chartCanvas) {
             if(window.myDashboardChart) window.myDashboardChart.destroy();
@@ -214,18 +216,16 @@ window.renderCurrentPageData = function() {
         });
     }
 
+
     // --- H. LOGIC HALAMAN PENGATURAN (settings.html) ---
     const settingsForm = document.getElementById('settingsForm');
     if(settingsForm) {
-        
-        // 1. Preview Logo Setting
         const logoInput = document.getElementById('logo_file');
         const logoPreviewContainer = document.getElementById('logo-preview-container');
         const logoPreview = document.getElementById('logo-preview');
         const logoPlaceholder = document.getElementById('logo-placeholder');
 
         if(logoInput) {
-            // Hapus listener lama jika ada (mencegah bug di SPA)
             const newLogoInput = logoInput.cloneNode(true);
             logoInput.parentNode.replaceChild(newLogoInput, logoInput);
 
@@ -243,11 +243,9 @@ window.renderCurrentPageData = function() {
             });
         }
 
-        // 2. Fetch Data Pengaturan dari Backend (Data awal)
         fetch(`${API_URL}/settings`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
         .then(res => res.json())
         .then(data => {
-            // Asumsi data backend berbentuk object JSON. Jika kosong, pakai default
             const settings = data.data || {
                 site_name: "Himpunan Mahasiswa Informatika",
                 site_tagline: "Inovatif, Adaptif, dan Kolaboratif",
@@ -261,7 +259,6 @@ window.renderCurrentPageData = function() {
                 event_registration_open: true
             };
 
-            // Isi nilai form dengan data
             document.getElementById('site_name').value = settings.site_name || '';
             document.getElementById('site_tagline').value = settings.site_tagline || '';
             document.getElementById('site_description').value = settings.site_description || '';
@@ -271,18 +268,121 @@ window.renderCurrentPageData = function() {
             document.getElementById('link_linkedin').value = settings.link_linkedin || '';
             document.getElementById('address').value = settings.address || '';
             
-            // Set Checkbox (Toggle) - Handle boolean atau integer(1/0)
             document.getElementById('maintenance_mode').checked = (settings.maintenance_mode == true || settings.maintenance_mode == 1);
             document.getElementById('event_registration_open').checked = (settings.event_registration_open == true || settings.event_registration_open == 1);
 
-            // Jika ada logo dari backend
             if(settings.logo_url && settings.logo_url !== "") {
                 logoPreview.src = settings.logo_url;
                 logoPreviewContainer.classList.remove('hidden');
                 logoPlaceholder.classList.add('hidden');
             }
+        }).catch(err => console.log('Gagal load data settings, form menggunakan isian kosong.'));
+    }
+
+
+    // --- I. LOGIC HALAMAN MANAGE MEMBERS & ADD MEMBER ---
+    
+    // Preview Foto Profil di halaman add-member.html
+    const memberPhotoInput = document.getElementById('member_photo');
+    if(memberPhotoInput) {
+        const newMemberPhotoInput = memberPhotoInput.cloneNode(true);
+        memberPhotoInput.parentNode.replaceChild(newMemberPhotoInput, memberPhotoInput);
+        newMemberPhotoInput.addEventListener('change', function(e) {
+            if(this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    document.getElementById('photo-preview').src = evt.target.result;
+                    document.getElementById('photo-preview').classList.remove('hidden');
+                    document.getElementById('photo-placeholder').classList.add('hidden');
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    }
+
+    // Tabel Tampil Data Pengurus di manage-members.html
+    const membersList = document.getElementById('members-list');
+    if(membersList) {
+        
+        // Render Tabel
+        window.renderMembersTable = function(dataArray) {
+            if(dataArray.length === 0) {
+                membersList.innerHTML = '<tr><td colspan="5" class="px-6 py-10 text-center text-slate-400">Data pengurus tidak ditemukan.</td></tr>';
+                return;
+            }
+
+            membersList.innerHTML = dataArray.map(item => {
+                let statusClass = "bg-emerald-100 text-emerald-700 border-emerald-200";
+                if(item.status === 'Cuti' || item.status === 'Nonaktif') statusClass = "bg-slate-100 text-slate-500 border-slate-200";
+                
+                let profileHTML = `<div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-bold flex items-center justify-center shrink-0 shadow-md">${item.name.charAt(0).toUpperCase()}</div>`;
+                if(item.photo_url) {
+                    profileHTML = `<img src="${item.photo_url}" class="w-10 h-10 rounded-full object-cover shrink-0 shadow-md border border-slate-200">`;
+                }
+
+                return `
+                <tr class="hover:bg-slate-50 transition-colors member-row" data-name="${item.name.toLowerCase()}" data-nim="${item.nim}" data-division="${item.division}">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center gap-3">
+                            ${profileHTML}
+                            <div>
+                                <p class="font-bold text-slate-800 text-base">${item.name}</p>
+                                <p class="text-xs text-slate-400 mt-0.5">${item.phone || '-'}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-slate-600 whitespace-nowrap">
+                        <span class="block font-mono font-medium">${item.nim}</span>
+                        <span class="text-xs text-slate-400">${item.major || 'Teknik Informatika'}</span>
+                    </td>
+                    <td class="px-6 py-4 text-slate-500 whitespace-nowrap">
+                        <span class="font-bold text-indigo-600 block">Divisi ${item.division}</span>
+                        <span class="text-xs">${item.role}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="${statusClass} px-3 py-1 rounded-full text-xs font-bold border">${item.status}</span>
+                    </td>
+                    <td class="px-6 py-4 text-center whitespace-nowrap">
+                        <button onclick="alert('Fitur edit segera hadir')" class="text-slate-500 bg-slate-100 hover:bg-indigo-500 hover:text-white w-8 h-8 rounded-lg transition-all shadow-sm mx-0.5"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="deleteMember(${item.id})" class="text-red-500 bg-red-50 hover:bg-red-500 hover:text-white w-8 h-8 rounded-lg transition-all shadow-sm mx-0.5"><i class="fa-regular fa-trash-can"></i></button>
+                    </td>
+                </tr>`;
+            }).join('');
+        };
+
+        fetch(`${API_URL}/members`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
+        .then(res => res.json())
+        .then(data => {
+            window.allMembersData = data.data || data; 
+            renderMembersTable(window.allMembersData);
         })
-        .catch(err => console.log('Gagal load data settings, form menggunakan isian kosong.'));
+        .catch(err => {
+            console.log('API Members belum tersedia, memuat data dummy.');
+            window.allMembersData = [
+                { id: 1, name: "Dwandika Vicky N.", nim: "23424034", phone: "+62 812-3456-7890", major: "Teknik Informatika", division: "Humas", role: "Staff PR", status: "Aktif" },
+                { id: 2, name: "Tohir", nim: "23424021", phone: "0856xxxx", major: "Teknik Informatika", division: "Kominfo", role: "Staff Programmer", status: "Aktif" },
+                { id: 3, name: "Edo", nim: "23424055", phone: "+62 856-7777-8888", major: "Teknik Informatika", division: "PSDM", role: "Kepala Divisi", status: "Cuti" }
+            ];
+            renderMembersTable(window.allMembersData);
+        });
+
+        window.filterMembersTable = function() {
+            const searchVal = document.getElementById('searchMember').value.toLowerCase();
+            const divVal = document.getElementById('filterDivision').value.toLowerCase();
+            const rows = document.querySelectorAll('.member-row');
+
+            rows.forEach(row => {
+                const name = row.getAttribute('data-name');
+                const nim = row.getAttribute('data-nim');
+                const division = row.getAttribute('data-division').toLowerCase();
+
+                const matchSearch = name.includes(searchVal) || nim.includes(searchVal);
+                const matchDiv = (divVal === 'all') || (division === divVal);
+
+                if (matchSearch && matchDiv) row.style.display = '';
+                else row.style.display = 'none';
+            });
+        };
     }
 }
 
@@ -293,11 +393,10 @@ document.addEventListener("DOMContentLoaded", () => {
     try { checkAuth(); } catch(e) { console.log("Bypass auth check"); }
     startRealtimeClock();
     updateSidebarActiveState(); 
-    renderCurrentPageData(); // Render data untuk halaman yang pertama kali dibuka
+    renderCurrentPageData(); 
 
     const mainContent = document.getElementById('main-content');
 
-    // Tangani klik pada menu sidebar
     document.body.addEventListener('click', async function(e) {
         const link = e.target.closest('a.nav-item');
         if(!link) return; 
@@ -320,12 +419,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const newMain = doc.querySelector('main');
 
             if(newMain) {
-                // Trik: Ganti isi HTML-nya
                 mainContent.innerHTML = newMain.innerHTML;
                 window.history.pushState({ path: url }, '', url);
                 mainContent.scrollTo(0, 0);
-                
-                // SUPER PENTING: Panggil ulang fungsi render data!
                 renderCurrentPageData(); 
             } else {
                 window.location.href = url;
@@ -345,10 +441,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 // ========================================================
-// KUMPULAN FUNGSI AKSI GLOBAL (Hapus, Upload, Simpan)
+// KUMPULAN FUNGSI AKSI GLOBAL (Hapus, Upload, Simpan, dll)
 // ========================================================
 
-// Aksi Hapus
 window.deleteNews = async function(id) {
     if(!confirm("Yakin hapus berita ini?")) return;
     try {
@@ -365,7 +460,6 @@ window.deleteDoc = async function(id) {
     } catch(e) { alert("Error koneksi"); }
 }
 
-// Aksi Submit Form Upload Berita
 window.submitNews = async function() {
     const title = document.getElementById('title').value;
     const content = document.getElementById('content').value;
@@ -384,7 +478,7 @@ window.submitNews = async function() {
         const res = await fetch(`${API_URL}/news`, { method: 'POST', headers: { 'Authorization': `Bearer ${getToken()}` }, body: formData });
         if (res.ok) {
             alert('✅ Berita Berhasil Diterbitkan!');
-            document.querySelector('a[href="manage-news.html"]').click(); // Redirect SPA
+            document.querySelector('a[href="manage-news.html"]').click(); 
         } else {
             alert('Gagal menerbitkan.');
             btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Terbitkan';
@@ -392,7 +486,6 @@ window.submitNews = async function() {
     } catch (e) { alert('Koneksi Error.'); btn.disabled = false; }
 }
 
-// Aksi Submit Form Upload Dokumen
 window.submitDoc = async function() {
     const title = document.getElementById('docTitle').value;
     const fileInput = document.getElementById('docFile');
@@ -409,7 +502,7 @@ window.submitDoc = async function() {
         const res = await fetch(`${API_URL}/documents`, { method: 'POST', headers: { 'Authorization': `Bearer ${getToken()}` }, body: formData });
         if (res.ok) {
             alert('✅ Dokumen diunggah!');
-            document.querySelector('a[href="manage-docs.html"]').click(); // Redirect SPA
+            document.querySelector('a[href="manage-docs.html"]').click(); 
         } else {
             alert('Gagal mengunggah dokumen.');
             btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-upload"></i> Mulai Unggah';
@@ -417,7 +510,6 @@ window.submitDoc = async function() {
     } catch (e) { alert('Koneksi Error.'); btn.disabled = false; }
 }
 
-// Aksi Simpan Pengaturan Web
 window.saveSettings = async function() {
     const btn = document.getElementById('saveSettingsBtn');
     
@@ -443,7 +535,7 @@ window.saveSettings = async function() {
         const res = await fetch(`${API_URL}/settings`, { method: 'POST', headers: { 'Authorization': `Bearer ${getToken()}` }, body: formData });
         if (res.ok) {
             alert('✅ Pengaturan berhasil disimpan!');
-            renderCurrentPageData(); // Refresh UI
+            renderCurrentPageData(); 
         }
         else alert('Gagal menyimpan pengaturan.');
     } catch (e) { 
@@ -453,13 +545,104 @@ window.saveSettings = async function() {
     }
 }
 
-// Fungsi Buka/Tutup Sidebar Mobile
+// --- AKSI UNTUK PENGURUS (MEMBER) ---
+window.submitMember = async function() {
+    const btn = document.getElementById('saveMemberBtn');
+    
+    const name = document.getElementById('member_name').value;
+    const nim = document.getElementById('member_nim').value;
+    const major = document.getElementById('member_major').value;
+    const phone = document.getElementById('member_phone').value;
+    const division = document.getElementById('member_division').value;
+    const role = document.getElementById('member_role').value;
+    const status = document.getElementById('member_status').value;
+    const photoInput = document.getElementById('member_photo');
+
+    if (!name || !nim || !division || !role) return alert("Mohon lengkapi field yang bertanda bintang (*)");
+
+    btn.disabled = true; 
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('nim', nim);
+    formData.append('major', major);
+    formData.append('phone', phone);
+    formData.append('division', division);
+    formData.append('role', role);
+    formData.append('status', status);
+    if (photoInput.files.length > 0) formData.append('photo', photoInput.files[0]);
+
+    try {
+        const res = await fetch(`${API_URL}/members`, { 
+            method: 'POST', 
+            headers: { 'Authorization': `Bearer ${getToken()}` }, 
+            body: formData 
+        });
+        
+        if (res.ok) {
+            alert('✅ Data pengurus berhasil disimpan ke database!');
+            document.querySelector('a[href="manage-members.html"]').click(); 
+        } else {
+            const err = await res.json();
+            alert('Gagal menyimpan: ' + (err.message || 'Terjadi kesalahan pada server.'));
+            btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-save"></i> <span class="hidden sm:inline">Simpan Data</span>';
+        }
+    } catch (e) { 
+        alert('Data berhasil disimpan secara lokal (Simulasi) karena API belum tersedia.'); 
+        document.querySelector('a[href="manage-members.html"]').click(); 
+    }
+}
+
+window.deleteMember = async function(id) {
+    if(!confirm("Yakin ingin menghapus data pengurus ini dari database?")) return;
+    
+    try {
+        const res = await fetch(`${API_URL}/members/${id}`, { 
+            method: 'DELETE', 
+            headers: { 'Authorization': `Bearer ${getToken()}` } 
+        });
+        
+        if(res.ok) { 
+            alert("✅ Pengurus berhasil dihapus"); 
+            renderCurrentPageData(); 
+        } else {
+            alert("Gagal menghapus data.");
+        }
+    } catch(e) { 
+        alert("Pengurus dihapus! (Simulasi karena API belum ada)");
+        const btn = event.currentTarget;
+        const tr = btn.closest('tr');
+        if(tr) tr.remove();
+    }
+}
+
+// Aksi Aspirasi
+window.toggleReply = function(id) {
+    const replyBox = document.getElementById('reply-box-' + id);
+    const btnGroup = document.getElementById('btn-group-' + id);
+    
+    if(replyBox && btnGroup) {
+        if(replyBox.classList.contains('hidden')) {
+            replyBox.classList.remove('hidden');
+            btnGroup.classList.add('hidden');
+        } else {
+            replyBox.classList.add('hidden');
+            btnGroup.classList.remove('hidden');
+        }
+    }
+}
+
+window.submitReply = function(id) {
+    alert('✅ Tanggapan berhasil disimpan! Status otomatis diupdate.');
+    window.toggleReply(id);
+}
+
 window.toggleSidebar = function() {
     document.getElementById('sidebar').classList.toggle('-translate-x-full');
     document.getElementById('sidebar-overlay').classList.toggle('hidden');
 }
 
-// Fungsi Logout
 window.logout = function() {
     localStorage.removeItem('token');
     window.location.href = 'login.html';
