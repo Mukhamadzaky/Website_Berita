@@ -7,6 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    
     <style>
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #f1f5f9; }
@@ -155,13 +157,14 @@
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
                 <div class="w-full md:w-1/3">
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Pilih Event / Kegiatan</label>
-                    <select class="w-full border border-slate-200 bg-white px-4 py-3 rounded-xl font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer shadow-sm appearance-none">
-                        <option value="1" selected>Seminar Nasional Teknologi AI 2026</option>
-                        <option value="2">Pelatihan Web Development Dasar</option>
-                        <option value="3">Makrab Mahasiswa Baru 2026</option>
+                    <select id="eventSelect" class="w-full border border-slate-200 bg-white px-4 py-3 rounded-xl font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer shadow-sm appearance-none">
+                        <option value="Seminar Nasional Teknologi AI 2026" selected>Seminar Nasional Teknologi AI 2026</option>
+                        <option value="Pelatihan Web Development Dasar">Pelatihan Web Development Dasar</option>
+                        <option value="Makrab Mahasiswa Baru 2026">Makrab Mahasiswa Baru 2026</option>
                     </select>
                 </div>
-                <button class="bg-slate-800 hover:bg-slate-900 text-white px-5 py-3 rounded-xl font-bold shadow-lg transition-all flex items-center justify-center gap-2 whitespace-nowrap">
+                
+                <button onclick="window.exportToExcel()" class="bg-slate-800 hover:bg-slate-900 text-white px-5 py-3 rounded-xl font-bold shadow-lg transition-all flex items-center justify-center gap-2 whitespace-nowrap">
                     <i class="fa-solid fa-file-excel text-emerald-400"></i> Export ke Excel
                 </button>
             </div>
@@ -171,111 +174,71 @@
                     <div class="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-xl"><i class="fa-solid fa-users"></i></div>
                     <div>
                         <p class="text-sm font-medium text-slate-500">Total Pendaftar</p>
-                        <h3 class="text-2xl font-bold text-slate-800">145</h3>
+                        <h3 class="text-2xl font-bold text-slate-800">3</h3>
                     </div>
                 </div>
                 <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
                     <div class="w-12 h-12 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center text-xl"><i class="fa-solid fa-user-check"></i></div>
                     <div>
                         <p class="text-sm font-medium text-slate-500">Terverifikasi</p>
-                        <h3 class="text-2xl font-bold text-slate-800">120</h3>
+                        <h3 class="text-2xl font-bold text-slate-800">1</h3>
                     </div>
                 </div>
                 <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
                     <div class="w-12 h-12 rounded-full bg-yellow-50 text-yellow-500 flex items-center justify-center text-xl"><i class="fa-solid fa-user-clock"></i></div>
                     <div>
                         <p class="text-sm font-medium text-slate-500">Menunggu Cek</p>
-                        <h3 class="text-2xl font-bold text-slate-800">25</h3>
+                        <h3 class="text-2xl font-bold text-slate-800">1</h3>
                     </div>
                 </div>
             </div>
 
             <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
                 <div class="overflow-x-auto w-full">
-                    <table class="w-full text-left min-w-full">
+                    <table id="registrationTable" class="w-full text-left min-w-full">
                         <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase text-xs tracking-wider">
                             <tr>
                                 <th class="px-6 py-4 whitespace-nowrap">Nama Peserta</th>
+                                <th class="px-6 py-4 whitespace-nowrap">Email</th>
                                 <th class="px-6 py-4 whitespace-nowrap">NIM / Instansi</th>
                                 <th class="px-6 py-4 whitespace-nowrap">Waktu Daftar</th>
                                 <th class="px-6 py-4 whitespace-nowrap">Status</th>
-                                <th class="px-6 py-4 text-center whitespace-nowrap">Aksi</th>
+                                <th class="px-6 py-4 text-center whitespace-nowrap no-export">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="registrations-list" class="divide-y divide-slate-100 text-sm">
                             
                             <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <p class="font-bold text-slate-700">Ahmad Budi Santoso</p>
-                                    <p class="text-xs text-slate-500 font-mono mt-0.5">ahmad.budi@email.com</p>
-                                </td>
-                                <td class="px-6 py-4 text-slate-600 whitespace-nowrap">
-                                    <span class="block">23424001</span>
-                                    <span class="text-xs text-slate-400">Univ. Telkom</span>
-                                </td>
-                                <td class="px-6 py-4 text-slate-500 whitespace-nowrap">
-                                    25 Feb 2026<br><span class="text-xs">08:15 WIB</span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold border border-emerald-200">
-                                        <i class="fa-solid fa-check mr-1"></i> Terverifikasi
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 text-center whitespace-nowrap">
-                                    <button class="text-blue-500 bg-blue-50 hover:bg-blue-500 hover:text-white w-8 h-8 rounded-lg transition-all shadow-sm mx-1" title="Lihat Detail/Bukti Bayar">
-                                        <i class="fa-solid fa-eye"></i>
-                                    </button>
+                                <td class="px-6 py-4 whitespace-nowrap font-bold text-slate-700">Ahmad Budi Santoso</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-slate-500">ahmad.budi@email.com</td>
+                                <td class="px-6 py-4 text-slate-600 whitespace-nowrap">23424001 (Univ. Telkom)</td>
+                                <td class="px-6 py-4 text-slate-500 whitespace-nowrap">25 Feb 2026, 08:15 WIB</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-emerald-700 font-bold">Terverifikasi</td>
+                                <td class="px-6 py-4 text-center whitespace-nowrap no-export">
+                                    <button class="text-blue-500 bg-blue-50 hover:bg-blue-500 hover:text-white w-8 h-8 rounded-lg transition-all shadow-sm mx-1"><i class="fa-solid fa-eye"></i></button>
                                 </td>
                             </tr>
 
                             <tr class="hover:bg-slate-50 transition-colors bg-yellow-50/30">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <p class="font-bold text-slate-700">Siti Aminah</p>
-                                    <p class="text-xs text-slate-500 font-mono mt-0.5">siti.amnh@email.com</p>
-                                </td>
-                                <td class="px-6 py-4 text-slate-600 whitespace-nowrap">
-                                    <span class="block">23424034</span>
-                                    <span class="text-xs text-slate-400">Informatika Reguler</span>
-                                </td>
-                                <td class="px-6 py-4 text-slate-500 whitespace-nowrap">
-                                    25 Feb 2026<br><span class="text-xs">09:30 WIB</span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-bold border border-yellow-200">
-                                        <i class="fa-regular fa-clock mr-1"></i> Pending
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 text-center whitespace-nowrap">
-                                    <button class="text-emerald-500 bg-emerald-50 hover:bg-emerald-500 hover:text-white w-8 h-8 rounded-lg transition-all shadow-sm mx-1" title="Verifikasi Peserta">
-                                        <i class="fa-solid fa-check"></i>
-                                    </button>
-                                    <button class="text-red-500 bg-red-50 hover:bg-red-500 hover:text-white w-8 h-8 rounded-lg transition-all shadow-sm mx-1" title="Tolak">
-                                        <i class="fa-solid fa-xmark"></i>
-                                    </button>
+                                <td class="px-6 py-4 whitespace-nowrap font-bold text-slate-700">Siti Aminah</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-slate-500">siti.amnh@email.com</td>
+                                <td class="px-6 py-4 text-slate-600 whitespace-nowrap">23424034 (Informatika Reguler)</td>
+                                <td class="px-6 py-4 text-slate-500 whitespace-nowrap">25 Feb 2026, 09:30 WIB</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-yellow-700 font-bold">Pending</td>
+                                <td class="px-6 py-4 text-center whitespace-nowrap no-export">
+                                    <button class="text-emerald-500 bg-emerald-50 hover:bg-emerald-500 hover:text-white w-8 h-8 rounded-lg transition-all shadow-sm mx-1"><i class="fa-solid fa-check"></i></button>
+                                    <button class="text-red-500 bg-red-50 hover:bg-red-500 hover:text-white w-8 h-8 rounded-lg transition-all shadow-sm mx-1"><i class="fa-solid fa-xmark"></i></button>
                                 </td>
                             </tr>
 
                              <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <p class="font-bold text-slate-700">Tohirudin</p>
-                                    <p class="text-xs text-slate-500 font-mono mt-0.5">tohir.dev@email.com</p>
-                                </td>
-                                <td class="px-6 py-4 text-slate-600 whitespace-nowrap">
-                                    <span class="block">-</span>
-                                    <span class="text-xs text-slate-400">Umum / Profesional</span>
-                                </td>
-                                <td class="px-6 py-4 text-slate-500 whitespace-nowrap">
-                                    24 Feb 2026<br><span class="text-xs">20:10 WIB</span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-bold border border-red-200">
-                                        <i class="fa-solid fa-ban mr-1"></i> Ditolak
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 text-center whitespace-nowrap">
-                                    <button class="text-slate-500 bg-slate-100 hover:bg-slate-500 hover:text-white w-8 h-8 rounded-lg transition-all shadow-sm mx-1" title="Hapus Data">
-                                        <i class="fa-regular fa-trash-can"></i>
-                                    </button>
+                                <td class="px-6 py-4 whitespace-nowrap font-bold text-slate-700">Tohirudin</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-slate-500">tohir.dev@email.com</td>
+                                <td class="px-6 py-4 text-slate-600 whitespace-nowrap">- (Umum / Profesional)</td>
+                                <td class="px-6 py-4 text-slate-500 whitespace-nowrap">24 Feb 2026, 20:10 WIB</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-red-700 font-bold">Ditolak</td>
+                                <td class="px-6 py-4 text-center whitespace-nowrap no-export">
+                                    <button class="text-slate-500 bg-slate-100 hover:bg-slate-500 hover:text-white w-8 h-8 rounded-lg transition-all shadow-sm mx-1"><i class="fa-regular fa-trash-can"></i></button>
                                 </td>
                             </tr>
 

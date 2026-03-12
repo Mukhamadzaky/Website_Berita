@@ -152,9 +152,26 @@
                 </div>
             </div>
 
+            <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4 border-b border-slate-200 pb-2">Agenda Mendatang</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pb-8" id="agenda-container">
-                <div class="col-span-full py-10 text-center text-slate-400">
-                    <i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i><br>Memuat Agenda...
+                </div>
+
+            <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4 border-b border-slate-200 pb-2 mt-4">Riwayat Seluruh Agenda</h3>
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden mb-10">
+                <div class="overflow-x-auto w-full">
+                    <table class="w-full text-left min-w-full">
+                        <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase text-xs tracking-wider">
+                            <tr>
+                                <th class="px-6 py-4 whitespace-nowrap">Nama Kegiatan</th>
+                                <th class="px-6 py-4 whitespace-nowrap">Tanggal & Waktu</th>
+                                <th class="px-6 py-4 whitespace-nowrap">Lokasi</th>
+                                <th class="px-6 py-4 whitespace-nowrap">Status</th>
+                                <th class="px-6 py-4 text-center whitespace-nowrap">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="agenda-history-list" class="divide-y divide-slate-100 text-sm">
+                            </tbody>
+                    </table>
                 </div>
             </div>
 
