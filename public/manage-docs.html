@@ -2,13 +2,13 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#f8fafc">
     <title>Kelola Dokumen - Portal Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #f1f5f9; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
@@ -16,10 +16,20 @@
         .no-select {
             -webkit-tap-highlight-color: transparent;
             -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
             user-select: none;
             outline: none !important;
+        }
+
+        /* Penyesuaian Padding Tabel Khusus Mobile yang dirender dari JS */
+        @media (max-width: 768px) {
+            #doc-list td {
+                padding: 12px 16px !important;
+                font-size: 13px !important;
+            }
+            #doc-list button {
+                width: 32px !important;
+                height: 32px !important;
+            }
         }
     </style>
 </head>
@@ -39,7 +49,7 @@
         </div>
         
         <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto" id="sidebar-nav">
-            <a href="index.html" class="flex items-center w-full px-4 py-3 bg-emerald-600/10 text-emerald-400 border border-emerald-600/20 hover:bg-emerald-600 hover:text-white rounded-xl transition-colors group mb-6 no-select cursor-pointer">
+            <a href="index.html" target="_blank" class="flex items-center w-full px-4 py-3 bg-emerald-600/10 text-emerald-400 border border-emerald-600/20 hover:bg-emerald-600 hover:text-white rounded-xl transition-colors group mb-6 no-select cursor-pointer">
                 <div class="w-8 flex items-center"><i class="fa-solid fa-globe text-lg"></i></div>
                 <span class="font-semibold text-sm">Beranda</span>
             </a>
@@ -86,8 +96,8 @@
                     <div class="w-8 flex items-center"><i class="fa-solid fa-list-check text-lg group-hover:text-blue-400 transition-colors"></i></div>
                     <span class="font-medium text-sm">Kelola Berita</span>
                 </a>
-                <a href="manage-docs.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
-                    <div class="w-8 flex items-center"><i class="fa-solid fa-folder-tree text-lg group-hover:text-orange-400 transition-colors"></i></div>
+                <a href="manage-docs.html" class="nav-item flex items-center w-full px-4 py-3 bg-orange-600 text-white rounded-xl shadow-lg shadow-orange-900/50 no-select cursor-pointer">
+                    <div class="w-8 flex items-center"><i class="fa-solid fa-folder-tree text-lg"></i></div>
                     <span class="font-medium text-sm">Kelola Dokumen</span>
                 </a>
                 <a href="manage-members.html" class="nav-item flex items-center w-full px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors group no-select cursor-pointer">
@@ -121,7 +131,7 @@
         </nav>
 
         <div class="p-6 border-t border-slate-800">
-            <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-4 py-3 text-red-400 bg-red-500/10 hover:bg-red-500 hover:text-white rounded-xl transition-colors font-bold text-sm no-select cursor-pointer">
+            <button onclick="window.logout()" class="w-full flex items-center justify-center gap-2 px-4 py-3 text-red-400 bg-red-500/10 hover:bg-red-500 hover:text-white rounded-xl transition-colors font-bold text-sm no-select cursor-pointer">
                 <i class="fa-solid fa-power-off"></i> Logout
             </button>
         </div>
@@ -129,239 +139,60 @@
 
     <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50 w-full transition-opacity duration-300" id="main-content">
         
-        <header class="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-4 md:px-8 z-10 sticky top-0 w-full">
+        <header class="h-16 md:h-20 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-4 md:px-8 z-10 sticky top-0 w-full">
             <div class="flex items-center gap-4">
-                <button onclick="toggleSidebar()" class="md:hidden text-slate-500 hover:text-blue-600 focus:outline-none p-2 rounded-lg bg-slate-100 transition-colors">
-                    <i class="fa-solid fa-bars text-xl"></i>
+                <button onclick="toggleSidebar()" class="md:hidden text-slate-500 hover:text-orange-600 focus:outline-none p-2 rounded-lg bg-slate-100 transition-colors">
+                    <i class="fa-solid fa-bars text-lg md:text-xl"></i>
                 </button>
-                <h2 class="text-xl font-bold text-slate-700">Manajemen Dokumen</h2>
+                <h2 class="text-base md:text-xl font-bold text-slate-700">Manajemen Dokumen</h2>
             </div>
             
-            <div class="flex items-center gap-4 md:gap-6">
-                <a href="upload-doc.html" class="nav-item bg-blue-600 hover:bg-blue-700 text-white px-3 md:px-4 py-2 rounded-lg font-bold text-sm shadow-lg shadow-blue-600/20 flex items-center gap-2 transition-all">
-                    <i class="fa-solid fa-upload"></i> <span class="hidden sm:inline">Upload Baru</span>
-                </a>
-                
-                <div class="flex items-center gap-4 md:border-l md:border-slate-200 md:pl-6">
-                    <div class="text-right hidden md:block no-select">
-                        <p id="admin-name" class="text-sm font-bold text-slate-700">Memuat...</p>
-                        <p id="realtime-clock" class="text-xs font-mono font-bold text-blue-600 tracking-wider mt-0.5">00:00:00 WIB</p>
-                    </div>
-                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 p-[2px] shadow-md no-select">
-                        <div id="admin-avatar" class="w-full h-full bg-white rounded-full flex items-center justify-center font-bold text-slate-700 text-sm">
-                            <i class="fa-solid fa-spinner fa-spin text-xs"></i>
-                        </div>
+            <div class="flex items-center gap-3 md:gap-4">
+                <div class="text-right hidden sm:block no-select">
+                    <p id="admin-name" class="text-sm font-bold text-slate-700">Memuat...</p>
+                    <p id="realtime-clock" class="text-xs font-mono font-bold text-blue-600 tracking-wider mt-0.5">00:00:00 WIB</p>
+                </div>
+                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 p-[2px] shadow-md no-select">
+                    <div id="admin-avatar" class="w-full h-full bg-white rounded-full flex items-center justify-center font-bold text-slate-700 text-xs md:text-sm">
+                        <i class="fa-solid fa-spinner fa-spin"></i>
                     </div>
                 </div>
             </div>
         </header>
 
         <div class="flex-1 overflow-y-auto p-4 md:p-8 w-full" id="inner-content">
-            <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+            
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 md:mb-8">
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold text-slate-800">Dokumen Publik</h1>
+                    <p class="text-xs md:text-sm text-slate-500 mt-1">Kelola file PDF, Word, atau Excel yang dapat diunduh publik.</p>
+                </div>
+                <a href="upload-doc.html" class="nav-item w-full md:w-auto bg-orange-600 hover:bg-orange-700 text-white px-5 py-3 md:py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-orange-600/30 transition-all flex items-center justify-center gap-2 shrink-0">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload Dokumen
+                </a>
+            </div>
+
+            <div class="bg-white rounded-2xl md:rounded-3xl shadow-sm border border-slate-100 overflow-hidden mb-8">
                 <div class="overflow-x-auto w-full">
                     <table class="w-full text-left min-w-full">
-                        <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase text-xs tracking-wider">
+                        <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase text-[10px] md:text-xs tracking-wider">
                             <tr>
-                                <th class="px-6 py-4 whitespace-nowrap">Nama File</th>
-                                <th class="px-6 py-4 whitespace-nowrap">Tipe Format</th>
-                                <th class="px-6 py-4 text-center w-32 whitespace-nowrap">Aksi</th>
+                                <th class="px-4 md:px-6 py-3 md:py-4 whitespace-nowrap min-w-[200px]">Nama File</th>
+                                <th class="px-4 md:px-6 py-3 md:py-4 whitespace-nowrap">Tipe Format</th>
+                                <th class="px-4 md:px-6 py-3 md:py-4 text-center w-24 md:w-32 whitespace-nowrap">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody id="doc-list" class="divide-y divide-slate-100 text-sm">
+                        <tbody id="doc-list" class="divide-y divide-slate-100 text-xs md:text-sm">
                             <tr><td colspan="3" class="px-6 py-8 text-center text-slate-400">Memuat data...</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
+
         </div>
     </main>
 
     <script src="config.js"></script>
-    <script>
-        // Mempertahankan fungsi auth
-        try { checkAuth(); } catch(e) { console.log("Bypass config.js check"); }
-        function logout() { localStorage.removeItem('token'); window.location.href = 'login.html'; }
-
-        // Fungsi Toggle Sidebar Mobile
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('-translate-x-full');
-            document.getElementById('sidebar-overlay').classList.toggle('hidden');
-        }
-
-        // ========================================================
-        // FUNGSI UPDATE WARNA SIDEBAR (TAHAN REFRESH)
-        // ========================================================
-        function updateSidebarActiveState(targetUrl = null) {
-            let path = targetUrl;
-            if (!path) {
-                path = window.location.pathname.split('/').pop(); 
-                path = path.split('?')[0].split('#')[0]; 
-                if (path === '' || path === '/') path = 'dashboard.html'; 
-            }
-
-            document.querySelectorAll('#sidebar-nav a.nav-item').forEach(item => {
-                item.classList.remove('bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-900/50');
-                item.classList.add('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
-                
-                const icon = item.querySelector('i');
-                if(icon) icon.className = icon.className.replace(/group-hover:text-[a-z]+-\d+/g, '');
-                
-                if (item.getAttribute('href') === path) {
-                    item.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
-                    item.classList.add('bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-900/50');
-                }
-            });
-        }
-
-        // ========================================================
-        // FUNGSI INIT HALAMAN KONTEN & LOGIC TABEL DOKUMEN
-        // ========================================================
-        function initPageContent() {
-            // Load Profile Header
-            try {
-                fetch(`${API_URL}/profile`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
-                .then(res => res.json())
-                .then(user => {
-                    if(user && user.name) {
-                        const nameEl = document.getElementById('admin-name');
-                        const avatarEl = document.getElementById('admin-avatar');
-                        if(nameEl) nameEl.innerText = user.name;
-                        if(avatarEl) avatarEl.innerText = user.name.charAt(0).toUpperCase();
-                    }
-                });
-            } catch(e) {}
-
-            // Load Notifikasi Dot
-            try {
-                fetch(`${API_URL}/dashboard-stats`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
-                .then(res => res.json())
-                .then(data => {
-                    if(data.unread_messages > 0) {
-                        const dot = document.getElementById('badge-dot');
-                        if(dot) dot.classList.remove('hidden');
-                    }
-                });
-            } catch(e) {}
-
-            // LOAD DATA DOKUMEN
-            const docList = document.getElementById('doc-list');
-            if(docList) {
-                try {
-                    fetch(`${API_URL}/documents`)
-                    .then(res => res.json())
-                    .then(data => {
-                        if(data.length === 0) { 
-                            docList.innerHTML = '<tr><td colspan="3" class="px-6 py-8 text-center text-slate-400">Belum ada dokumen.</td></tr>'; 
-                            return; 
-                        }
-
-                        docList.innerHTML = data.map(item => {
-                            // Beri warna badge sesuai tipe file
-                            let typeClass = 'bg-slate-100 text-slate-500 border-slate-200';
-                            const type = (item.file_type || '').toLowerCase();
-                            
-                            if(type.includes('pdf')) typeClass = 'bg-red-50 text-red-600 border-red-200';
-                            else if(type.includes('doc')) typeClass = 'bg-blue-50 text-blue-600 border-blue-200';
-                            else if(type.includes('xls')) typeClass = 'bg-green-50 text-green-600 border-green-200';
-
-                            return `
-                            <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="px-6 py-4 font-bold text-slate-700 whitespace-nowrap">${item.title}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="${typeClass} px-2 py-1 rounded text-[10px] font-bold uppercase border">${item.file_type || 'File'}</span>
-                                </td>
-                                <td class="px-6 py-4 text-center whitespace-nowrap">
-                                    <button onclick="deleteDoc(${item.id})" class="text-red-500 bg-red-50 hover:bg-red-500 hover:text-white w-8 h-8 rounded-lg transition-all shadow-sm" title="Hapus">
-                                        <i class="fa-regular fa-trash-can"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            `;
-                        }).join('');
-                    })
-                    .catch(err => {
-                        docList.innerHTML = '<tr><td colspan="3" class="px-6 py-8 text-center text-red-500">Gagal mengambil data dokumen.</td></tr>';
-                    });
-                } catch(e) { console.log('Bypass fetch docs error'); }
-            }
-        }
-
-        // FUNGSI HAPUS DOKUMEN
-        window.deleteDoc = async function(id) {
-            if(!confirm("Yakin ingin menghapus dokumen ini selamanya?")) return;
-            try {
-                const res = await fetch(`${API_URL}/documents/${id}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${getToken()}` }
-                });
-                if(res.ok) {
-                    alert("✅ Dokumen berhasil dihapus");
-                    initPageContent(); // Refresh tabel tanpa reload halaman
-                } else {
-                    alert("Gagal menghapus.");
-                }
-            } catch (err) { alert("Error koneksi"); }
-        }
-
-        // ========================================================
-        // ENGINE SPA ROUTER
-        // ========================================================
-        document.addEventListener("DOMContentLoaded", () => {
-            updateSidebarActiveState(); 
-            initPageContent();
-
-            const mainContent = document.getElementById('main-content');
-
-            document.querySelectorAll('a.nav-item').forEach(link => {
-                link.addEventListener('click', async function(e) {
-                    const url = this.getAttribute('href');
-                    
-                    if(url === '#' || url.startsWith('http')) return;
-                    e.preventDefault(); 
-                    
-                    updateSidebarActiveState(url);
-
-                    try {
-                        mainContent.style.opacity = '0.4';
-
-                        const response = await fetch(url);
-                        if (!response.ok) throw new Error('Halaman tidak ditemukan');
-                        const htmlText = await response.text();
-
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(htmlText, 'text/html');
-                        const newMain = doc.querySelector('main');
-
-                        if(newMain) {
-                            mainContent.innerHTML = newMain.innerHTML;
-                            window.history.pushState({ path: url }, '', url);
-                            mainContent.scrollTo(0, 0);
-                            
-                            initPageContent();
-                        } else {
-                            window.location.href = url;
-                        }
-
-                        setTimeout(() => mainContent.style.opacity = '1', 50);
-                        if(window.innerWidth < 768) toggleSidebar();
-
-                    } catch(error) {
-                        console.error("Gagal SPA routing:", error);
-                        window.location.href = url; 
-                    }
-                });
-            });
-
-            window.addEventListener('popstate', () => window.location.reload());
-        });
-
-        // Jam Realtime Global
-        setInterval(() => {
-            const clockEl = document.getElementById('realtime-clock');
-            if(clockEl) {
-                clockEl.innerText = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' WIB';
-            }
-        }, 1000);
-    </script>
+    <script src="admin-core.js"></script>
 </body>
 </html>
