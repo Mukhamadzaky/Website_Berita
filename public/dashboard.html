@@ -2,7 +2,8 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#f8fafc">
     <title>Dashboard Premium - Portal Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -14,7 +15,7 @@
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-        /* Mencegah Teks Terblok Biru Saat Diklik */
+        /* Mencegah Teks Terblok Biru Saat Diklik (Touch Android) */
         .no-select {
             -webkit-tap-highlight-color: transparent;
             -webkit-user-select: none;
@@ -41,9 +42,9 @@
         </div>
         
         <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto" id="sidebar-nav">
-            <a href="index.html" class="flex items-center w-full px-4 py-3 bg-emerald-600/10 text-emerald-400 border border-emerald-600/20 hover:bg-emerald-600 hover:text-white rounded-xl transition-colors group mb-6 no-select cursor-pointer">
+            <a href="index.html" target="_blank" class="flex items-center w-full px-4 py-3 bg-emerald-600/10 text-emerald-400 border border-emerald-600/20 hover:bg-emerald-600 hover:text-white rounded-xl transition-colors group mb-6 no-select cursor-pointer">
                 <div class="w-8 flex items-center"><i class="fa-solid fa-globe text-lg"></i></div>
-                <span class="font-semibold text-sm">Beranda</span>
+                <span class="font-semibold text-sm">Lihat Website</span>
             </a>
 
             <div class="mb-6">
@@ -123,29 +124,29 @@
         </nav>
 
         <div class="p-6 border-t border-slate-800">
-            <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-4 py-3 text-red-400 bg-red-500/10 hover:bg-red-500 hover:text-white rounded-xl transition-colors font-bold text-sm no-select cursor-pointer">
+            <button onclick="window.logout()" class="w-full flex items-center justify-center gap-2 px-4 py-3 text-red-400 bg-red-500/10 hover:bg-red-500 hover:text-white rounded-xl transition-colors font-bold text-sm no-select cursor-pointer">
                 <i class="fa-solid fa-power-off"></i> Logout
             </button>
         </div>
     </aside>
 
     <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50 w-full transition-opacity duration-300" id="main-content">
-        <header class="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-4 md:px-8 z-10 sticky top-0 w-full">
+        <header class="h-16 md:h-20 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-4 md:px-8 z-10 sticky top-0 w-full">
             <div class="flex items-center gap-4">
                 <button onclick="toggleSidebar()" class="md:hidden text-slate-500 hover:text-blue-600 focus:outline-none p-2 rounded-lg bg-slate-100 transition-colors">
-                    <i class="fa-solid fa-bars text-xl"></i>
+                    <i class="fa-solid fa-bars text-lg md:text-xl"></i>
                 </button>
-                <h2 class="text-lg md:text-xl font-bold text-slate-700">Overview</h2>
+                <h2 class="text-base md:text-xl font-bold text-slate-700">Overview</h2>
             </div>
             
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3 md:gap-4">
                 <div class="text-right hidden sm:block no-select">
                     <p id="admin-name" class="text-sm font-bold text-slate-700">Memuat...</p>
                     <p id="realtime-clock" class="text-xs font-mono font-bold text-blue-600 tracking-wider mt-0.5">00:00:00 WIB</p>
                 </div>
-                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 p-[2px] shadow-md no-select">
-                    <div id="admin-avatar" class="w-full h-full bg-white rounded-full flex items-center justify-center font-bold text-slate-700 text-sm">
-                        <i class="fa-solid fa-spinner fa-spin text-xs"></i>
+                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 p-[2px] shadow-md no-select">
+                    <div id="admin-avatar" class="w-full h-full bg-white rounded-full flex items-center justify-center font-bold text-slate-700 text-xs md:text-sm">
+                        <i class="fa-solid fa-spinner fa-spin"></i>
                     </div>
                 </div>
             </div>
@@ -153,113 +154,132 @@
 
         <div class="flex-1 overflow-y-auto p-4 md:p-8 w-full" id="inner-content">
             
-            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-3xl p-6 md:p-8 mb-8 text-white shadow-xl shadow-blue-600/20 relative overflow-hidden no-select">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl md:rounded-[2rem] p-5 md:p-8 mb-6 md:mb-8 text-white shadow-lg shadow-blue-600/20 relative overflow-hidden no-select">
                 <div class="relative z-10">
-                    <h2 class="text-2xl md:text-3xl font-bold mb-2">Selamat Datang 👋</h2>
-                    <p class="text-blue-100 text-sm md:text-base max-w-xl">Kelola seluruh konten website, pantau statistik, dan respon pesan masuk dalam satu tempat yang terintegrasi.</p>
+                    <h2 class="text-xl md:text-3xl font-bold mb-1.5 md:mb-2">Selamat Datang 👋</h2>
+                    <p class="text-blue-100 text-xs md:text-base max-w-xl leading-relaxed opacity-90 md:opacity-100">Kelola seluruh konten website, pantau statistik, dan respon pesan masuk dalam satu tempat yang terintegrasi.</p>
                 </div>
-                <i class="fa-solid fa-chart-line absolute -bottom-4 -right-4 text-8xl md:text-9xl text-white/10 rotate-12"></i>
+                <i class="fa-solid fa-chart-line absolute -bottom-3 -right-3 text-7xl md:text-9xl text-white/10 rotate-12"></i>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 no-select">
-                <div class="bg-white p-5 md:p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="p-3 bg-blue-50 rounded-xl text-blue-600"><i class="fa-regular fa-newspaper text-xl"></i></div>
-                        <span class="text-[10px] md:text-xs font-bold text-emerald-500 bg-emerald-50 px-2 py-1 rounded-lg">Realtime</span>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-6 md:mb-8 no-select">
+                <div class="bg-white p-4 md:p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
+                    <div class="flex flex-col xl:flex-row justify-between xl:items-start gap-2 mb-3 md:mb-4">
+                        <div class="w-10 h-10 md:w-auto md:h-auto md:p-3 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 self-start"><i class="fa-regular fa-newspaper md:text-xl"></i></div>
+                        <span class="text-[9px] md:text-xs font-bold text-emerald-500 bg-emerald-50 px-2 py-1 rounded-lg w-fit">Realtime</span>
                     </div>
-                    <p class="text-slate-500 text-xs md:text-sm font-medium">Total Berita</p>
-                    <h3 class="text-2xl md:text-3xl font-bold text-slate-800" id="stat-news">0</h3>
+                    <div>
+                        <p class="text-slate-500 text-[10px] md:text-sm font-medium mb-0.5">Total Berita</p>
+                        <h3 class="text-2xl md:text-3xl font-bold text-slate-800" id="stat-news">0</h3>
+                    </div>
                 </div>
-                <div class="bg-white p-5 md:p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="p-3 bg-orange-50 rounded-xl text-orange-600"><i class="fa-solid fa-file-pdf text-xl"></i></div>
+
+                <div class="bg-white p-4 md:p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
+                    <div class="flex justify-between items-start gap-2 mb-3 md:mb-4">
+                        <div class="w-10 h-10 md:w-auto md:h-auto md:p-3 bg-orange-50 rounded-xl flex items-center justify-center text-orange-600 self-start"><i class="fa-solid fa-file-pdf md:text-xl"></i></div>
                     </div>
-                    <p class="text-slate-500 text-xs md:text-sm font-medium">Dokumen Aktif</p>
-                    <h3 class="text-2xl md:text-3xl font-bold text-slate-800" id="stat-docs">0</h3>
+                    <div>
+                        <p class="text-slate-500 text-[10px] md:text-sm font-medium mb-0.5">Dokumen Aktif</p>
+                        <h3 class="text-2xl md:text-3xl font-bold text-slate-800" id="stat-docs">0</h3>
+                    </div>
                 </div>
-                <div class="bg-white p-5 md:p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="p-3 bg-yellow-50 rounded-xl text-yellow-600"><i class="fa-solid fa-inbox text-xl"></i></div>
-                        <span id="msg-badge" class="text-[10px] md:text-xs font-bold text-red-500 bg-red-50 px-2 py-1 rounded-lg hidden">Perlu Cek</span>
+
+                <div class="bg-white p-4 md:p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
+                    <div class="flex flex-col xl:flex-row justify-between xl:items-start gap-2 mb-3 md:mb-4">
+                        <div class="w-10 h-10 md:w-auto md:h-auto md:p-3 bg-yellow-50 rounded-xl flex items-center justify-center text-yellow-600 self-start"><i class="fa-solid fa-inbox md:text-xl"></i></div>
+                        <span id="msg-badge" class="text-[9px] md:text-xs font-bold text-red-500 bg-red-50 px-2 py-1 rounded-lg w-fit hidden">Perlu Cek</span>
                     </div>
-                    <p class="text-slate-500 text-xs md:text-sm font-medium">Pesan Masuk</p>
-                    <h3 class="text-2xl md:text-3xl font-bold text-slate-800" id="stat-msg">0</h3>
+                    <div>
+                        <p class="text-slate-500 text-[10px] md:text-sm font-medium mb-0.5">Pesan Masuk</p>
+                        <h3 class="text-2xl md:text-3xl font-bold text-slate-800" id="stat-msg">0</h3>
+                    </div>
                 </div>
-                <div class="bg-white p-5 md:p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="p-3 bg-purple-50 rounded-xl text-purple-600"><i class="fa-solid fa-users text-xl"></i></div>
+
+                <div class="bg-white p-4 md:p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
+                    <div class="flex justify-between items-start gap-2 mb-3 md:mb-4">
+                        <div class="w-10 h-10 md:w-auto md:h-auto md:p-3 bg-purple-50 rounded-xl flex items-center justify-center text-purple-600 self-start"><i class="fa-solid fa-users md:text-xl"></i></div>
                     </div>
-                    <p class="text-slate-500 text-xs md:text-sm font-medium">Admin Aktif</p>
-                    <h3 class="text-2xl md:text-3xl font-bold text-slate-800" id="stat-users">0</h3>
+                    <div>
+                        <p class="text-slate-500 text-[10px] md:text-sm font-medium mb-0.5">Admin Aktif</p>
+                        <h3 class="text-2xl md:text-3xl font-bold text-slate-800" id="stat-users">0</h3>
+                    </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-10">
-                <div class="xl:col-span-2 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-lg font-bold text-slate-700">Statistik Unggahan Bulanan</h3>
-                        <div class="px-3 py-1 bg-slate-100 rounded-lg text-xs font-semibold text-slate-500">Tahun 2026</div>
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-10">
+                <div class="xl:col-span-2 bg-white p-4 md:p-6 rounded-2xl border border-slate-100 shadow-sm">
+                    <div class="flex justify-between items-center mb-4 md:mb-6">
+                        <h3 class="text-base md:text-lg font-bold text-slate-700">Statistik Unggahan</h3>
+                        <div class="px-2.5 py-1 bg-slate-100 rounded-lg text-[10px] md:text-xs font-semibold text-slate-500">Tahun 2026</div>
                     </div>
-                    <div class="relative h-64 w-full">
+                    <div class="relative h-48 md:h-64 w-full">
                         <canvas id="uploadChart"></canvas>
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col h-full">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-lg font-bold text-slate-700">Aktivitas Terbaru</h3>
-                        <a href="#" class="text-sm text-blue-600 hover:text-blue-800 font-medium">Lihat Semua</a>
+                <div class="bg-white p-4 md:p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col h-full max-h-[300px] xl:max-h-full">
+                    <div class="flex justify-between items-center mb-4 md:mb-6">
+                        <h3 class="text-base md:text-lg font-bold text-slate-700">Aktivitas Terbaru</h3>
+                        <a href="#" class="text-xs md:text-sm text-blue-600 hover:text-blue-800 font-medium">Semua</a>
                     </div>
-                    <div class="flex-1 overflow-y-auto space-y-5 pr-2">
-                        <div class="flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0"><i class="fa-regular fa-newspaper"></i></div>
+                    <div class="flex-1 overflow-y-auto space-y-4 md:space-y-5 pr-1 md:pr-2">
+                        <div class="flex items-start gap-3 md:gap-4">
+                            <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0"><i class="fa-regular fa-newspaper text-xs md:text-base"></i></div>
                             <div>
-                                <p class="text-sm font-bold text-slate-800">Berita Dipublikasikan</p>
-                                <p class="text-xs text-slate-500">"Pendaftaran Beasiswa Mahasiswa 2026..."</p>
-                                <span class="text-[10px] font-medium text-slate-400 mt-1 block"><i class="fa-regular fa-clock mr-1"></i> 10 menit yang lalu</span>
+                                <p class="text-xs md:text-sm font-bold text-slate-800 leading-tight">Berita Dipublikasikan</p>
+                                <p class="text-[10px] md:text-xs text-slate-500 mt-0.5 line-clamp-1">"Pendaftaran Beasiswa Mahasiswa 2026..."</p>
+                                <span class="text-[9px] md:text-[10px] font-medium text-slate-400 mt-1 block"><i class="fa-regular fa-clock mr-1"></i> 10 menit lalu</span>
                             </div>
                         </div>
-                        <div class="flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-file-pdf"></i></div>
+                        <div class="flex items-start gap-3 md:gap-4">
+                            <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-file-pdf text-xs md:text-base"></i></div>
                             <div>
-                                <p class="text-sm font-bold text-slate-800">Dokumen Diunggah</p>
-                                <p class="text-xs text-slate-500">"SOP_Praktikum_Lab_2026.pdf"</p>
-                                <span class="text-[10px] font-medium text-slate-400 mt-1 block"><i class="fa-regular fa-clock mr-1"></i> 1 jam yang lalu</span>
+                                <p class="text-xs md:text-sm font-bold text-slate-800 leading-tight">Dokumen Diunggah</p>
+                                <p class="text-[10px] md:text-xs text-slate-500 mt-0.5 line-clamp-1">"SOP_Praktikum_Lab_2026.pdf"</p>
+                                <span class="text-[9px] md:text-[10px] font-medium text-slate-400 mt-1 block"><i class="fa-regular fa-clock mr-1"></i> 1 jam lalu</span>
                             </div>
                         </div>
-                        <div class="flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-envelope"></i></div>
+                        <div class="flex items-start gap-3 md:gap-4">
+                            <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-envelope text-xs md:text-base"></i></div>
                             <div>
-                                <p class="text-sm font-bold text-slate-800">Pesan Masuk Baru</p>
-                                <p class="text-xs text-slate-500">Dari: Budi Santoso - "Pertanyaan seputar..."</p>
-                                <span class="text-[10px] font-medium text-slate-400 mt-1 block"><i class="fa-regular fa-clock mr-1"></i> 3 jam yang lalu</span>
+                                <p class="text-xs md:text-sm font-bold text-slate-800 leading-tight">Pesan Masuk Baru</p>
+                                <p class="text-[10px] md:text-xs text-slate-500 mt-0.5 line-clamp-1">Budi - "Pertanyaan seputar pendaftaran..."</p>
+                                <span class="text-[9px] md:text-[10px] font-medium text-slate-400 mt-1 block"><i class="fa-regular fa-clock mr-1"></i> 3 jam lalu</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <h3 class="text-base md:text-lg font-bold text-slate-700 mb-4 no-select">Aksi Cepat</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pb-6">
-                <a href="upload-news.html" class="nav-item group p-5 bg-white border border-slate-200 rounded-2xl hover:border-blue-500 hover:shadow-lg transition-all cursor-pointer no-select">
-                    <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors mb-4"><i class="fa-solid fa-pen-nib text-xl"></i></div>
-                    <h4 class="text-base font-bold text-slate-800 group-hover:text-blue-600 transition-colors">Tulis Berita</h4>
-                    <p class="text-xs text-slate-500 mt-1">Publikasi artikel baru</p>
+            <h3 class="text-base md:text-lg font-bold text-slate-700 mb-3 md:mb-4 no-select">Aksi Cepat</h3>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 pb-6">
+                <a href="upload-news.html" class="nav-item group p-4 md:p-5 bg-white border border-slate-200 rounded-2xl hover:border-blue-500 hover:shadow-md transition-all cursor-pointer no-select text-center md:text-left flex flex-col md:flex-col items-center md:items-start justify-center">
+                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors mb-2 md:mb-3 shrink-0"><i class="fa-solid fa-pen-nib text-lg md:text-xl"></i></div>
+                    <div>
+                        <h4 class="text-sm md:text-base font-bold text-slate-800 group-hover:text-blue-600 transition-colors leading-tight">Tulis Berita</h4>
+                        <p class="text-[10px] md:text-xs text-slate-500 mt-1 hidden md:block">Publikasi artikel baru</p>
+                    </div>
                 </a>
-                <a href="upload-doc.html" class="nav-item group p-5 bg-white border border-slate-200 rounded-2xl hover:border-orange-500 hover:shadow-lg transition-all cursor-pointer no-select">
-                    <div class="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center text-orange-600 group-hover:bg-orange-500 group-hover:text-white transition-colors mb-4"><i class="fa-solid fa-file-arrow-up text-xl"></i></div>
-                    <h4 class="text-base font-bold text-slate-800 group-hover:text-orange-600 transition-colors">Unggah Dokumen</h4>
-                    <p class="text-xs text-slate-500 mt-1">Upload PDF/File publik</p>
+                <a href="upload-doc.html" class="nav-item group p-4 md:p-5 bg-white border border-slate-200 rounded-2xl hover:border-orange-500 hover:shadow-md transition-all cursor-pointer no-select text-center md:text-left flex flex-col md:flex-col items-center md:items-start justify-center">
+                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-orange-50 flex items-center justify-center text-orange-600 group-hover:bg-orange-500 group-hover:text-white transition-colors mb-2 md:mb-3 shrink-0"><i class="fa-solid fa-file-arrow-up text-lg md:text-xl"></i></div>
+                    <div>
+                        <h4 class="text-sm md:text-base font-bold text-slate-800 group-hover:text-orange-600 transition-colors leading-tight">Dokumen</h4>
+                        <p class="text-[10px] md:text-xs text-slate-500 mt-1 hidden md:block">Upload PDF publik</p>
+                    </div>
                 </a>
-                <a href="inbox.html" class="nav-item group p-5 bg-white border border-slate-200 rounded-2xl hover:border-yellow-500 hover:shadow-lg transition-all cursor-pointer no-select">
-                    <div class="w-12 h-12 rounded-full bg-yellow-50 flex items-center justify-center text-yellow-600 group-hover:bg-yellow-500 group-hover:text-white transition-colors mb-4"><i class="fa-solid fa-envelope-open-text text-xl"></i></div>
-                    <h4 class="text-base font-bold text-slate-800 group-hover:text-yellow-600 transition-colors">Cek Inbox</h4>
-                    <p class="text-xs text-slate-500 mt-1">Lihat pesan pengunjung</p>
+                <a href="inbox.html" class="nav-item group p-4 md:p-5 bg-white border border-slate-200 rounded-2xl hover:border-yellow-500 hover:shadow-md transition-all cursor-pointer no-select text-center md:text-left flex flex-col md:flex-col items-center md:items-start justify-center">
+                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-yellow-50 flex items-center justify-center text-yellow-600 group-hover:bg-yellow-500 group-hover:text-white transition-colors mb-2 md:mb-3 shrink-0"><i class="fa-solid fa-envelope-open-text text-lg md:text-xl"></i></div>
+                    <div>
+                        <h4 class="text-sm md:text-base font-bold text-slate-800 group-hover:text-yellow-600 transition-colors leading-tight">Cek Inbox</h4>
+                        <p class="text-[10px] md:text-xs text-slate-500 mt-1 hidden md:block">Lihat pesan masuk</p>
+                    </div>
                 </a>
-                <a href="users.html" class="nav-item group p-5 bg-white border border-slate-200 rounded-2xl hover:border-purple-500 hover:shadow-lg transition-all cursor-pointer no-select">
-                    <div class="w-12 h-12 rounded-full bg-purple-50 flex items-center justify-center text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors mb-4"><i class="fa-solid fa-user-plus text-xl"></i></div>
-                    <h4 class="text-base font-bold text-slate-800 group-hover:text-purple-600 transition-colors">Kelola Admin</h4>
-                    <p class="text-xs text-slate-500 mt-1">Tambah user/pengurus</p>
+                <a href="users.html" class="nav-item group p-4 md:p-5 bg-white border border-slate-200 rounded-2xl hover:border-purple-500 hover:shadow-md transition-all cursor-pointer no-select text-center md:text-left flex flex-col md:flex-col items-center md:items-start justify-center">
+                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-purple-50 flex items-center justify-center text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors mb-2 md:mb-3 shrink-0"><i class="fa-solid fa-user-plus text-lg md:text-xl"></i></div>
+                    <div>
+                        <h4 class="text-sm md:text-base font-bold text-slate-800 group-hover:text-purple-600 transition-colors leading-tight">Kelola Admin</h4>
+                        <p class="text-[10px] md:text-xs text-slate-500 mt-1 hidden md:block">Tambah pengurus</p>
+                    </div>
                 </a>
             </div>
 
@@ -267,186 +287,6 @@
     </main>
 
     <script src="config.js"></script>
-    <script>
-        // Mempertahankan fungsi auth
-        try { checkAuth(); } catch(e) { console.log("Bypass config.js check"); }
-        function logout() { localStorage.removeItem('token'); window.location.href = 'login.html'; }
-
-        // Fungsi Toggle Sidebar Mobile
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('-translate-x-full');
-            document.getElementById('sidebar-overlay').classList.toggle('hidden');
-        }
-
-        // Jam Realtime (Global)
-        setInterval(() => {
-            const clockEl = document.getElementById('realtime-clock');
-            if(clockEl) {
-                clockEl.innerText = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' WIB';
-            }
-        }, 1000);
-
-        // ========================================================
-        // FUNGSI UPDATE WARNA SIDEBAR (TAHAN REFRESH)
-        // ========================================================
-        function updateSidebarActiveState(targetUrl = null) {
-            // Jika targetUrl kosong (karena refresh), ambil dari URL browser saat ini
-            let path = targetUrl;
-            if (!path) {
-                path = window.location.pathname.split('/').pop(); 
-                path = path.split('?')[0].split('#')[0]; 
-                if (path === '' || path === '/') path = 'dashboard.html'; 
-            }
-
-            document.querySelectorAll('#sidebar-nav a.nav-item').forEach(item => {
-                // 1. Reset semua menu ke warna abu-abu (tidak aktif)
-                item.classList.remove('bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-900/50');
-                item.classList.add('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
-                
-                const icon = item.querySelector('i');
-                if(icon) icon.className = icon.className.replace(/group-hover:text-[a-z]+-\d+/g, '');
-                
-                // 2. Beri warna biru pada menu yang link-nya cocok
-                if (item.getAttribute('href') === path) {
-                    item.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
-                    item.classList.add('bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-900/50');
-                }
-            });
-        }
-
-        // ========================================================
-        // FUNGSI INIT HALAMAN (Dijalankan setiap kali halaman berubah)
-        // ========================================================
-        function initPageContent() {
-            // 1. Fetch Data Profile
-            try {
-                fetch(`${API_URL}/profile`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
-                .then(res => res.json())
-                .then(user => {
-                    if(user && user.name) {
-                        const nameEl = document.getElementById('admin-name');
-                        const avatarEl = document.getElementById('admin-avatar');
-                        if(nameEl) nameEl.innerText = user.name;
-                        if(avatarEl) avatarEl.innerText = user.name.charAt(0).toUpperCase();
-                    }
-                });
-            } catch(e) {}
-
-            // 2. Jika di Dashboard, fetch stats
-            if(document.getElementById('stat-news')) {
-                try {
-                    fetch(`${API_URL}/dashboard-stats`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
-                    .then(res => res.json())
-                    .then(data => {
-                        document.getElementById('stat-news').innerText = data.total_news || 0;
-                        document.getElementById('stat-docs').innerText = data.total_docs || 0;
-                        document.getElementById('stat-msg').innerText = data.total_messages || 0;
-                        document.getElementById('stat-users').innerText = data.total_users || 0;
-
-                        if(data.unread_messages > 0) {
-                            const msgBadge = document.getElementById('msg-badge');
-                            if(msgBadge) {
-                                msgBadge.classList.remove('hidden');
-                                msgBadge.innerText = data.unread_messages + " Pesan Baru";
-                            }
-                            const dot = document.getElementById('badge-dot');
-                            if(dot) dot.classList.remove('hidden');
-                        }
-                    });
-                } catch(e) {}
-            }
-
-            // 3. Jika ada Canvas Chart, inisialisasi Chart.js
-            const chartCanvas = document.getElementById('uploadChart');
-            if (chartCanvas) {
-                // Hancurkan chart lama jika ada
-                if(window.myDashboardChart) window.myDashboardChart.destroy();
-                
-                const ctx = chartCanvas.getContext('2d');
-                window.myDashboardChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
-                        datasets: [
-                            { label: 'Berita & Artikel', data: [15, 22, 18, 25, 30, 20], backgroundColor: '#2563eb', borderRadius: 6, barPercentage: 0.6 },
-                            { label: 'Dokumen', data: [5, 12, 8, 15, 10, 18], backgroundColor: '#f97316', borderRadius: 6, barPercentage: 0.6 }
-                        ]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top', labels: { usePointStyle: true, boxWidth: 8, font: { family: "'Poppins', sans-serif", size: 12 } } } }, scales: { y: { beginAtZero: true, grid: { borderDash: [5, 5], color: '#f1f5f9' }, border: { display: false } }, x: { grid: { display: false }, border: { display: false } } } }
-                });
-            }
-        }
-
-        // ========================================================
-        // ENGINE SPA (SINGLE PAGE APPLICATION) - ROUTER
-        // ========================================================
-        document.addEventListener("DOMContentLoaded", () => {
-            // Panggil saat halaman pertama direfresh / diload
-            updateSidebarActiveState(); 
-            initPageContent();
-
-            const mainContent = document.getElementById('main-content');
-
-            // Tangkap semua klik pada link berkelas 'nav-item'
-            document.querySelectorAll('a.nav-item').forEach(link => {
-                link.addEventListener('click', async function(e) {
-                    const url = this.getAttribute('href');
-                    
-                    // Biarkan link eksternal atau link # jalan normal
-                    if(url === '#' || url.startsWith('http')) return;
-
-                    // Cegah browser reload halaman!
-                    e.preventDefault(); 
-
-                    // Update UI Sidebar
-                    updateSidebarActiveState(url);
-
-                    try {
-                        // Efek loading transisi memudar
-                        mainContent.style.opacity = '0.4';
-
-                        // Ambil HTML dari halaman tujuan
-                        const response = await fetch(url);
-                        if (!response.ok) throw new Error('Halaman tidak ditemukan');
-                        const htmlText = await response.text();
-
-                        // Ekstrak tag <main> dari HTML yang didapat
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(htmlText, 'text/html');
-                        const newMain = doc.querySelector('main');
-
-                        if(newMain) {
-                            // Ganti seluruh isi main dengan yang baru
-                            mainContent.innerHTML = newMain.innerHTML;
-                            
-                            // Ubah URL di address bar browser
-                            window.history.pushState({ path: url }, '', url);
-
-                            // Scroll ke atas
-                            mainContent.scrollTo(0, 0);
-
-                            // Eksekusi ulang API dan Chart karena HTML baru saja diganti
-                            initPageContent();
-                        } else {
-                            window.location.href = url; // Fallback normal
-                        }
-
-                        // Munculkan lagi dengan transisi
-                        setTimeout(() => mainContent.style.opacity = '1', 50);
-
-                        // Auto-close sidebar jika di HP
-                        if(window.innerWidth < 768) toggleSidebar();
-
-                    } catch(error) {
-                        console.error("Gagal SPA routing:", error);
-                        window.location.href = url; // Fallback jika fetch gagal
-                    }
-                });
-            });
-
-            // Handle tombol Back/Forward di browser
-            window.addEventListener('popstate', () => window.location.reload());
-        });
-    </script>
+    <script src="admin-core.js"></script>
 </body>
 </html>

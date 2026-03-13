@@ -2,82 +2,136 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#f3f4f6">
     <title>Detail Dokumen - Portal Informasi</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Mencegah Teks Terblok Biru Saat Diklik di Layar Sentuh */
+        .no-select {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+    </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen font-sans text-gray-800">
+<body class="bg-gray-100 flex items-center justify-center min-h-screen font-sans text-gray-800 p-4 md:p-6">
 
-    <div class="container max-w-2xl px-6">
-        <a href="index.html" class="text-gray-500 hover:text-gray-800 font-bold mb-6 inline-block">
+    <div class="w-full max-w-[420px] md:max-w-xl mx-auto flex flex-col h-full justify-center">
+        
+        <a href="index.html" class="no-select text-gray-500 hover:text-gray-800 font-bold mb-4 md:mb-6 inline-flex items-center w-fit transition-colors text-sm md:text-base px-2 py-1 -ml-2 rounded-lg hover:bg-gray-200">
             <i class="fa-solid fa-arrow-left mr-2"></i> Kembali ke Daftar
         </a>
 
-        <div id="loading" class="text-center py-10">
-            <i class="fa-solid fa-circle-notch fa-spin text-3xl text-blue-500"></i>
+        <div id="loading" class="text-center py-16 bg-white rounded-3xl shadow-sm border border-gray-100">
+            <i class="fa-solid fa-circle-notch fa-spin text-3xl md:text-4xl text-blue-500 mb-3"></i>
+            <p class="text-sm font-bold text-gray-400 animate-pulse">Memuat Dokumen...</p>
         </div>
 
-        <div id="content-area" class="hidden bg-white p-10 rounded-3xl shadow-xl border border-gray-100 text-center relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-purple-500"></div>
+        <div id="content-area" class="hidden bg-white p-6 md:p-10 rounded-[2rem] shadow-xl border border-gray-100 text-center relative overflow-hidden">
             
-            <div id="icon-container" class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
-                <i id="doc-icon" class="fa-solid fa-file text-5xl text-gray-400"></i>
+            <div class="absolute top-0 left-0 w-full h-1.5 md:h-2 bg-gradient-to-r from-blue-500 to-purple-500"></div>
+            
+            <div id="icon-container" class="w-20 h-20 md:w-24 md:h-24 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-inner border border-gray-100">
+                <i id="doc-icon" class="fa-solid fa-file text-4xl md:text-5xl text-gray-400"></i>
             </div>
 
-            <h1 id="doc-title" class="text-2xl font-bold text-gray-800 mb-2"></h1>
-            <p class="text-gray-500 text-sm mb-8">Diunggah pada: <span id="doc-date" class="font-bold"></span></p>
+            <h1 id="doc-title" class="text-lg md:text-2xl font-bold text-gray-800 mb-1.5 md:mb-2 leading-tight px-2">Memuat Judul...</h1>
+            <p class="text-gray-400 text-[11px] md:text-sm mb-6 md:mb-8 font-medium">Diunggah pada: <span id="doc-date" class="font-bold text-gray-500">...</span></p>
 
-            <div class="bg-blue-50 rounded-xl p-6 mb-8 text-left border border-blue-100">
-                <h3 class="font-bold text-blue-800 text-sm mb-2 uppercase tracking-wide">Informasi File</h3>
-                <div class="flex justify-between text-sm border-b border-blue-200 pb-2 mb-2">
-                    <span class="text-blue-600">Tipe Format</span>
-                    <span id="doc-type" class="font-bold text-gray-700 uppercase"></span>
+            <div class="bg-blue-50/50 rounded-2xl p-4 md:p-6 mb-6 md:mb-8 text-left border border-blue-100/50">
+                <h3 class="font-bold text-blue-800 text-[10px] md:text-xs mb-2 md:mb-3 uppercase tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-circle-info"></i> Informasi File
+                </h3>
+                
+                <div class="flex justify-between items-center text-xs md:text-sm border-b border-blue-100 pb-2 md:pb-3 mb-2 md:mb-3">
+                    <span class="text-blue-600/80 font-medium">Tipe Format</span>
+                    <span id="doc-type" class="font-bold text-gray-700 uppercase bg-white px-2.5 py-1 rounded-md shadow-sm border border-blue-50 text-[10px] md:text-xs">PDF</span>
                 </div>
-                <div class="flex justify-between text-sm">
-                    <span class="text-blue-600">Status</span>
-                    <span class="font-bold text-green-600"><i class="fa-solid fa-check-circle mr-1"></i> Publik</span>
+                
+                <div class="flex justify-between items-center text-xs md:text-sm">
+                    <span class="text-blue-600/80 font-medium">Status Akses</span>
+                    <span class="font-bold text-emerald-600 flex items-center gap-1 bg-emerald-50 px-2.5 py-1 rounded-md text-[10px] md:text-xs">
+                        <i class="fa-solid fa-check-circle"></i> Publik
+                    </span>
                 </div>
             </div>
 
-            <a id="download-btn" href="#" target="_blank" class="w-full block bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-600/30 transition-all transform hover:-translate-y-1">
-                <i class="fa-solid fa-cloud-arrow-down mr-2"></i> Download Dokumen
+            <a id="download-btn" href="#" target="_blank" class="no-select w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 md:py-4 rounded-xl shadow-lg shadow-blue-600/30 transition-all transform active:scale-95 text-sm md:text-base">
+                <i class="fa-solid fa-cloud-arrow-down text-lg"></i> Unduh Dokumen
             </a>
         </div>
+        
     </div>
 
     <script src="config.js"></script>
     <script>
         const params = new URLSearchParams(window.location.search);
         const id = params.get('id');
-        if(!id) window.location.href = 'index.html';
+        
+        // Jika tidak ada ID, kembalikan ke beranda
+        if(!id) {
+            window.location.href = 'index.html';
+        }
 
+        // Fungsi Render UI
+        function renderDocument(data) {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('content-area').classList.remove('hidden');
+
+            document.getElementById('doc-title').innerText = data.title;
+            document.getElementById('doc-type').innerText = data.file_type;
+            
+            // Format Tanggal
+            const dateObj = new Date(data.created_at);
+            document.getElementById('doc-date').innerText = dateObj.toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'});
+            
+            // Set Link Download
+            document.getElementById('download-btn').href = data.file_path ? `${STORAGE_URL}${data.file_path}` : '#';
+
+            // Atur Ikon & Warna Berdasarkan Tipe
+            const icon = document.getElementById('doc-icon');
+            const container = document.getElementById('icon-container');
+            const typeLabel = document.getElementById('doc-type');
+            
+            const type = (data.file_type || '').toLowerCase();
+
+            if(type.includes('pdf')) {
+                icon.className = 'fa-solid fa-file-pdf text-4xl md:text-5xl text-red-500';
+                container.className = 'w-20 h-20 md:w-24 md:h-24 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-inner border border-red-100';
+                typeLabel.className = 'font-bold text-red-600 uppercase bg-white px-2.5 py-1 rounded-md shadow-sm border border-red-50 text-[10px] md:text-xs';
+            } else if(type.includes('xls') || type.includes('csv')) {
+                icon.className = 'fa-solid fa-file-excel text-4xl md:text-5xl text-emerald-500';
+                container.className = 'w-20 h-20 md:w-24 md:h-24 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-inner border border-emerald-100';
+                typeLabel.className = 'font-bold text-emerald-600 uppercase bg-white px-2.5 py-1 rounded-md shadow-sm border border-emerald-50 text-[10px] md:text-xs';
+            } else {
+                icon.className = 'fa-solid fa-file-word text-4xl md:text-5xl text-blue-500';
+                container.className = 'w-20 h-20 md:w-24 md:h-24 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-inner border border-blue-100';
+                typeLabel.className = 'font-bold text-blue-600 uppercase bg-white px-2.5 py-1 rounded-md shadow-sm border border-blue-50 text-[10px] md:text-xs';
+            }
+        }
+
+        // Mulai Ambil Data
         fetch(`${API_URL}/documents/${id}`)
             .then(res => res.ok ? res.json() : Promise.reject("Dokumen tidak ditemukan"))
             .then(data => {
-                document.getElementById('loading').classList.add('hidden');
-                document.getElementById('content-area').classList.remove('hidden');
-
-                document.getElementById('doc-title').innerText = data.title;
-                document.getElementById('doc-type').innerText = data.file_type;
-                document.getElementById('doc-date').innerText = new Date(data.created_at).toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'});
-                
-                // Set Link Download
-                document.getElementById('download-btn').href = `${STORAGE_URL}${data.file_path}`;
-
-                // Atur Ikon
-                const icon = document.getElementById('doc-icon');
-                const container = document.getElementById('icon-container');
-                
-                if(data.file_type.includes('pdf')) {
-                    icon.className = 'fa-solid fa-file-pdf text-5xl text-red-500';
-                    container.className = 'w-24 h-24 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6';
-                } else {
-                    icon.className = 'fa-solid fa-file-word text-5xl text-blue-500';
-                    container.className = 'w-24 h-24 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6';
-                }
+                renderDocument(data);
             })
             .catch(err => {
-                document.getElementById('loading').innerHTML = `<p class="text-red-500">${err}</p><a href="index.html" class="block mt-4 underline">Kembali</a>`;
+                console.log("Memuat Simulasi Data Dummy (karena API belum terhubung)");
+                
+                // Fallback Data Dummy agar UI bisa di-test
+                setTimeout(() => {
+                    const dummyData = {
+                        id: id,
+                        title: "SOP Praktikum Laboratorium Komputer 2026",
+                        file_type: id % 2 === 0 ? "DOCX" : "PDF", // Selang-seling PDF/Word
+                        created_at: new Date().toISOString(),
+                        file_path: "#"
+                    };
+                    renderDocument(dummyData);
+                }, 800); // Simulasi loading 0.8 detik
             });
     </script>
 </body>
